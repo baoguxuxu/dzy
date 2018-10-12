@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.meiguo.chengjiumanager.dao.ChengjiuDao">
+
+	<select id="get" resultType="com.meiguo.chengjiumanager.domain.ChengjiuDO">
+		select `chengjiu_id`,`id`,`open_id`,`nickname`,`phone`,`name`,`redister_time`,`chengjiu_time`,`rank`,`chengjiu_flag`,`chengjiu_ico`,`chengjiu_name`,`chengjiu_demand`,`reward`,`start_time`,`end_time`,`add_time`,`update_time`,`login_time`,`hearc_url`,`identity_card`,`delete_flag`,`username` from t_chengjiu where chengjiu_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.meiguo.chengjiumanager.domain.ChengjiuDO">
+		select `chengjiu_id`,`id`,`open_id`,`nickname`,`phone`,`name`,`redister_time`,`chengjiu_time`,`rank`,`chengjiu_flag`,`chengjiu_ico`,`chengjiu_name`,`chengjiu_demand`,`reward`,`start_time`,`end_time`,`add_time`,`update_time`,`login_time`,`hearc_url`,`identity_card`,`delete_flag`,`username` from t_chengjiu
+        <where>  
+		  		  <if test="chengjiuId != null and chengjiuId != ''"> and chengjiu_id = #{chengjiuId} </if>
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="openId != null and openId != ''"> and open_id = #{openId} </if>
+		  		  <if test="nickname != null and nickname != ''"> and nickname = #{nickname} </if>
+		  		  <if test="phone != null and phone != ''"> and phone = #{phone} </if>
+		  		  <if test="name != null and name != ''"> and name = #{name} </if>
+		  		  <if test="redisterTime != null and redisterTime != ''"> and redister_time = #{redisterTime} </if>
+		  		  <if test="chengjiuTime != null and chengjiuTime != ''"> and chengjiu_time = #{chengjiuTime} </if>
+		  		  <if test="rank != null and rank != ''"> and rank = #{rank} </if>
+		  		  <if test="chengjiuFlag != null and chengjiuFlag != ''"> and chengjiu_flag = #{chengjiuFlag} </if>
+		  		  <if test="chengjiuIco != null and chengjiuIco != ''"> and chengjiu_ico = #{chengjiuIco} </if>
+		  		  <if test="chengjiuName != null and chengjiuName != ''"> and chengjiu_name = #{chengjiuName} </if>
+		  		  <if test="chengjiuDemand != null and chengjiuDemand != ''"> and chengjiu_demand = #{chengjiuDemand} </if>
+		  		  <if test="reward != null and reward != ''"> and reward = #{reward} </if>
+		  		  <if test="startTime != null and startTime != ''"> and start_time = #{startTime} </if>
+		  		  <if test="endTime != null and endTime != ''"> and end_time = #{endTime} </if>
+		  		  <if test="addTime != null and addTime != ''"> and add_time = #{addTime} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		  <if test="loginTime != null and loginTime != ''"> and login_time = #{loginTime} </if>
+		  		  <if test="hearcUrl != null and hearcUrl != ''"> and hearc_url = #{hearcUrl} </if>
+		  		  <if test="identityCard != null and identityCard != ''"> and identity_card = #{identityCard} </if>
+		  		  <if test="deleteFlag != null and deleteFlag != ''"> and delete_flag = #{deleteFlag} </if>
+		  		  <if test="username != null and username != ''"> and username = #{username} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by chengjiu_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from t_chengjiu
+		 <where>  
+		  		  <if test="chengjiuId != null and chengjiuId != ''"> and chengjiu_id = #{chengjiuId} </if>
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="openId != null and openId != ''"> and open_id = #{openId} </if>
+		  		  <if test="nickname != null and nickname != ''"> and nickname = #{nickname} </if>
+		  		  <if test="phone != null and phone != ''"> and phone = #{phone} </if>
+		  		  <if test="name != null and name != ''"> and name = #{name} </if>
+		  		  <if test="redisterTime != null and redisterTime != ''"> and redister_time = #{redisterTime} </if>
+		  		  <if test="chengjiuTime != null and chengjiuTime != ''"> and chengjiu_time = #{chengjiuTime} </if>
+		  		  <if test="rank != null and rank != ''"> and rank = #{rank} </if>
+		  		  <if test="chengjiuFlag != null and chengjiuFlag != ''"> and chengjiu_flag = #{chengjiuFlag} </if>
+		  		  <if test="chengjiuIco != null and chengjiuIco != ''"> and chengjiu_ico = #{chengjiuIco} </if>
+		  		  <if test="chengjiuName != null and chengjiuName != ''"> and chengjiu_name = #{chengjiuName} </if>
+		  		  <if test="chengjiuDemand != null and chengjiuDemand != ''"> and chengjiu_demand = #{chengjiuDemand} </if>
+		  		  <if test="reward != null and reward != ''"> and reward = #{reward} </if>
+		  		  <if test="startTime != null and startTime != ''"> and start_time = #{startTime} </if>
+		  		  <if test="endTime != null and endTime != ''"> and end_time = #{endTime} </if>
+		  		  <if test="addTime != null and addTime != ''"> and add_time = #{addTime} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		  <if test="loginTime != null and loginTime != ''"> and login_time = #{loginTime} </if>
+		  		  <if test="hearcUrl != null and hearcUrl != ''"> and hearc_url = #{hearcUrl} </if>
+		  		  <if test="identityCard != null and identityCard != ''"> and identity_card = #{identityCard} </if>
+		  		  <if test="deleteFlag != null and deleteFlag != ''"> and delete_flag = #{deleteFlag} </if>
+		  		  <if test="username != null and username != ''"> and username = #{username} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.meiguo.chengjiumanager.domain.ChengjiuDO" useGeneratedKeys="true" keyProperty="chengjiuId">
+		insert into t_chengjiu
+		(
+			`id`, 
+			`open_id`, 
+			`nickname`, 
+			`phone`, 
+			`name`, 
+			`redister_time`, 
+			`chengjiu_time`, 
+			`rank`, 
+			`chengjiu_flag`, 
+			`chengjiu_ico`, 
+			`chengjiu_name`, 
+			`chengjiu_demand`, 
+			`reward`, 
+			`start_time`, 
+			`end_time`, 
+			`add_time`, 
+			`update_time`, 
+			`login_time`, 
+			`hearc_url`, 
+			`identity_card`, 
+			`delete_flag`, 
+			`username`
+		)
+		values
+		(
+			#{id}, 
+			#{openId}, 
+			#{nickname}, 
+			#{phone}, 
+			#{name}, 
+			#{redisterTime}, 
+			#{chengjiuTime}, 
+			#{rank}, 
+			#{chengjiuFlag}, 
+			#{chengjiuIco}, 
+			#{chengjiuName}, 
+			#{chengjiuDemand}, 
+			#{reward}, 
+			#{startTime}, 
+			#{endTime}, 
+			#{addTime}, 
+			#{updateTime}, 
+			#{loginTime}, 
+			#{hearcUrl}, 
+			#{identityCard}, 
+			#{deleteFlag}, 
+			#{username}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.meiguo.chengjiumanager.domain.ChengjiuDO">
+		update t_chengjiu 
+		<set>
+			<if test="id != null">`id` = #{id}, </if>
+			<if test="openId != null">`open_id` = #{openId}, </if>
+			<if test="nickname != null">`nickname` = #{nickname}, </if>
+			<if test="phone != null">`phone` = #{phone}, </if>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="redisterTime != null">`redister_time` = #{redisterTime}, </if>
+			<if test="chengjiuTime != null">`chengjiu_time` = #{chengjiuTime}, </if>
+			<if test="rank != null">`rank` = #{rank}, </if>
+			<if test="chengjiuFlag != null">`chengjiu_flag` = #{chengjiuFlag}, </if>
+			<if test="chengjiuIco != null">`chengjiu_ico` = #{chengjiuIco}, </if>
+			<if test="chengjiuName != null">`chengjiu_name` = #{chengjiuName}, </if>
+			<if test="chengjiuDemand != null">`chengjiu_demand` = #{chengjiuDemand}, </if>
+			<if test="reward != null">`reward` = #{reward}, </if>
+			<if test="startTime != null">`start_time` = #{startTime}, </if>
+			<if test="endTime != null">`end_time` = #{endTime}, </if>
+			<if test="addTime != null">`add_time` = #{addTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
+			<if test="loginTime != null">`login_time` = #{loginTime}, </if>
+			<if test="hearcUrl != null">`hearc_url` = #{hearcUrl}, </if>
+			<if test="identityCard != null">`identity_card` = #{identityCard}, </if>
+			<if test="deleteFlag != null">`delete_flag` = #{deleteFlag}, </if>
+			<if test="username != null">`username` = #{username}</if>
+		</set>
+		where chengjiu_id = #{chengjiuId}
+	</update>
+	
+	<delete id="remove">
+		delete from t_chengjiu where chengjiu_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from t_chengjiu where chengjiu_id in 
+		<foreach item="chengjiuId" collection="array" open="(" separator="," close=")">
+			#{chengjiuId}
+		</foreach>
+	</delete>
+
+</mapper>
