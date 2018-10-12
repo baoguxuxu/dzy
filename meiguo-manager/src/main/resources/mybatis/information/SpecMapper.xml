@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.meiguo.product.dao.SpecDao">
+
+	<select id="get" resultType="com.meiguo.product.domain.SpecDO">
+		select `id`,`parent_id`,`product_spec_id`,`name`,`create_time`,`update_time`,`create_by`,`update_by`,`remark`,`status` from product_spec where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.meiguo.product.domain.SpecDO">
+		select `id`,status,parent_name,`parent_id`,`product_spec_id`,`name`,`create_time`,`update_time`,`create_by`,`update_by`,`remark`,`status` from product_spec
+        where parent_id=#{parent_id}
+         
+		  		
+		  		  <if test="parent_name != null and parent_name != ''"> and parent_name = #{parent_name} </if>
+		  		  <if test="productSpecId != null and productSpecId != ''"> and product_spec_id = #{productSpecId} </if>
+		  		  <if test="name != null and name != ''"> and name = #{name} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		  <if test="createBy != null and createBy != ''"> and create_by = #{createBy} </if>
+		  		  <if test="updateBy != null and updateBy != ''"> and update_by = #{updateBy} </if>
+		  		  <if test="remark != null and remark != ''"> and remark = #{remark} </if>
+		  		  <if test="status != null and status != ''"> and status = #{status} </if>
+		  		
+		  		
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from product_spec
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="parentId != null and parentId != ''"> and parent_id = #{parentId} </if>
+		  		  <if test="productSpecId != null and productSpecId != ''"> and product_spec_id = #{productSpecId} </if>
+		  		  <if test="name != null and name != ''"> and name = #{name} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		  <if test="createBy != null and createBy != ''"> and create_by = #{createBy} </if>
+		  		  <if test="updateBy != null and updateBy != ''"> and update_by = #{updateBy} </if>
+		  		  <if test="remark != null and remark != ''"> and remark = #{remark} </if>
+		  		  <if test="status != null and status != ''"> and status = #{status} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.meiguo.product.domain.SpecDO" useGeneratedKeys="true" keyProperty="id">
+		insert into product_spec
+		(
+			parent_id,
+			parent_name,
+			`product_spec_id`, 
+			`name`, 
+			`create_time`, 
+			`update_time`, 
+			`create_by`, 
+			`update_by`, 
+			`remark`
+		)
+		values
+		(
+			#{parentId},
+			#{parentName},
+			#{productSpecId}, 
+			#{name}, 
+			#{createTime}, 
+			#{updateTime}, 
+			#{createBy}, 
+			#{updateBy}, 
+			#{remark}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.meiguo.product.domain.SpecDO">
+		update product_spec 
+		<set>
+			<!-- <if test="parentId != null">`parent_id` = #{parentId}, </if>
+			<if test="productSpecId != null">`product_spec_id` = #{productSpecId}, </if> -->
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="parentName != null">`parent_name` = #{parentName}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
+			<if test="createBy != null">`create_by` = #{createBy}, </if>
+			<if test="updateBy != null">`update_by` = #{updateBy}, </if>
+			<if test="remark != null">`remark` = #{remark}, </if>
+			<if test="status != null">`status` = #{status}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<update id="updateByParentId" parameterType="com.meiguo.product.domain.SpecDO">
+		update product_spec set parent_name=#{parentName}  where parent_id = #{parentId}
+	</update>
+	
+	<delete id="remove">
+		delete from product_spec where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from product_spec where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>
