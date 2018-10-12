@@ -24,12 +24,12 @@
   									</select>
 								</div>
 							</div>
-							<div class="form-group"  th:each="spec,iterStat:${list}" >
-								<label class="col-sm-3 control-label" th:text="${spec.name}">产品规格：</label>
+							<div class="form-group"  id="specEdit">
+								<!-- <label class="col-sm-3 control-label" th:text="${spec.name}">产品规格：</label>
 								<div class="col-sm-8" id="ss">
 								 <input  name="list[0].id" th:value="${spec.id}" class="form-control" type="hidden">
 									<input  name="list[0].remark" th:value="${spec.remark}" class="form-control" type="text">
-								</div>
+								</div> -->
 						  </div>
 														
 														<div class="form-group">	
@@ -82,15 +82,16 @@
 	<div th:include="include::footer"></div>
 	<script type="text/javascript" src="/js/appjs/information/product/edit.js"></script>
 	<script th:inline="javascript">
-		/* var list = [[${list}]];
-		var html="";
+		 var list = [[${list}]];
+		 var html="";
 		for(i=0;i<list.length;i++){
-			var nameId = list[i].id;
-			var nameRemark = list[i].remark;
-			html+='<input  name="list['+i+'].id" th:value="'+nameId+'" class="form-control" type="hidden">';
-			html+='<input  name="list['+i+'].remark" th:value="'+nameRemark+'" class="form-control" type="text">;
+			html+='<label class="col-sm-3 control-label">'+list[i].name+'</label>';
+			html+='<div class="col-sm-8">';
+			html+='<input  name="list['+i+'].id" value="'+list[i].id+'" class="form-control" type="hidden">';
+			html+='<input  name="list['+i+'].remark" value="'+list[i].remark+'" class="form-control" type="text">';
+			html+='</div>';
 		}
-		$("#ss").html(html); */
+		$("#specEdit").html(html); 
 	</script>
 	
 	<script type="text/javascript">
