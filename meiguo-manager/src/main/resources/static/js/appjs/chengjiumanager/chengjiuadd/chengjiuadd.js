@@ -34,7 +34,9 @@ function load() {
 								limit: params.limit,
 								offset:params.offset,
 								addTime:$('#addTime').val(),
-					           // name:$('#searchName').val(),
+								startTime:$('#startTime').val(),
+								endTime:$('#endTime').val(),
+								//name:$('#searchName').val(),
 					           // username:$('#searchName').val()
 							};
 						},
@@ -58,7 +60,11 @@ function load() {
 								},
 																{
 									field : 'chengjiuIco', 
-									title : '成就图标' 
+									title : '成就图标' ,
+									formatter : function(value, row, index) {
+										var e = '<div class="image"><img width="90" height="100" alt="image" class="img-responsive" src="' + value + '"></div>'
+										return e;
+									}
 								},
 																{
 									field : 'chengjiuDemand', 
@@ -76,14 +82,10 @@ function load() {
 									field : 'updateTime', 
 									title : '修改时间' 
 								},
-																{
-									field : 'deleteFlag', 
-									title : '0：是1：否' 
-								},
-																{
+							 								    {
 									field : 'username', 
 									title : '' 
-								},
+								},*/
 																{
 									field : 'startTime', 
 									title : '开始时间' 
@@ -92,7 +94,31 @@ function load() {
 									field : 'endTime', 
 									title : '结束时间' 
 								},
-								*/								{
+																{
+									field : 'deleteFlag', 
+									title : '状态' ,
+									formatter : function(value, row, index) {
+										var str = '';
+										
+										str +=' <div class="switch onoffswitch col-sm-1"> ';
+											str +=' <div class="onoffswitch"> ';
+												str +=' <input name="allowComment" '; 
+												//启用状态 0：解锁；1：未解锁
+												if(row.deleteFlag == 0)
+													str += ' checked="" ';
+													
+												str +=' type="checkbox" onchange="updateEnable(' +row.id+ ',this)" value="' +row.id+ '" class="onoffswitch-checkbox" id="example1' +row.id+ '">  ';
+												str +=' <label class="onoffswitch-label" for="example1' +row.id+ '">  ';
+													str +=' <span class="onoffswitch-inner"></span> ';
+													str +=' <span class="onoffswitch-switch"></span> ';
+														str +=' </label> ';
+											str +=' </div>';
+										str +=' </div>';
+										return str;
+									}
+									
+								},
+																{
 									title : '操作',
 									field : 'id',
 									align : 'center',
@@ -124,6 +150,32 @@ function add() {
 		content : prefix + '/add' // iframe的url
 	});
 }
+function updateEnable(id,enable){
+	var deleteFlag = 1;
+	if($(enable).prop("checked")){
+		deleteFlag = 0;
+	}
+	
+	$.ajax({
+		url : prefix + "/updateEnable",
+		type : "post",
+		data : {
+			'id' : id,
+			'deleteFlag' : deleteFlag
+		},
+		dataType: 'JSON',
+		async : false,
+		success : function(r) {
+			if (r.code == 0) {
+				layer.msg(r.msg);
+				reLoad();
+			} else {
+				layer.msg(r.msg);
+				reLoad();
+			}
+		}
+	});
+}
 function edit(id) {
 	layer.open({
 		type : 2,
@@ -134,6 +186,7 @@ function edit(id) {
 		content : prefix + '/edit/' + id // iframe的url
 	});
 }
+
 function remove(id) {
 	layer.confirm('确定要删除选中的记录？', {
 		btn : [ '确定', '取消' ]

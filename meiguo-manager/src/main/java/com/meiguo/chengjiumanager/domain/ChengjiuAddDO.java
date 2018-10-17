@@ -1,8 +1,11 @@
 package com.meiguo.chengjiumanager.domain;
 
 import java.io.Serializable;
+
 import java.util.Date;
 
+import org.joda.time.DateTime;
+import org.springframework.web.multipart.MultipartFile;
 
 
 /**
@@ -37,7 +40,23 @@ public class ChengjiuAddDO implements Serializable {
 	private Date startTime;
 	//结束时间
 	private Date endTime;
+		
+	private String url;
+	
+	private MultipartFile imgFile;
+	
+	private Long userId;
+	
 
+
+	public String getUrl() {
+		return url;
+	}
+
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
 	/**
 	 * 设置：id
 	 */
@@ -169,5 +188,17 @@ public class ChengjiuAddDO implements Serializable {
 	 */
 	public Date getEndTime() {
 		return endTime;
+	}
+	public MultipartFile getImgFile() {
+		return imgFile;
+	}
+	public void setImgFile(MultipartFile imgFile) {
+		this.imgFile = imgFile;
+	}
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 }

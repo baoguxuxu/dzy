@@ -57,5 +57,16 @@
 	</div>
 	<div th:include="include :: footer"></div>
 	<script type="text/javascript" src="/js/appjs/chengjiumanager/chengjiuadd/chengjiuadd.js"></script>
+	<script type="text/javascript">
+	
+		laydate.render({
+			elem: '#startTime',
+			type: 'datetime'
+		});
+		laydate.render({
+			elem: '#endTime',
+			type: 'datetime'
+		});
+	</script>
 </body>
 </html>

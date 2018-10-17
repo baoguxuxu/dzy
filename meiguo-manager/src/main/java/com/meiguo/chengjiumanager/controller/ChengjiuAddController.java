@@ -1,6 +1,12 @@
 package com.meiguo.chengjiumanager.controller;
 
+
 import java.util.List;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -17,9 +23,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.meiguo.chengjiumanager.domain.ChengjiuAddDO;
 import com.meiguo.chengjiumanager.service.ChengjiuAddService;
+import com.meiguo.common.config.BootdoConfig;
+import com.meiguo.common.controller.BaseController;
+import com.meiguo.common.utils.FileUtil;
 import com.meiguo.common.utils.PageUtils;
 import com.meiguo.common.utils.Query;
 import com.meiguo.common.utils.R;
+import com.meiguo.information.domain.UserDO;
 
 
 /**
@@ -32,9 +42,11 @@ import com.meiguo.common.utils.R;
  
 @Controller
 @RequestMapping("/chengjiumanager/chengjiuadd")
-public class ChengjiuAddController {
+public class ChengjiuAddController extends BaseController {
 	@Autowired
 	private ChengjiuAddService chengjiuAddService;
+	@Autowired
+	private BootdoConfig bootdoConfig;
 	
 	@GetMapping()
 	@RequiresPermissions("information:chengjiuAdd:chengjiuAdd")
@@ -63,6 +75,9 @@ public class ChengjiuAddController {
 	@GetMapping("/edit/{id}")
 	@RequiresPermissions("information:chengjiuAdd:edit")
 	String edit(@PathVariable("id") Integer id,Model model){
+		Date date = new Date();
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		System.out.println(dateFormat.format(date));
 		ChengjiuAddDO chengjiuAdd = chengjiuAddService.get(id);
 		model.addAttribute("chengjiuAdd", chengjiuAdd);
 	    return "chengjiumanager/chengjiuadd/edit";
@@ -74,7 +89,20 @@ public class ChengjiuAddController {
 	@ResponseBody
 	@PostMapping("/save")
 	@RequiresPermissions("information:chengjiuAdd:add")
-	public R save( ChengjiuAddDO chengjiuAdd){
+	public R save( ChengjiuAddDO chengjiuAdd){		
+		
+		String fileName = chengjiuAdd.getImgFile().getOriginalFilename();
+		fileName = FileUtil.renameToUUID(fileName);		
+		try {					
+			FileUtil.uploadFile(chengjiuAdd.getImgFile().getBytes(), bootdoConfig.getUploadPath(), fileName);
+			chengjiuAdd.setChengjiuIco("/files/" + fileName);
+			chengjiuAdd.setAddTime(new Date());
+			chengjiuAdd.setUpdateTime(new Date());
+			chengjiuAdd.setUserId(this.getUserId());
+		} catch (Exception e) {
+			return R.error();
+		}
+		
 		if(chengjiuAddService.save(chengjiuAdd)>0){
 			return R.ok();
 		}
@@ -87,6 +115,19 @@ public class ChengjiuAddController {
 	@RequestMapping("/update")
 	@RequiresPermissions("information:chengjiuAdd:edit")
 	public R update( ChengjiuAddDO chengjiuAdd){
+		if(chengjiuAdd.getImgFile() != null && chengjiuAdd.getImgFile().getSize() > 0){
+			String fileName = chengjiuAdd.getImgFile().getOriginalFilename();
+			fileName = FileUtil.renameToUUID(fileName);
+			try {
+				FileUtil.uploadFile(chengjiuAdd.getImgFile().getBytes(), bootdoConfig.getUploadPath(), fileName);
+				chengjiuAdd.setChengjiuIco("/files/" + fileName);
+				chengjiuAdd.setUpdateTime(new Date());
+				chengjiuAdd.setUserId(this.getUserId());
+			} catch (Exception e) {
+				return R.error();
+			}
+		}
+		
 		chengjiuAddService.update(chengjiuAdd);
 		return R.ok();
 	}
@@ -115,4 +156,14 @@ public class ChengjiuAddController {
 		return R.ok();
 	}
 	
+	@ResponseBody
+	@RequestMapping(value="/updateEnable")
+	public R updateEnable(Integer id,Integer enable) {
+		ChengjiuAddDO sysFile = new ChengjiuAddDO();
+		sysFile.setId(id);
+		sysFile.setDeleteFlag(enable);
+		chengjiuAddService.update(sysFile);
+
+		return R.ok();
+	}
 }

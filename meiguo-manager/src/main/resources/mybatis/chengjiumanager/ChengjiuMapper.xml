@@ -6,7 +6,7 @@
 	<select id="get" resultType="com.meiguo.chengjiumanager.domain.ChengjiuDO">
 		select `chengjiu_id`,`id`,`open_id`,`nickname`,`phone`,`name`,`redister_time`,`chengjiu_time`,`rank`,`chengjiu_flag`,`chengjiu_ico`,`chengjiu_name`,`chengjiu_demand`,`reward`,`start_time`,`end_time`,`add_time`,`update_time`,`login_time`,`hearc_url`,`identity_card`,`delete_flag`,`username` from t_chengjiu where chengjiu_id = #{value}
 	</select>
-
+	
 	<select id="list" resultType="com.meiguo.chengjiumanager.domain.ChengjiuDO">
 		select `chengjiu_id`,`id`,`open_id`,`nickname`,`phone`,`name`,`redister_time`,`chengjiu_time`,`rank`,`chengjiu_flag`,`chengjiu_ico`,`chengjiu_name`,`chengjiu_demand`,`reward`,`start_time`,`end_time`,`add_time`,`update_time`,`login_time`,`hearc_url`,`identity_card`,`delete_flag`,`username` from t_chengjiu
         <where>  

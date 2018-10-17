@@ -4,11 +4,11 @@
 <mapper namespace="com.meiguo.information.dao.UserDao">
 
 	<select id="get" resultType="com.meiguo.information.domain.UserDO">
-		select `id`,`open_id`,`nickname`,`password`,`phone`,`heard_url`,`name`,`identity_card`,`register_time`,`pay_num`,`serve_num`,`balance`,`restitution`,`pay_time`,`login_time`,`add_time`,`update_time`,`delete_flag`,`username` from t_user where id = #{value}
+		select `id`,`open_id`,`nickname`,`password`,`phone`,`heard_url`,`name`,`identity_card`,`register_time`,`pay_num`,`serve_num`,`balance`,`restitution`,`pay_time`,`login_time`,`add_time`,`update_time`,`delete_flag`,`username`,`chengjiu_ioc`,`chengjiu_name`,`chengjiu_demand`,`reward`,`chengjiu_time`,`rank`,`chengjiu_flag`,`start_time`,`end_time` from t_user where id = #{value}
 	</select>
 
 	<select id="list" resultType="com.meiguo.information.domain.UserDO">
-		select `id`,`open_id`,`nickname`,`password`,`phone`,`heard_url`,`name`,`identity_card`,`register_time`,`pay_num`,`serve_num`,`balance`,`restitution`,`pay_time`,`login_time`,`add_time`,`update_time`,`delete_flag`,`username` from t_user
+		select `id`,`open_id`,`nickname`,`password`,`phone`,`heard_url`,`name`,`identity_card`,`register_time`,`pay_num`,`serve_num`,`balance`,`restitution`,`pay_time`,`login_time`,`add_time`,`update_time`,`delete_flag`,`username`,`chengjiu_ioc`,`chengjiu_name`,`chengjiu_demand`,`reward`,`chengjiu_time`,`rank`,`chengjiu_flag`,`start_time`,`end_time` from t_user
         <where>  
 		  		  <if test="id != null and id != ''"> and id = #{id} </if>
 		  		  <if test="openId != null and openId != ''"> and open_id = #{openId} </if>
@@ -29,6 +29,15 @@
 		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
 		  		  <if test="deleteFlag != null and deleteFlag != ''"> and delete_flag = #{deleteFlag} </if>
 		  		  <if test="username != null and username != ''"> and username = #{username} </if>
+		  		  <if test="chengjiuIoc != null and chengjiuIoc != ''"> and chengjiu_ioc = #{chengjiuIoc} </if>
+		  		  <if test="chengjiuName != null and chengjiuName != ''"> and chengjiu_name = #{chengjiuName} </if>
+		  		  <if test="chengjiuDemand != null and chengjiuDemand != ''"> and chengjiu_demand = #{chengjiuDemand} </if>
+		  		  <if test="reward != null and reward != ''"> and reward = #{reward} </if>
+		  		  <if test="chengjiuTime != null and chengjiuTime != ''"> and chengjiu_time = #{chengjiuTime} </if>
+		  		  <if test="rank != null and rank != ''"> and rank = #{rank} </if>
+		  		  <if test="chengjiuFlag != null and chengjiuFlag != ''"> and chengjiu_flag = #{chengjiuFlag} </if>
+		  		  <if test="startTime != null and startTime != ''"> and start_time = #{startTime} </if>
+		  		  <if test="endTime != null and endTime != ''"> and end_time = #{endTime} </if>
 		  		</where>
         <choose>
             <when test="sort != null and sort.trim() != ''">
@@ -65,6 +74,15 @@
 		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
 		  		  <if test="deleteFlag != null and deleteFlag != ''"> and delete_flag = #{deleteFlag} </if>
 		  		  <if test="username != null and username != ''"> and username = #{username} </if>
+		  		  <if test="chengjiuIoc != null and chengjiuIoc != ''"> and chengjiu_ioc = #{chengjiuIoc} </if>
+		  		  <if test="chengjiuName != null and chengjiuName != ''"> and chengjiu_name = #{chengjiuName} </if>
+		  		  <if test="chengjiuDemand != null and chengjiuDemand != ''"> and chengjiu_demand = #{chengjiuDemand} </if>
+		  		  <if test="reward != null and reward != ''"> and reward = #{reward} </if>
+		  		  <if test="chengjiuTime != null and chengjiuTime != ''"> and chengjiu_time = #{chengjiuTime} </if>
+		  		  <if test="rank != null and rank != ''"> and rank = #{rank} </if>
+		  		  <if test="chengjiuFlag != null and chengjiuFlag != ''"> and chengjiu_flag = #{chengjiuFlag} </if>
+		  		  <if test="startTime != null and startTime != ''"> and start_time = #{startTime} </if>
+		  		  <if test="endTime != null and endTime != ''"> and end_time = #{endTime} </if>
 		  		</where>
 	</select>
 	 
@@ -88,7 +106,16 @@
 			`add_time`, 
 			`update_time`, 
 			`delete_flag`, 
-			`username`
+			`username`, 
+			`chengjiu_ioc`, 
+			`chengjiu_name`, 
+			`chengjiu_demand`, 
+			`reward`, 
+			`chengjiu_time`, 
+			`rank`, 
+			`chengjiu_flag`, 
+			`start_time`, 
+			`end_time`
 		)
 		values
 		(
@@ -109,7 +136,16 @@
 			#{addTime}, 
 			#{updateTime}, 
 			#{deleteFlag}, 
-			#{username}
+			#{username}, 
+			#{chengjiuIoc}, 
+			#{chengjiuName}, 
+			#{chengjiuDemand}, 
+			#{reward}, 
+			#{chengjiuTime}, 
+			#{rank}, 
+			#{chengjiuFlag}, 
+			#{startTime}, 
+			#{endTime}
 		)
 	</insert>
 	 
@@ -133,7 +169,16 @@
 			<if test="addTime != null">`add_time` = #{addTime}, </if>
 			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
 			<if test="deleteFlag != null">`delete_flag` = #{deleteFlag}, </if>
-			<if test="username != null">`username` = #{username}</if>
+			<if test="username != null">`username` = #{username}, </if>
+			<if test="chengjiuIoc != null">`chengjiu_ioc` = #{chengjiuIoc}, </if>
+			<if test="chengjiuName != null">`chengjiu_name` = #{chengjiuName}, </if>
+			<if test="chengjiuDemand != null">`chengjiu_demand` = #{chengjiuDemand}, </if>
+			<if test="reward != null">`reward` = #{reward}, </if>
+			<if test="chengjiuTime != null">`chengjiu_time` = #{chengjiuTime}, </if>
+			<if test="rank != null">`rank` = #{rank}, </if>
+			<if test="chengjiuFlag != null">`chengjiu_flag` = #{chengjiuFlag}, </if>
+			<if test="startTime != null">`start_time` = #{startTime}, </if>
+			<if test="endTime != null">`end_time` = #{endTime}</if>
 		</set>
 		where id = #{id}
 	</update>

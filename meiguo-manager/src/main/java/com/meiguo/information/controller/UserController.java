@@ -1,5 +1,6 @@
 package com.meiguo.information.controller;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.meiguo.common.utils.FileUtil;
 import com.meiguo.common.utils.PageUtils;
 import com.meiguo.common.utils.Query;
 import com.meiguo.common.utils.R;
@@ -134,9 +136,4 @@ public class UserController {
 
 		return R.ok();
 	}	
-	
-	@GetMapping("/treeView")
-	String treeView() {
-		return   "information/users/userTree";
-	}
 }

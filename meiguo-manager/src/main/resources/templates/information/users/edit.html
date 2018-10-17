@@ -10,12 +10,14 @@
 					<div class="ibox-content">
 						<form class="form-horizontal m-t" id="signupForm">
 						 <input id="id" name="id" th:value="${user.id}"  type="hidden">
+						 <!--  
 							<div class="form-group">	
 								<label class="col-sm-3 control-label">微信Id：</label>
 								<div class="col-sm-8">
 									<input id="openId" name="openId" th:value="${user.openId}" class="form-control" type="text" readonly="readonly">
 								</div>
 							</div>
+							-->
 							<div class="form-group">	
 								<label class="col-sm-3 control-label">昵称：</label>
 								<div class="col-sm-8">
@@ -131,11 +133,66 @@
 									</label>
 								</div>
 							</div>
+							
 							<!--  
 							<div class="form-group">	
 								<label class="col-sm-3 control-label">：</label>
 								<div class="col-sm-8">
 									<input id="username" name="username" th:value="${user.username}" class="form-control" type="text">
+								</div>
+							</div>
+													<div class="form-group">	
+								<label class="col-sm-3 control-label">成就图标：</label>
+								<div class="col-sm-8">
+									<input id="chengjiuIoc" name="chengjiuIoc" th:value="${user.chengjiuIoc}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">成就名称：</label>
+								<div class="col-sm-8">
+									<input id="chengjiuName" name="chengjiuName" th:value="${user.chengjiuName}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">获取条件：</label>
+								<div class="col-sm-8">
+									<input id="chengjiuDemand" name="chengjiuDemand" th:value="${user.chengjiuDemand}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">奖励：</label>
+								<div class="col-sm-8">
+									<input id="reward" name="reward" th:value="${user.reward}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">达成时间：</label>
+								<div class="col-sm-8">
+									<input id="chengjiuTime" name="chengjiuTime" th:value="${user.chengjiuTime}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">排名：</label>
+								<div class="col-sm-8">
+									<input id="rank" name="rank" th:value="${user.rank}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">0：解锁1：未解锁：</label>
+								<div class="col-sm-8">
+									<input id="chengjiuFlag" name="chengjiuFlag" th:value="${user.chengjiuFlag}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">开始时间：</label>
+								<div class="col-sm-8">
+									<input id="startTime" name="startTime" th:value="${user.startTime}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">结束时间：</label>
+								<div class="col-sm-8">
+									<input id="endTime" name="endTime" th:value="${user.endTime}" class="form-control" type="text">
 								</div>
 							</div>
 							-->
