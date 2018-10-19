@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+						<input id="id" name="id" th:value="${goods.id}"  type="hidden">
+							<div class="form-group">	
+								<label class="col-sm-2 control-label">货品名称：</label>
+								<div class="col-sm-3">
+									<input id="name" name="name" th:value="${goods.name}" class="form-control" type="text" readonly="readonly">
+								</div>
+								<label class="col-sm-2 control-label">货品编号：</label>
+								<div class="col-sm-3">
+									<input id="goodsNumber" name="goodsNumber" th:value="${goods.goodsNumber}" class="form-control" type="text" readonly="readonly">
+								</div>
+							</div>
+							<div class="form-group">	
+								<label class="col-sm-2 control-label">货品条形码号：</label>
+								<div class="col-sm-3">
+									<input id="tgoodsNumber" name="tgoodsNumber" th:value="${goods.tgoodsNumber}" class="form-control" type="text" readonly="readonly">
+								</div>
+								<label class="col-sm-2 control-label">所属产品：</label>
+								<div class="col-sm-3">
+									<input id="productId" name="productId" th:value="${goods.productId}" class="form-control" type="text" readonly="readonly">
+								</div>
+							</div>
+							<div class="form-group">	
+								<label class="col-sm-2 control-label"> 折扣价：</label>
+								<div class="col-sm-3">
+									<input id="discountPrice" name="discountPrice" th:value="${goods.discountPrice}" class="form-control" type="text" readonly="readonly">
+								</div>
+								<label class="col-sm-2 control-label"> 售价：</label>
+								<div class="col-sm-3">
+									<input id="payPrice" name="payPrice" th:value="${goods.payPrice}" class="form-control" type="text" readonly="readonly">
+								</div>
+							</div>
+							<div class="form-group">	
+								<label class="col-sm-2 control-label"> 会员价：</label>
+								<div class="col-sm-3">
+									<input id="vipPrice" name="vipPrice" th:value="${goods.vipPrice}" class="form-control" type="text" readonly="readonly">
+								</div>
+							<label class="col-sm-2 control-label"> 促销价：</label>
+								<div class="col-sm-3">
+									<input id="promotionPrice" name="promotionPrice" th:value="${goods.promotionPrice}" class="form-control" type="text" readonly="readonly">
+								</div>
+							</div>
+							<div class="form-group">	
+								<label class="col-sm-2 control-label">货品详情描述：</label>
+								<div class="col-sm-8">
+									<input id="remarks" name="remarks" th:value="${goods.remarks}" class="form-control" type="text" readonly="readonly">
+								</div>
+							</div>
+							
+							 <div class="form-group" >	
+								<label class="col-sm-2 control-label">货品列表图：</label>
+								<div class="col-sm-8">
+									<input class="form-control" id="listimg" style="display: none;" type="file" name="listimg" onchange="udpateFileUrl(this)" readonly="readonly"/>
+									<label><img width="100" height="100" id="fileImgimgFile" alt="点击上传图片" th:src="${listimg.url}"></label>
+									<span style="color: red;">(750*718)</span>
+								</div>
+							</div>
+							<div class="form-group" >	
+								<label class="col-sm-2 control-label">货品图：</label>
+								<div class="col-sm-8" id="divimg" >
+								 <span th:each="img:${goodsimg}">
+									<input class="form-control" th:id="${img.id}" style="display: none;" type="file" name="goodsimg" onchange="udpateFileUrl(this)" readonly="readonly"/>
+									<label><img width="100" height="100" id="fileImgimgFile1" alt="点击上传图片" th:src="${img.url}"></label>
+								</span>
+									<label><img width="20" height="20" id="fileImgimgadd1" alt="点此继续添加图片" src="/img/add_icon.jpg"></label>
+									<span style="color: red;">(750*718)</span>
+								</div>
+							</div>
+							<div class="form-group" >	
+								<label class="col-sm-2 control-label">货品详情图：</label>
+								<div class="col-sm-8" id="divimg1" >
+								  <span th:each="img:${detailimg}">
+									<input class="form-control" th:id="${img.id}" style="display: none;" type="file" name="detailimg" onchange="udpateFileUrl(this)" readonly="readonly"/>
+									<label><img width="100" height="100" id="fileImgimgFile2" alt="点击上传图片" th:src="${img.url}"></label>
+								 </span>
+									<label><img width="20" height="20" id="fileImgimgadd2" alt="点此继续添加图片" src="/img/add_icon.jpg"></label>
+									<span style="color: red;">(750*718)</span>
+								</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/information/goods/edit.js"></script>
+</body>
+</html>
