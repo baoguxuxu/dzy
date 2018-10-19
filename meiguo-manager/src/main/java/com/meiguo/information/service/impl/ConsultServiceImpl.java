@@ -39,7 +39,8 @@ public class ConsultServiceImpl implements ConsultService {
 	
 	@Override
 	public int save(ConsultDO consult){
-		int id = consultDao.consultId();
+//		int id = consultDao.consultId();
+		int id=55;
 		consult.setId(id);
 		if(StringUtils.isNotBlank(consult.getForIds())){
 			String[] ids = consult.getForIds().split(",");

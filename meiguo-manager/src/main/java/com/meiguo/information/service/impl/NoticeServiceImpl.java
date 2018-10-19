@@ -43,7 +43,8 @@ public class NoticeServiceImpl implements NoticeService {
 	
 	@Override
 	public int save(NoticeDO notice){
-		int id = noticeDao.noticeId();
+//		int id = noticeDao.noticeId();
+		int id=55;
 		notice.setId(id);
 		if(StringUtils.isNotBlank(notice.getForIds())){
 			String[] ids = notice.getForIds().split(",");
