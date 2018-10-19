@@ -8,8 +8,8 @@
 	</select>
 
 	<select id="list" resultType="com.meiguo.product.domain.CategoryDO">
-		select `id`,status,`name`,`create_time`,`create_by`,`update_time`,`update_by`,`remarks` from product_category
-        <where>  
+		select `id`,status,`name`,`create_time`,`create_by`,`update_time`,`update_by`,`remarks` from product_category where deleteEnable=0
+       
 		  		  <if test="id != null and id != ''"> and id = #{id} </if>
 		  		  <if test="name != null and name != ''"> and name = #{name} </if>
 		  		  <if test="status != null and status != ''"> and status = #{status} </if>
@@ -18,7 +18,7 @@
 		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
 		  		  <if test="updateBy != null and updateBy != ''"> and update_by = #{updateBy} </if>
 		  		  <if test="remarks != null and remarks != ''"> and remarks = #{remarks} </if>
-		  		</where>
+		  	
         <choose>
             <when test="sort != null and sort.trim() != ''">
                 order by ${sort} ${order}
@@ -33,16 +33,17 @@
 	</select>
 	
  	<select id="count" resultType="int">
-		select count(*) from product_category
-		 <where>  
+		select count(*) from product_category where deleteEnable=0
+		  
 		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="status != null and status != ''"> and status = #{status} </if>
 		  		  <if test="name != null and name != ''"> and name = #{name} </if>
 		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
 		  		  <if test="createBy != null and createBy != ''"> and create_by = #{createBy} </if>
 		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
 		  		  <if test="updateBy != null and updateBy != ''"> and update_by = #{updateBy} </if>
 		  		  <if test="remarks != null and remarks != ''"> and remarks = #{remarks} </if>
-		  		</where>
+		  		
 	</select>
 	 
 	<insert id="save" parameterType="com.meiguo.product.domain.CategoryDO" useGeneratedKeys="true" keyProperty="id">
@@ -53,7 +54,8 @@
 			`create_by`, 
 			`update_time`, 
 			`update_by`, 
-			`remarks`
+			`remarks`,
+			 status
 		)
 		values
 		(
@@ -62,7 +64,8 @@
 			#{createBy}, 
 			#{updateTime}, 
 			#{updateBy}, 
-			#{remarks}
+			#{remarks},
+			#{status}
 		)
 	</insert>
 	 
@@ -70,6 +73,7 @@
 		update product_category 
 		<set>
 			<if test="name != null">`name` = #{name}, </if>
+			<if test="deleteEnable != null">`deleteEnable` = #{deleteEnable}, </if>
 			<if test="createTime != null">`create_time` = #{createTime}, </if>
 			<if test="status != null">`status` = #{status}, </if>
 			<if test="createBy != null">`create_by` = #{createBy}, </if>
