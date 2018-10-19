@@ -12,17 +12,15 @@
 							<button shiro:hasPermission="information:spec:add" type="button" class="btn  btn-primary" onclick="add()">
 								<i class="fa fa-plus" aria-hidden="true"></i>添加
 							</button>
-							<button shiro:hasPermission="information:spec:batchRemove" type="button" class="btn  btn-danger"
-								onclick="batchRemove()">
-								<i class="fa fa-trash" aria-hidden="true"></i>删除
-							</button>
 						</div>
 						<div class="columns pull-right">
 							<button class="btn btn-success" onclick="reLoad()">查询</button>
 						</div>
-						<div class="columns pull-right col-md-2 nopadding">
-							<input id="searchName" type="text" class="form-control"
-								placeholder="">
+						<div class="columns pull-right col-md-2 nopadding ">
+							<select class="form-control" name="name" id="name" >
+                        		<option value="">规格名称：</option>
+                        		<option  th:each="list:${specList}" th:value="${list.name}" th:text="${list.name }"></option>
+                    		</select>
 						</div>
 					</div>
 					<input id="id" name="id" th:value="${id}"  type="hidden">
