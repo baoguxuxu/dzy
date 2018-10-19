@@ -32,9 +32,9 @@ function load() {
 							return {
 								//说明：传入后台的参数包括offset开始索引，limit步长，sort排序列，order：desc或者,以及所有列的键值对
 								limit: params.limit,
-								offset:params.offset
-					           // name:$('#searchName').val(),
-					           // username:$('#searchName').val()
+								offset:params.offset,
+								status : $('#status option:selected').val(),
+								name : $('#name option:selected').val()
 							};
 						},
 						// //请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数，例如 toolbar 中的参数 如果
@@ -53,20 +53,7 @@ function load() {
 								},								{
 									field : 'name', 
 									title : '分类名称' 
-								},							    {
-									field: 'status',
-									title: '状态',
-									formatter: function (value, row, index){
-										var text="-";
-										if (value == 0) {
-						                      text = "启用";
-						                  } else if (value == 1) {
-						                      text = "禁用";
-						                  } 
-										return text;
-									}
-								},
-																{
+								},							{
 									field : 'createTime', 
 									title : '创建时间' 
 								},
@@ -85,6 +72,28 @@ function load() {
 																{
 									field : 'remarks', 
 									title : '备注信息' 
+								},                              {
+									field: 'status',
+									title: '是否禁用',
+									formatter : function(value, row, index) {
+										var str = '';
+										
+										str +=' <div class="switch onoffswitch col-sm-1"> ';
+											str +=' <div class="onoffswitch"> ';
+												str +=' <input name="allowComment" '; 
+												//启用状态 0：是；1：否
+												if(row.status == 0)
+													str += ' checked="" ';
+													
+												str +=' type="checkbox" onchange="updateEnable(' +row.id+ ',this)" value="' +row.id+ '" class="onoffswitch-checkbox" id="example1' +row.id+ '">  ';
+												str +=' <label class="onoffswitch-label" for="example1' +row.id+ '">  ';
+													str +=' <span class="onoffswitch-inner"></span> ';
+													str +=' <span class="onoffswitch-switch"></span> ';
+														str +=' </label> ';
+											str +=' </div>';
+										str +=' </div>';
+										return str;
+									} 
 								},
 																{
 									title : '操作',
@@ -105,7 +114,7 @@ function load() {
 								} ]
 					});
 }
-function reLoad() {
+function reLoad() {$('#name').val()
 	$('#exampleTable').bootstrapTable('refresh');
 }
 function add() {
@@ -114,7 +123,7 @@ function add() {
 		title : '增加',
 		maxmin : true,
 		shadeClose : false, // 点击遮罩关闭层
-		area : [ '800px', '520px' ],
+		area : [ '800px', '300px' ],
 		content : prefix + '/add' // iframe的url
 	});
 }
@@ -124,10 +133,33 @@ function edit(id) {
 		title : '编辑',
 		maxmin : true,
 		shadeClose : false, // 点击遮罩关闭层
-		area : [ '800px', '520px' ],
+		area : [ '800px', '300px' ],
 		content : prefix + '/edit/' + id // iframe的url
 	});
 }
+function updateEnable(id,enable) {
+	var isEnable = 1;
+	if($(enable).prop("checked")){
+		isEnable = 0;
+	}
+		$.ajax({
+			url : prefix+"/updateEnable",
+			type : "post",
+			data : {
+				'id' : id,
+				'enable':isEnable
+			},
+			success : function(r) {
+				if (r.code==0) {
+					layer.msg(r.msg);
+					reLoad();
+				}else{
+					layer.msg(r.msg);
+				}
+			}
+		});
+}
+
 function remove(id) {
 	layer.confirm('确定要删除选中的记录？', {
 		btn : [ '确定', '取消' ]

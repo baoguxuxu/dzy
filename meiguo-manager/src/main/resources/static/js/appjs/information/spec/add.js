@@ -38,11 +38,17 @@ function validateRule() {
 		rules : {
 			name : {
 				required : true
+			},
+			productSpecId:{
+				required : true
 			}
 		},
 		messages : {
 			name : {
 				required : icon + "请输入姓名"
+			},
+			productSpecId :{
+				required : icon + "请输入规格编号"
 			}
 		}
 	})

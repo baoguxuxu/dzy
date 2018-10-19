@@ -1,5 +1,5 @@
 
-var prefix = "/information/product"
+var prefix = "/information/goods"
 $(function() {
 	load();
 });
@@ -33,10 +33,8 @@ function load() {
 								//说明：传入后台的参数包括offset开始索引，limit步长，sort排序列，order：desc或者,以及所有列的键值对
 								limit: params.limit,
 								offset:params.offset,
-								status:$("#status").val(),
-								name:$("#name option:selected").val()
-					           // name:$('#searchName').val(),
-					           // username:$('#searchName').val()
+					           name:$('#name option:selected').val(),
+					           status:$('#status').val()
 							};
 						},
 						// //请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数，例如 toolbar 中的参数 如果
@@ -51,22 +49,38 @@ function load() {
 								},
 																{
 									field : 'id', 
-									title : '产品ID' 
+									title : '货品ID编号' 
 								},
 																{
-									field : 'productNumber', 
-									title : '产品编号' 
-								},								{
 									field : 'name', 
-									title : '产品名称' 
+									title : '货品名称' 
 								},
 																{
-									field : 'categoryName', 
-									title : '产品分类' 
+									field : 'goodsNumber', 
+									title : '货品编号' 
 								},
 																{
-									field : 'spec_dis', 
-									title : '产品规格' 
+									field : 'tgoodsNumber', 
+									title : '货品条形码号' 
+								},
+																{
+									field : 'productName', 
+									title : '所属产品名称' 
+								},								{
+									field : 'discountPrice', 
+									title : ' 折扣价' 
+								},
+																{
+									field : 'payPrice', 
+									title : ' 售价' 
+								},
+																{
+									field : 'vipPrice', 
+									title : ' 会员价' 
+								},
+																{
+									field : 'promotionPrice', 
+									title : ' 促销价' 
 								},
 																{
 									field : 'createTime', 
@@ -83,32 +97,32 @@ function load() {
 																{
 									field : 'updateBy', 
 									title : '更新者' 
-								},		
+								},
 																{
 									field : 'remarks', 
-									title : '备注' 
-								},								{
-									field:'status',
-									title:'是否上架'	,
-									formatter : function(value, row, index) {
-										var str = '';
-										
-										str +=' <div class="switch onoffswitch col-sm-1"> ';
-											str +=' <div class="onoffswitch"> ';
-												str +=' <input name="allowComment" '; 
-												//启用状态 0：是；1：否
-												if(row.status == 0)
-													str += ' checked="" ';
-													
-												str +=' type="checkbox" onchange="updateEnable(' +row.id+ ',this)" value="' +row.id+ '" class="onoffswitch-checkbox" id="example1' +row.id+ '">  ';
-												str +=' <label class="onoffswitch-label" for="example1' +row.id+ '">  ';
-													str +=' <span class="onoffswitch-inner"></span> ';
-													str +=' <span class="onoffswitch-switch"></span> ';
-														str +=' </label> ';
+									title : '货品详情描述' 
+								},                              {
+									field : 'status', 
+									title : '是否上架 ' ,
+										formatter : function(value, row, index) {
+											var str = '';
+											
+											str +=' <div class="switch onoffswitch col-sm-1"> ';
+												str +=' <div class="onoffswitch"> ';
+													str +=' <input name="allowComment" '; 
+													//启用状态 0：是；1：否
+													if(row.status == 0)
+														str += ' checked="" ';
+														
+													str +=' type="checkbox" onchange="updateEnable(' +row.id+ ',this)" value="' +row.id+ '" class="onoffswitch-checkbox" id="example1' +row.id+ '">  ';
+													str +=' <label class="onoffswitch-label" for="example1' +row.id+ '">  ';
+														str +=' <span class="onoffswitch-inner"></span> ';
+														str +=' <span class="onoffswitch-switch"></span> ';
+															str +=' </label> ';
+												str +=' </div>';
 											str +=' </div>';
-										str +=' </div>';
-										return str;
-									} 
+											return str;
+										} 
 								},
 																{
 									title : '操作',
@@ -121,10 +135,10 @@ function load() {
 										var d = '<a class="btn btn-warning btn-sm '+s_remove_h+'" href="#" title="删除"  mce_href="#" onclick="remove(\''
 												+ row.id
 												+ '\')"><i class="fa fa-remove"></i></a> ';
-										var f = '<a class="btn btn-success btn-sm" href="#" title="备用"  mce_href="#" onclick="resetPwd(\''
+										var f = '<a class="btn btn-success btn-sm" href="#" title="查看"  mce_href="#" onclick="see(\''
 												+ row.id
 												+ '\')"><i class="fa fa-key"></i></a> ';
-										return e + d ;
+										return e + f +d;
 									}
 								} ]
 					});
@@ -133,7 +147,7 @@ function reLoad() {
 	$('#exampleTable').bootstrapTable('refresh');
 }
 function add() {
-	layer.open({
+	var addPage =layer.open({
 		type : 2,
 		title : '增加',
 		maxmin : true,
@@ -141,16 +155,32 @@ function add() {
 		area : [ '800px', '520px' ],
 		content : prefix + '/add' // iframe的url
 	});
+	layer.full(addPage);
 }
+
 function edit(id) {
-	layer.open({
+	var type=1;
+	var addPage =layer.open({
 		type : 2,
 		title : '编辑',
 		maxmin : true,
 		shadeClose : false, // 点击遮罩关闭层
 		area : [ '800px', '520px' ],
-		content : prefix + '/edit/' + id // iframe的url
+		content : prefix + '/edit/' + id+"/"+type // iframe的url
 	});
+	layer.full(addPage);
+}
+function see(id) {
+	var type=0;
+	var addPage =layer.open({
+		type : 2,
+		title : '编辑',
+		maxmin : true,
+		shadeClose : false, // 点击遮罩关闭层
+		area : [ '800px', '520px' ],
+		content : prefix + '/edit/' + id+"/"+type // iframe的url
+	});
+	layer.full(addPage);
 }
 function updateEnable(id,enable) {
 	var isEnable = 1;

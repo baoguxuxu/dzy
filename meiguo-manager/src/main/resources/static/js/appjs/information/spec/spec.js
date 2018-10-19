@@ -32,8 +32,8 @@ function load() {
 							return {
 								//说明：传入后台的参数包括offset开始索引，limit步长，sort排序列，order：desc或者,以及所有列的键值对
 								limit: params.limit,
-								offset:params.offset
-					           // name:$('#searchName').val(),
+								offset:params.offset,
+								name:$('#name option:selected').val()
 					           // username:$('#searchName').val()
 							};
 						},
@@ -79,7 +79,8 @@ function load() {
 									field : 'remark', 
 									title : '商品规格描述' 
 								},
-																{
+																
+								/*{
 									field : 'status', 
 									title : '规格状态',
 									formatter: function (value, row, index){
@@ -91,7 +92,7 @@ function load() {
 						                  } 
 										return text;
 									}
-								},
+								},*/
 																{
 									title : '操作',
 									field : 'id',
@@ -105,10 +106,8 @@ function load() {
 												+ '\')"><i class="fa fa-remove"></i></a> ';
 										
 										var f = '<a class="btn btn-success btn-sm" href="/information/spec/specMX?id= '+row.id+' " title="明细"  mce_href="#" ><i class="fa fa-edit"></i></a> ';
-										if(row.status==0)
-											return e + d +f;
-										 if(row.status==1)
-											 return e+d;
+											return e + f +d;
+										 
 									}
 								} ]
 					});
@@ -122,7 +121,7 @@ function add() {
 		title : '增加',
 		maxmin : true,
 		shadeClose : false, // 点击遮罩关闭层
-		area : [ '800px', '520px' ],
+		area : [ '800px', '300px' ],
 		content : prefix + '/add' // iframe的url
 	});
 }
@@ -132,7 +131,7 @@ function edit(id) {
 		title : '编辑',
 		maxmin : true,
 		shadeClose : false, // 点击遮罩关闭层
-		area : [ '800px', '520px' ],
+		area : [ '800px', '300px' ],
 		content : prefix + '/edit/' + id // iframe的url
 	});
 }

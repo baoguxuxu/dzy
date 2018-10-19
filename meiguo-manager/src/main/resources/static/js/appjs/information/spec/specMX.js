@@ -34,8 +34,8 @@ function load() {
 								//说明：传入后台的参数包括offset开始索引，limit步长，sort排序列，order：desc或者,以及所有列的键值对
 								limit: params.limit,
 								offset:params.offset,
-								id:parent_id
-					           // name:$('#searchName').val(),
+								id:parent_id,
+					            name:$('#name option:selected').val()
 					           // username:$('#searchName').val()
 							};
 						},
@@ -60,10 +60,7 @@ function load() {
 																{
 									field : 'name', 
 									title : '规格名称' 
-								},                              {
-									field : 'parentName', 
-									title : '父规格名称' 
-								},
+								},                         
 																{
 									field : 'createTime', 
 									title : '创建时间' 
@@ -84,7 +81,7 @@ function load() {
 									field : 'remark', 
 									title : '商品规格描述' 
 								},
-																{
+																/*{
 									field : 'status', 
 									title : '规格状态',
 									formatter: function (value, row, index){
@@ -96,7 +93,7 @@ function load() {
 						                  } 
 										return text;
 									}
-								},
+								},*/
 																{
 									title : '操作',
 									field : 'id',
@@ -127,7 +124,7 @@ function add() {
 		title : '增加',
 		maxmin : true,
 		shadeClose : false, // 点击遮罩关闭层
-		area : [ '800px', '520px' ],
+		area : [ '800px', '350px' ],
 		content : prefix + '/addMX/' + parent_id // iframe的url
 	});
 }
@@ -137,7 +134,7 @@ function edit(id) {
 		title : '编辑',
 		maxmin : true,
 		shadeClose : false, // 点击遮罩关闭层
-		area : [ '800px', '520px' ],
+		area : [ '800px', '300px' ],
 		content : prefix + '/edit/' + id // iframe的url
 	});
 }

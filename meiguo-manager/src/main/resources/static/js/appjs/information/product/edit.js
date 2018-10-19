@@ -39,11 +39,32 @@ function validateRule() {
 		rules : {
 			name : {
 				required : true
+			},
+			productNumber : {
+				required : true
+			},
+			cid : {
+				required : true
+			},
+			categoryId : {
+				required : true
 			}
 		},
 		messages : {
 			name : {
-				required : icon + "请输入名字"
+				required : icon + "请输入产品名称"
+			},
+			productNumber : {
+				required : icon + "请输入产品编号"
+			},
+			cid : {
+				required : icon + "请选择产品规格"
+			},
+			name : {
+				required : icon + "请输入产品名称"
+			},
+			categoryId : {
+				required : icon + "请选择产品分类"
 			}
 		}
 	})
