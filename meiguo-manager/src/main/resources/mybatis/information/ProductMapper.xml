@@ -9,14 +9,15 @@
 
 	<select id="list" resultType="com.meiguo.product.domain.ProductDO">
 		select pp.id,pp.status,pp.product_number,pc.name category_name,pp.name,pp.create_time,pp.create_by,pp.update_time,pp.update_by,pp.remarks from product_product pp,product_category pc 
-        where pp.category_id=pc.id
+        where pp.category_id=pc.id and pp.deleteEnable=0
 		  		  <if test="productNumber != null and productNumber != ''"> and product_number = #{productNumber} </if>
 		  		  <if test="categoryId != null and categoryId != ''"> and category_id = #{categoryId} </if>
-		  		  <if test="name != null and name != ''"> and name = #{name} </if>
+		  		  <if test="name != null and name != ''"> and pp.name = #{name} </if>
 		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
 		  		  <if test="createBy != null and createBy != ''"> and create_by = #{createBy} </if>
 		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
 		  		  <if test="updateBy != null and updateBy != ''"> and update_by = #{updateBy} </if>
+		  		  <if test="status != null and status != ''"> and pp.status = #{status} </if>
 		  		  <if test="remarks != null and remarks != ''"> and remarks = #{remarks} </if>
         <choose>
             <when test="sort != null and sort.trim() != ''">
@@ -36,17 +37,19 @@
 	</select>
 	
  	<select id="count" resultType="int">
-		select count(*) from product_product
-		 <where>  
+		select count(*) from product_product pp,product_category pc 
+        where pp.category_id=pc.id and pp.deleteEnable=0 
+		
 		  		  <if test="productNumber != null and productNumber != ''"> and product_number = #{productNumber} </if>
 		  		  <if test="categoryId != null and categoryId != ''"> and category_id = #{categoryId} </if>
-		  		  <if test="name != null and name != ''"> and name = #{name} </if>
+		  		  <if test="name != null and name != ''"> and pp.name = #{name} </if>
 		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
 		  		  <if test="createBy != null and createBy != ''"> and create_by = #{createBy} </if>
 		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
 		  		  <if test="updateBy != null and updateBy != ''"> and update_by = #{updateBy} </if>
 		  		  <if test="remarks != null and remarks != ''"> and remarks = #{remarks} </if>
-		  		</where>
+		  		  <if test="status != null and status != ''"> and pp.status = #{status} </if>
+		  		
 	</select>
 	 
 	<insert id="save" parameterType="com.meiguo.product.domain.ProductDO" useGeneratedKeys="true" keyProperty="id">
@@ -58,7 +61,8 @@
 			`create_time`, 
 			`create_by`, 
 			`update_time`, 
-			`update_by`, 
+			`update_by`,
+			
 			`remarks`
 		)
 		values
@@ -70,6 +74,7 @@
 			#{createBy}, 
 			#{updateTime}, 
 			#{updateBy}, 
+			
 			#{remarks}
 		)
 	</insert>
@@ -97,6 +102,7 @@
 <!-- 			<if test="categoryId != null">`category_id` = #{categoryId}, </if> -->
 <!-- 			<if test="name != null">`name` = #{name}, </if> -->
 			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="deleteEnable != null">`deleteEnable` = #{deleteEnable}, </if>
 			<if test="createBy != null">`create_by` = #{createBy}, </if>
 			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
 			<if test="updateBy != null">`update_by` = #{updateBy}, </if>
