@@ -11,7 +11,7 @@ import java.util.Date;
  * 
  * @author wjl
  * @email bushuo@163.com
- * @date 2018-10-10 10:03:45
+ * @date 2018-10-18 13:45:12
  */
 public class UserDO implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -54,7 +54,47 @@ public class UserDO implements Serializable {
 	private Integer deleteFlag;
 	//
 	private String username;
+	//成就图标
+	private String chengjiuIoc;
+	//成就名称
+	private String chengjiuName;
+	//获取条件
+	private String chengjiuDemand;
+	//奖励
+	private String reward;
+	//达成时间
+	private Date chengjiuTime;
+	//排名
+	private String rank;
+	//0：解锁1：未解锁
+	private Integer chengjiuFlag;
+	//开始时间
+	private Date startTime;
+	//结束时间
+	private Date endTime;
+	//总口数
+	private Integer totalkouNum;
+	//当天口数
+	private Integer daykouNum;
+	//性别
+	private String sex;
+	//年龄
+	private Integer age;
+	//烟龄
+	private String smokeAge;
+	//日期
+	private Date time;
+	
+	private String personalchengjiu;
+	
+	
 
+	public String getPersonalchengjiu() {
+		return personalchengjiu;
+	}
+	public void setPersonalchengjiu(String personalchengjiu) {
+		this.personalchengjiu = personalchengjiu;
+	}
 	/**
 	 * 设置：id
 	 */
@@ -160,7 +200,7 @@ public class UserDO implements Serializable {
 	/**
 	 * 获取：注册时间
 	 */
-	public Date getRegisterTime() {
+	public Timestamp getRegisterTime() {
 		return registerTime;
 	}
 	/**
@@ -282,5 +322,185 @@ public class UserDO implements Serializable {
 	 */
 	public String getUsername() {
 		return username;
+	}
+	/**
+	 * 设置：成就图标
+	 */
+	public void setChengjiuIoc(String chengjiuIoc) {
+		this.chengjiuIoc = chengjiuIoc;
+	}
+	/**
+	 * 获取：成就图标
+	 */
+	public String getChengjiuIoc() {
+		return chengjiuIoc;
+	}
+	/**
+	 * 设置：成就名称
+	 */
+	public void setChengjiuName(String chengjiuName) {
+		this.chengjiuName = chengjiuName;
+	}
+	/**
+	 * 获取：成就名称
+	 */
+	public String getChengjiuName() {
+		return chengjiuName;
+	}
+	/**
+	 * 设置：获取条件
+	 */
+	public void setChengjiuDemand(String chengjiuDemand) {
+		this.chengjiuDemand = chengjiuDemand;
+	}
+	/**
+	 * 获取：获取条件
+	 */
+	public String getChengjiuDemand() {
+		return chengjiuDemand;
+	}
+	/**
+	 * 设置：奖励
+	 */
+	public void setReward(String reward) {
+		this.reward = reward;
+	}
+	/**
+	 * 获取：奖励
+	 */
+	public String getReward() {
+		return reward;
+	}
+	/**
+	 * 设置：达成时间
+	 */
+	public void setChengjiuTime(Date chengjiuTime) {
+		this.chengjiuTime = chengjiuTime;
+	}
+	/**
+	 * 获取：达成时间
+	 */
+	public Date getChengjiuTime() {
+		return chengjiuTime;
+	}
+	/**
+	 * 设置：排名
+	 */
+	public void setRank(String rank) {
+		this.rank = rank;
+	}
+	/**
+	 * 获取：排名
+	 */
+	public String getRank() {
+		return rank;
+	}
+	/**
+	 * 设置：0：解锁1：未解锁
+	 */
+	public void setChengjiuFlag(Integer chengjiuFlag) {
+		this.chengjiuFlag = chengjiuFlag;
+	}
+	/**
+	 * 获取：0：解锁1：未解锁
+	 */
+	public Integer getChengjiuFlag() {
+		return chengjiuFlag;
+	}
+	/**
+	 * 设置：开始时间
+	 */
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+	}
+	/**
+	 * 获取：开始时间
+	 */
+	public Date getStartTime() {
+		return startTime;
+	}
+	/**
+	 * 设置：结束时间
+	 */
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
+	}
+	/**
+	 * 获取：结束时间
+	 */
+	public Date getEndTime() {
+		return endTime;
+	}
+	/**
+	 * 设置：总口数
+	 */
+	public void setTotalkouNum(Integer totalkouNum) {
+		this.totalkouNum = totalkouNum;
+	}
+	/**
+	 * 获取：总口数
+	 */
+	public Integer getTotalkouNum() {
+		return totalkouNum;
+	}
+	/**
+	 * 设置：当天口数
+	 */
+	public void setDaykouNum(Integer daykouNum) {
+		this.daykouNum = daykouNum;
+	}
+	/**
+	 * 获取：当天口数
+	 */
+	public Integer getDaykouNum() {
+		return daykouNum;
+	}
+	/**
+	 * 设置：性别
+	 */
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+	/**
+	 * 获取：性别
+	 */
+	public String getSex() {
+		return sex;
+	}
+	/**
+	 * 设置：年龄
+	 */
+	public void setAge(Integer age) {
+		this.age = age;
+	}
+	/**
+	 * 获取：年龄
+	 */
+	public Integer getAge() {
+		return age;
+	}
+	/**
+	 * 设置：烟龄
+	 */
+	public void setSmokeAge(String smokeAge) {
+		this.smokeAge = smokeAge;
+	}
+	/**
+	 * 获取：烟龄
+	 */
+	public String getSmokeAge() {
+		return smokeAge;
+	}
+	/**
+	 * 设置：日期
+	 */
+	public void setTime(Date time) {
+		this.time = time;
+	}
+	/**
+	 * 获取：日期
+	 */
+	public Date getTime() {
+		return time;
 	}
 }

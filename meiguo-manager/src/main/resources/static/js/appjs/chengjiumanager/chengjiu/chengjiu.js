@@ -80,8 +80,8 @@ function load() {
 																{
 									field : 'id', 
 									title : '外键id' 
-								},
-								*/								{
+								},*/
+																{
 									field : 'openId', 
 									title : '微信id' 
 								},
@@ -173,7 +173,8 @@ function load() {
 									field : 'username', 
 									title : '' 
 								},
-								*/								{
+								*/		
+															{
 									title : '操作',
 									field : 'id',
 									align : 'center',

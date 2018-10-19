@@ -1,4 +1,4 @@
-$().ready(function() {
+$().ready(function() {	
 	validateRule();
 });
 
@@ -8,11 +8,13 @@ $.validator.setDefaults({
 	}
 });
 function update() {
-	$.ajax({
+	$.ajax({		
 		cache : true,
 		type : "POST",
 		url : "/information/users/update",
-		data : $('#signupForm').serialize(),// 你的formid
+		data : formData, //$('#signupForm').serialize(),// 你的formid
+		processData:false,
+		contentType:false,
 		async : false,
 		error : function(request) {
 			parent.layer.alert("Connection error");

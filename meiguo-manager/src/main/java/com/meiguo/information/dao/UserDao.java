@@ -21,6 +21,7 @@ public interface UserDao {
 	UserDO get(Integer id);
 	
 	List<UserDO> list(Map<String,Object> map);
+	List<Map<String, Object>> exeList(Map<String, Object> map);
 	
 	int count(Map<String,Object> map);
 	

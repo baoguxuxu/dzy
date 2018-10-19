@@ -33,6 +33,7 @@ function load() {
 								//说明：传入后台的参数包括offset开始索引，limit步长，sort排序列，order：desc或者,以及所有列的键值对
 								limit: params.limit,
 								offset:params.offset,
+								
 					            name:$('#searchName').val(),
 					           // username:$('#searchName').val()
 							};
@@ -51,18 +52,41 @@ function load() {
 									field : 'id', 
 									title : 'id' 
 								},
-								*/								{
+																{
 									field : 'openId', 
 									title : '微信id' 
 								},
-																{
+								*/								{
 									field : 'nickname', 
 									title : '昵称' 
 								},
 								/*								{
 									field : 'password', 
 									title : '密码' 
+								},*/
+								
+																{
+									field : 'sex', 
+									title : '性别' 
 								},
+																{
+									field : 'age', 
+									title : '年龄' 
+								},							
+								
+																{
+									field : 'smokeAge', 
+									title : '烟龄' 
+								},
+									
+																{
+									field : 'totalkouNum', 
+									title : '总口数' 
+								},
+								/*								{
+									field : 'daykouNum', 
+									title : '当天口数' 
+								},								
 								*/								{
 									field : 'phone', 
 									title : '手机号' 
@@ -91,11 +115,11 @@ function load() {
 									field : 'serveNum', 
 									title : '服务次数' 
 								},
-								*/								{
+																{
 									field : 'balance', 
 									title : '余额' 
 								},
-								/*								{
+																{
 									field : 'restitution', 
 									title : '返还' 
 								},
@@ -115,8 +139,49 @@ function load() {
 									field : 'updateTime', 
 									title : '修改时间' 
 								},
+																{
+									field : 'chengjiuIoc', 
+									title : '成就图标' 
+								},
+																{
+									field : 'chengjiuName', 
+									title : '成就名称' 
+								},
+																{
+									field : 'chengjiuDemand', 
+									title : '获取条件' 
+								},
+																{
+									field : 'reward', 
+									title : '奖励' 
+								},
+																{
+									field : 'chengjiuTime', 
+									title : '达成时间' 
+								},
+																{
+									field : 'rank', 
+									title : '排名' 
+								},
+																{
+									field : 'chengjiuFlag', 
+									title : '0：解锁1：未解锁' 
+								},
+																{
+									field : 'startTime', 
+									title : '开始时间' 
+								},
+																{
+									field : 'endTime', 
+									title : '结束时间' 
+								},
+								
+																{
+									field : 'time', 
+									title : '日期' 
+								},
 								*/								{
-									field : 'delete_flag',
+									field : 'deleteFlag',
 									title : '状态',
 									formatter : function(value, row, index) {
 										var str = '';
@@ -158,7 +223,7 @@ function load() {
 										var f = '<a  class="btn btn-primary btn-sm '+s_chakan_h+ '" href="#" mce_href="#" title="查看" onclick="show(\''
 												+ row.id											
 												+ '\')"><i class="fa fa-rocket "></i></a> ';
-										return e + f  ;
+										return  f  ;
 									}
 								} ]
 					});
@@ -167,7 +232,7 @@ function reLoad() {
 	$('#exampleTable').bootstrapTable('refresh');
 }
 function add() {
-	layer.open({
+    layer.open({
 		type : 2,
 		title : '增加',
 		maxmin : true,
@@ -175,11 +240,12 @@ function add() {
 		area : [ '800px', '520px' ],
 		content : prefix + '/add' // iframe的url
 	});
+
 }
 function updateEnable(id,enable){
-	var isEnable = 1;
+	var deleteFlag = 1;
 	if($(enable).prop("checked")){
-		isEnable = 0;
+		deleteFlag = 0;
 	}
 	
 	$.ajax({
@@ -187,7 +253,7 @@ function updateEnable(id,enable){
 		type : "post",
 		data : {
 			'id' : id,
-			'enable' : isEnable
+			'enable' : deleteFlag
 		},
 		dataType: 'JSON',
 		async : false,
@@ -203,7 +269,7 @@ function updateEnable(id,enable){
 }
 function show(id) {
 	
-	layer.open({
+	var showpage = layer.open({
 		type : 2,
 		title : '业主详情',
 		maxmin : true,
@@ -211,6 +277,7 @@ function show(id) {
 		area : [ '800px', '520px' ],
 		content : prefix + '/show/' + id // iframe的url
 	});
+	layer.full(showpage);
 }
 function edit(id) {
 	layer.open({
@@ -280,30 +347,3 @@ function batchRemove() {
 
 	});
 }
-function loadTree(tree) {
-	$('#jstree').jstree({
-		'core' : {
-			'data' : tree
-		},
-		"plugins" : [ "search" ]
-	});
-	$('#jstree').jstree().open_all();
-}
-$('#jstree').on("changed.jstree", function(e, data) {
-	if (data.selected == -1) {
-		var opt = {
-			query : {
-				deptId : '',
-			}
-		}
-		$('#exampleTable').bootstrapTable('refresh', opt);
-	} else {
-		var opt = {
-			query : {
-				deptId : data.selected[0],
-			}
-		}
-		$('#exampleTable').bootstrapTable('refresh',opt);
-	}
-
-});
