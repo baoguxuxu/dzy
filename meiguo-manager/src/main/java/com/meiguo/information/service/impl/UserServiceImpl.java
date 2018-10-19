@@ -56,5 +56,11 @@ public class UserServiceImpl implements UserService {
 	public int updateStatus(UserDO user) {
 		return userDao.update(user);
 	}
+
+	@Override
+	public List<Map<String, Object>> exeList(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return userDao.exeList(map);
+	}
 	
 }

@@ -21,7 +21,7 @@
 							<button class="btn btn-success" onclick="reLoad()">查询</button>
 						</div>
 						<div class="columns pull-right col-md-2 nopadding">
-							<input id="searchName" type="text" class="form-control"
+							<input id="chengjiuName" name="chengjiuName" type="text" class="form-control"
 								placeholder="">
 						</div>
 					</div>
@@ -57,16 +57,5 @@
 	</div>
 	<div th:include="include :: footer"></div>
 	<script type="text/javascript" src="/js/appjs/chengjiumanager/chengjiuadd/chengjiuadd.js"></script>
-	<script type="text/javascript">
-	
-		laydate.render({
-			elem: '#startTime',
-			type: 'datetime'
-		});
-		laydate.render({
-			elem: '#endTime',
-			type: 'datetime'
-		});
-	</script>
 </body>
 </html>

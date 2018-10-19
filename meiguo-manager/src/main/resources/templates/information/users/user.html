@@ -34,6 +34,7 @@
 		</div>
 	</div>
 	<!--shiro控制bootstraptable行内按钮看见性 来自bootdo的创新方案 -->
+	<div>
 		<div>
 			<script type="text/javascript">
 				var s_edit_h = 'hidden';
@@ -62,8 +63,47 @@
 				var s_chakan_h = '';
 			</script>
 		</div>
+		<!-- 		
+		<button type="button" class="btn btn-primary" onclick="exportExcel(1)">
+			<i class="fa fa-export" aria-hidden="true"></i>导出当页数据
+		</button>
+		<button type="button" class="btn btn-primary" onclick="exportExcel(2)">
+			<i class="fa fa-export" aria-hidden="true"></i>导出全部数据
+		</button>
+		<button type="button" class="btn btn-primary" onclick="exportExcel(3)">
+			<i class="fa fa-export" aria-hidden="true"></i>导出符合条件全部数据
+		</button> -->
+		<button type="button" class="btn btn-primary" onclick="exportExcel(4)">
+			<i class="fa fa-export" aria-hidden="true"></i>导出选中的数据
+		</button>
 	</div>
 	<div th:include="include :: footer"></div>
 	<script type="text/javascript" src="/js/appjs/information/users/user.js"></script>
+	<script type="text/javascript">
+	
+	//导出Excel type导出的类型
+	//type 1 导出当页数据 2 导出全部数据 3 导出符合条件全部数据 4:导出勾选
+	function exportExcel(type) {
+		//获取table的分页参数值
+		var offset = $('#exampleTable').bootstrapTable('getOptions').pageNumber;
+		var limit =( $('#exampleTable').bootstrapTable('getOptions').pageSize -1) * offset;
+		data = 'limit='+limit+'&offset='+offset;
+		var ids = new Array();
+		if(type == 4){
+			var rows = $('#exampleTable').bootstrapTable('getSelections'); // 返回所有选择的行，当没有选择的记录时，返回一个空数组
+			if (rows.length == 0) {
+				layer.msg("请选择要导出的数据");
+				return;
+			}
+			// 遍历所有选择的行数据，取每条数据对应的ID
+			$.each(rows, function(i, row) {
+				ids[i] = row['id'];
+			});
+		}
+		//后端导出的方法
+		document.location.href = prefix + "/exportExcel?type="+type+"&"+ data+"&ids="+ids.join(",");
+	}
+	
+	</script>
 </body>
 </html>

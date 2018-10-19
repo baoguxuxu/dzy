@@ -75,9 +75,6 @@ public class ChengjiuAddController extends BaseController {
 	@GetMapping("/edit/{id}")
 	@RequiresPermissions("information:chengjiuAdd:edit")
 	String edit(@PathVariable("id") Integer id,Model model){
-		Date date = new Date();
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		System.out.println(dateFormat.format(date));
 		ChengjiuAddDO chengjiuAdd = chengjiuAddService.get(id);
 		model.addAttribute("chengjiuAdd", chengjiuAdd);
 	    return "chengjiumanager/chengjiuadd/edit";

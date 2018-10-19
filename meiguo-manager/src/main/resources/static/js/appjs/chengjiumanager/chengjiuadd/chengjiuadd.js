@@ -33,10 +33,7 @@ function load() {
 								//说明：传入后台的参数包括offset开始索引，limit步长，sort排序列，order：desc或者,以及所有列的键值对
 								limit: params.limit,
 								offset:params.offset,
-								addTime:$('#addTime').val(),
-								startTime:$('#startTime').val(),
-								endTime:$('#endTime').val(),
-								//name:$('#searchName').val(),
+								chengjiuName:$('#chengjiuName').val(),
 					           // username:$('#searchName').val()
 							};
 						},
@@ -161,7 +158,7 @@ function updateEnable(id,enable){
 		type : "post",
 		data : {
 			'id' : id,
-			'deleteFlag' : deleteFlag
+			'enable' : deleteFlag
 		},
 		dataType: 'JSON',
 		async : false,

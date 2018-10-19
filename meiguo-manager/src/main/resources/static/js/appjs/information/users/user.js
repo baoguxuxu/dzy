@@ -63,7 +63,30 @@ function load() {
 								/*								{
 									field : 'password', 
 									title : '密码' 
+								},*/
+								
+																{
+									field : 'sex', 
+									title : '性别' 
 								},
+																{
+									field : 'age', 
+									title : '年龄' 
+								},							
+								
+																{
+									field : 'smokeAge', 
+									title : '烟龄' 
+								},
+									
+																{
+									field : 'totalkouNum', 
+									title : '总口数' 
+								},
+								/*								{
+									field : 'daykouNum', 
+									title : '当天口数' 
+								},								
 								*/								{
 									field : 'phone', 
 									title : '手机号' 
@@ -84,7 +107,7 @@ function load() {
 									field : 'registerTime', 
 									title : '注册时间' 
 								},
-																{
+								/*								{
 									field : 'payNum', 
 									title : '消费金额' 
 								},
@@ -96,7 +119,7 @@ function load() {
 									field : 'balance', 
 									title : '余额' 
 								},
-								/*								{
+																{
 									field : 'restitution', 
 									title : '返还' 
 								},
@@ -152,6 +175,11 @@ function load() {
 									field : 'endTime', 
 									title : '结束时间' 
 								},
+								
+																{
+									field : 'time', 
+									title : '日期' 
+								},
 								*/								{
 									field : 'deleteFlag',
 									title : '状态',
@@ -195,7 +223,7 @@ function load() {
 										var f = '<a  class="btn btn-primary btn-sm '+s_chakan_h+ '" href="#" mce_href="#" title="查看" onclick="show(\''
 												+ row.id											
 												+ '\')"><i class="fa fa-rocket "></i></a> ';
-										return e + f  ;
+										return  f  ;
 									}
 								} ]
 					});

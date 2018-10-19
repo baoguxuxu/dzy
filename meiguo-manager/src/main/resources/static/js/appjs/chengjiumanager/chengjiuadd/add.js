@@ -8,7 +8,6 @@ $.validator.setDefaults({
 	}
 });
 
-
 function save() {
 	
 		var endTime = $("#endTime").val();
@@ -45,17 +44,36 @@ function save() {
 	});
 
 }
+
 function validateRule() {
 	var icon = "<i class='fa fa-times-circle'></i> ";
 	$("#signupForm").validate({
 		rules : {
-			name : {
+			chengjiuName : {
 				required : true
-			}
+			},
+			imgFile :{
+				required :true
+			},
+			startTime	:{
+				required:true
+			},
+			endTime :{
+				required:true
+			},
 		},
 		messages : {
-			name : {
-				required : icon + "请输入姓名"
+			chengjiuName : {
+				required : icon + "请输入名称"
+			},
+			imgFile :{
+				required :icon + "请上传成就图标"
+			},
+			startTime :{
+				required : icon + "请输入开始时间"
+			},
+			endTime : {
+				required : icon + "请输入结束时间"
 			}
 		}
 	})
