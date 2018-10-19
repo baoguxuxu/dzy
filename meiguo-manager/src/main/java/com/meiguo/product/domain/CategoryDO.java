@@ -33,6 +33,14 @@ public class CategoryDO implements Serializable {
 	private String updateBy;
 	//备注信息
 	private String remarks;
+    //数据删除标志(0:数据没有被执行删除操作   1：数据执行了删除操作)
+	private Integer deleteEnable;
+	public Integer getDeleteEnable() {
+		return deleteEnable;
+	}
+	public void setDeleteEnable(Integer deleteEnable) {
+		this.deleteEnable = deleteEnable;
+	}
 
 	/**
 	 * 设置：分类ID

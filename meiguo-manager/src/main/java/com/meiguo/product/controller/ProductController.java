@@ -47,7 +47,9 @@ public class ProductController {
 	private CategoryService categoryService;
 	@GetMapping()
 	@RequiresPermissions("information:product:product")
-	String Product(){
+	String Product(Model model){
+		List<ProductDO> productList = productService.list(new HashMap<String,Object>());
+		model.addAttribute("productList",productList);
 	    return "information/product/product";
 	}
 	
@@ -57,6 +59,8 @@ public class ProductController {
 	public PageUtils list(@RequestParam Map<String, Object> params){
 		//查询列表数据
         Query query = new Query(params);
+        query.put("status",params.get("status"));
+        query.put("name",params.get("name"));
 		List<ProductDO> productList = productService.list(query);
 		if(productList.size()!=0){
 			for(ProductDO productDO :productList){
@@ -103,6 +107,11 @@ public class ProductController {
 	@PostMapping("/save")
 	@RequiresPermissions("information:product:add")
 	public R save( ProductDO product){
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("productNumber",product.getProductNumber());
+		List<ProductDO> listP = productService.list(map);
+		if(listP.size()>0)
+			return R.error("产品编号已存在，请重新输入");
 		if(productService.save(product)>0){
 		    //保存产品的规格
 			List<Spec_Product> list = product.getList();
@@ -144,7 +153,20 @@ public class ProductController {
 	public R remove( Long id){
 		ProductDO productDO = new ProductDO();
 		productDO.setId(id);
-		productDO.setStatus(1);
+		productDO.setDeleteEnable(1);
+		if(productService.update(productDO)>0){
+		return R.ok();
+		}
+		return R.error();
+	}
+	
+	@PostMapping( "/updateEnable")
+	@ResponseBody
+	@RequiresPermissions("information:product:remove")
+	public R updateEnable( Long id,Integer enable){
+		ProductDO productDO = new ProductDO();
+		productDO.setId(id);
+		productDO.setStatus(enable);
 		if(productService.update(productDO)>0){
 		return R.ok();
 		}

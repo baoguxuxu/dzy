@@ -38,7 +38,16 @@ public class SpecDO implements Serializable {
 	private String remark;
 	//规格状态：0,启用；1,禁用
 	private Integer status;
+	//数据删除标志(0:数据没有执行删除操作        1：数据被执行了删除操作)
+	private Integer deleteEnable;
 
+	public Integer getDeleteEnable() {
+		return deleteEnable;
+	}
+	public void setDeleteEnable(Integer deleteEnable) {
+		this.deleteEnable = deleteEnable;
+	}
+	
 	/**
 	 * 设置：规格ID
 	 */

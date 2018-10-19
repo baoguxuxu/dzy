@@ -1,5 +1,6 @@
 package com.meiguo.product.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,7 +38,9 @@ public class CategoryController {
 	
 	@GetMapping()
 	@RequiresPermissions("information:category:category")
-	String Category(){
+	String Category(Model model){
+		List<CategoryDO> categoryList = categoryService.list(new HashMap<String, Object>());
+		model.addAttribute("categoryList",categoryList);
 	    return "information/category/category";
 	}
 	
@@ -74,11 +77,18 @@ public class CategoryController {
 	@PostMapping("/save")
 	@RequiresPermissions("information:category:add")
 	public R save( CategoryDO category){
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("name", category.getName());
+		List<CategoryDO> list = categoryService.list(map);
+		if(list.size()>0)
+			return R.error("分类名称已存在,请重新输入");
 		if(categoryService.save(category)>0){
 			return R.ok();
 		}
 		return R.error();
+		
 	}
+	
 	/**
 	 * 修改
 	 */
@@ -86,8 +96,28 @@ public class CategoryController {
 	@RequestMapping("/update")
 	@RequiresPermissions("information:category:edit")
 	public R update( CategoryDO category){
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("name", category.getName());
+		List<CategoryDO> list = categoryService.list(map);
+		if(list.size()>0)
+			return R.error("分类名称已存在,请重新输入");
 		categoryService.update(category);
 		return R.ok();
+	}
+	
+	/**
+	 * 更改产品分类状态
+	 */
+	@PostMapping( "/updateEnable")
+	@ResponseBody
+	@RequiresPermissions("information:category:remove")
+	public R updateEnable( Long id,Integer enable){
+		CategoryDO categoryDO = new CategoryDO();
+		categoryDO.setStatus(enable);
+		categoryDO.setId(id);
+		categoryService.update(categoryDO);
+		return R.ok();
+		
 	}
 	
 	/**
@@ -98,7 +128,7 @@ public class CategoryController {
 	@RequiresPermissions("information:category:remove")
 	public R remove( Long id){
 		CategoryDO categoryDO = new CategoryDO();
-		categoryDO.setStatus(1);
+		categoryDO.setDeleteEnable(1);
 		categoryDO.setId(id);
 		categoryService.update(categoryDO);
 		return R.ok();

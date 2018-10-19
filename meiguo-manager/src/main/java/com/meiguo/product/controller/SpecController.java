@@ -1,5 +1,6 @@
 package com.meiguo.product.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,7 +39,11 @@ public class SpecController {
 	
 	@GetMapping()
 	@RequiresPermissions("information:spec:spec")
-	String Spec(){
+	String Spec(Model model){
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("parent_id", 0);
+		List<SpecDO> specList  = specService.list(map);
+		model.addAttribute("specList", specList);
 	    return "information/spec/spec";
 	}
 	
@@ -48,10 +53,12 @@ public class SpecController {
 	public PageUtils list(@RequestParam Map<String, Object> params){
 		//查询列表数据
         Query query = new Query(params);
-        if(params.get("id")!=null)
+        if(params.get("id")!=null){
         	query.put("parent_id",Integer.parseInt(params.get("id").toString()));
-        else
+        }
+        else{
         	query.put("parent_id",0);
+        }
 		List<SpecDO> specList = specService.list(query);
 		int total = specService.count(query);
 		PageUtils pageUtils = new PageUtils(specList, total);
@@ -79,10 +86,12 @@ public class SpecController {
 	@PostMapping("/save")
 	@RequiresPermissions("information:spec:add")
 	public R save( SpecDO spec){
-		if(spec.getParentId()==null)
-			spec.setParentId(0l);
-		if(spec.getParentName()==null)
-			spec.setParentName("0");
+		Map<String,Object> map  = new HashMap<String,Object>();
+		map.put("productSpecId", spec.getProductSpecId());
+		map.put("parent_id", spec.getParentId()==null?0:spec.getParentId());
+		List<SpecDO> list = specService.list(map);
+		if(list.size()>0)
+			return R.error("规格编号已存在，请重新输入");
 		if(specService.save(spec)>0){
 			return R.ok();
 		}
@@ -102,9 +111,11 @@ public class SpecController {
 			specDO.setParentName(spec.getName());
 			specService.updateByParentId(specDO);//修改自规格中保存的父规格名称
 		}
-		specService.update(spec);
-		return R.ok();
+			specService.update(spec);
+			return R.ok();
 	}
+		
+	
 	
 	/**
 	 * 删除
@@ -115,7 +126,7 @@ public class SpecController {
 	public R remove( Long id){
 		SpecDO specDO = new SpecDO();
 		specDO.setId(id);
-		specDO.setStatus(1);
+		specDO.setDeleteEnable(1);
 		specService.update(specDO);
 		return R.ok();
 		
@@ -139,6 +150,10 @@ public class SpecController {
 	@RequiresPermissions("information:spec:spec")
 	String Spec(Integer id,Model model){
 		model.addAttribute("id",id);
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("parent_id", id);
+		List<SpecDO> specList  = specService.list(map);
+		model.addAttribute("specList", specList);
 	    return "information/spec/specMX";
 	}
 	
