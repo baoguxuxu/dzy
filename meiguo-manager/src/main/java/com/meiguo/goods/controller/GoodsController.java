@@ -187,45 +187,52 @@ public class GoodsController {
 			if(goods.getListimg() != null && goods.getListimg().getSize() > 0){
 				fileName = goods.getListimg().getOriginalFilename();
 				fileName = FileUtil.renameToUUID(fileName);
-			    FileUtil.uploadFile(goods.getListimg().getBytes(), bootdoConfig.getUploadPath()+"goods/", fileName);
-				imgDO.setType(0);
-				imgDO.setAddTime(new Date());
-				imgDO.setGoodsId(goods.getId());
-				imgDO.setCreateBy(ShiroUtils.getUser().getUsername());
-				imgDO.setUrl("/files/goods/"+fileName);
-				goodsService.saveImg(imgDO);
-			}
-			//保存货品图
-
-			 List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("goodsimg");
-			 if(files.size()==0){
-				 for(int i=0;i<files.size();i++){
-					fileName = files.get(i).getOriginalFilename();
-					fileName = FileUtil.renameToUUID(fileName);
-					imgDO = new ImgDO();
-					FileUtil.uploadFile(files.get(i).getBytes(), bootdoConfig.getUploadPath()+"goods/", fileName);
-					imgDO.setType(1);
+				if(!fileName.substring(fileName.indexOf(".")+1).equals("")){//保存时，确保上传的文件具有有效的后缀名
+					FileUtil.uploadFile(goods.getListimg().getBytes(), bootdoConfig.getUploadPath()+"goods/", fileName);
+					imgDO.setType(0);
 					imgDO.setAddTime(new Date());
 					imgDO.setGoodsId(goods.getId());
 					imgDO.setCreateBy(ShiroUtils.getUser().getUsername());
 					imgDO.setUrl("/files/goods/"+fileName);
 					goodsService.saveImg(imgDO);
 				}
+			}
+			//保存货品图
+
+			 List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("goodsimg");
+			 if(files.size()>0){
+				 for(int i=0;i<files.size();i++){
+					fileName = files.get(i).getOriginalFilename();
+					fileName = FileUtil.renameToUUID(fileName);
+					
+					imgDO = new ImgDO();
+					if(!fileName.substring(fileName.indexOf(".")+1).equals("")){
+						FileUtil.uploadFile(files.get(i).getBytes(), bootdoConfig.getUploadPath()+"goods/", fileName);
+						imgDO.setType(1);
+						imgDO.setAddTime(new Date());
+						imgDO.setGoodsId(goods.getId());
+						imgDO.setCreateBy(ShiroUtils.getUser().getUsername());
+						imgDO.setUrl("/files/goods/"+fileName);
+						goodsService.saveImg(imgDO);
+					}
+				}
 			 }
 			//保存货品详图
 			files = ((MultipartHttpServletRequest) request).getFiles("detailimg");
-			if(files.size()==0){
+			if(files.size()>0){
 				for(int i=0;i<files.size();i++){
 					fileName = files.get(i).getOriginalFilename();
 					fileName = FileUtil.renameToUUID(fileName);
 					imgDO = new ImgDO();
-					FileUtil.uploadFile(files.get(i).getBytes(), bootdoConfig.getUploadPath()+"goods/", fileName);
-					imgDO.setType(2);
-					imgDO.setAddTime(new Date());
-					imgDO.setGoodsId(goods.getId());
-					imgDO.setCreateBy(ShiroUtils.getUser().getUsername());
-					imgDO.setUrl("/files/goods/"+fileName);
-					goodsService.saveImg(imgDO);
+					if(!fileName.substring(fileName.indexOf(".")+1).equals("")){
+						FileUtil.uploadFile(files.get(i).getBytes(), bootdoConfig.getUploadPath()+"goods/", fileName);
+						imgDO.setType(2);
+						imgDO.setAddTime(new Date());
+						imgDO.setGoodsId(goods.getId());
+						imgDO.setCreateBy(ShiroUtils.getUser().getUsername());
+						imgDO.setUrl("/files/goods/"+fileName);
+						goodsService.saveImg(imgDO);
+					}
 				}
 			}
 		} catch (Exception e) {

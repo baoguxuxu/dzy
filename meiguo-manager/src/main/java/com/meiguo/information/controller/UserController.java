@@ -27,11 +27,11 @@ import com.meiguo.common.utils.FileUtil;
 import com.meiguo.common.utils.PageUtils;
 import com.meiguo.common.utils.Query;
 import com.meiguo.common.utils.R;
-import com.meiguo.information.dao.UserShopDao;
+//import com.meiguo.information.dao.UserShopDao;
 import com.meiguo.information.domain.UserDO;
-import com.meiguo.information.domain.UserShopDO;
+//import com.meiguo.information.domain.UserShopDO;
 import com.meiguo.information.service.UserService;
-import com.meiguo.information.service.UserShopService;
+//import com.meiguo.information.service.UserShopService;
 import com.meiguo.common.utils.ExcelExportUtil4DIY;
 
 
@@ -52,7 +52,7 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	@Autowired
-	private UserShopService userShopService;
+//	private UserShopService userShopService;
 	
 	@GetMapping()
 	@RequiresPermissions("information:user:user")
