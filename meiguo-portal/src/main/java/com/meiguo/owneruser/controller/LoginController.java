@@ -112,6 +112,7 @@ public class LoginController extends BaseController {
 		return "user/wangjimima";
 	}
 
+	//手机号、密码登录
 	@Log("登录")
 	@PostMapping("/login")
 	@ResponseBody
@@ -138,7 +139,37 @@ public class LoginController extends BaseController {
 			return R.error("用户或密码错误");
 		}
 	}
+	
+	//手机号密码注册
 	@Log("注册")
+	@PostMapping("/zhuce")
+	@ResponseBody
+	R ajaxZhuce(String username, String password, String nickname, String codenum) {
+		if (StringUtils.isBlank(username)) {
+			return R.error("手机号码不能为空");
+		}
+		password = MD5Utils.encrypt(username, password);
+		OwnerUserDO udo= new OwnerUserDO();
+		Map<String, Object> mapP = new HashMap<String, Object>();
+		mapP.put("username", username);
+		boolean flag = userService.exit(mapP);
+		if (flag) {
+			return R.error("手机号码已存在");
+		}
+		udo.setUsername(username);
+		udo.setPhone(username);
+		udo.setPassword(password);
+		udo.setNickname(nickname);
+		udo.setBalance(0.00);
+		udo.setDeleteFlag(0);
+		udo.setRegisterTime(new Date());
+		if (userService.save(udo) > 0) {
+			return R.ok();
+		}
+		return R.error();
+	}
+	
+	/*@Log("注册")
 	@PostMapping("/zhuce")
 	@ResponseBody
 	R ajaxZhuce(String username, String password, String nickname, String codenum) {
@@ -173,7 +204,8 @@ public class LoginController extends BaseController {
 			return R.ok();
 		}
 		return R.error();
-	}
+	}*/
+	
 	@Log("忘记密码")
 	@PostMapping("/retpwd")
 	@ResponseBody
