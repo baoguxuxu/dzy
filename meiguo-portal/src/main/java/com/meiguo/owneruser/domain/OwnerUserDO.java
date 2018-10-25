@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class OwnerUserDO implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	//id
 	private Long id;
 	//微信id
@@ -49,10 +49,38 @@ public class OwnerUserDO implements Serializable {
 	private Date updateTime;
 	//0：是；1：否
 	private Integer deleteFlag;
+	//成就图标
+    private String chengjiu_ioc ;
+    //成就名称
+   private String chengjiu_name; 
+    //获取条件
+   private String chengjiu_demand;
+    //奖励
+   private String reward;
+    //达成时间
+   private Date chengjiu_time;
+   // 排名
+   private String rank;
+   //'0：解锁1：未解锁'
+   private Integer chengjiu_flag;
+  //开始时间'
+  private Date startTime;
+  //结束时间
+  private Date endTime; 
+  //总口数
+  private Integer otalkou_num;
+  //当天口数
+  private Integer daykou_num;
+  //性别
+  private String sex;
+  //年龄
+  private Integer age;
+  //烟龄
+  private String smoke_age;
+  //日期
+  private Date time;
+  
 	
-    //小区
-    private List<Long> plotIds;
-
 	/**
 	 * 设置：id
 	 */
@@ -275,14 +303,96 @@ public class OwnerUserDO implements Serializable {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	/**
-	 * 小区
-	 */
-	public List<Long> getPlotIds() {
-		return plotIds;
+	
+	public String getChengjiu_ioc() {
+		return chengjiu_ioc;
 	}
-	public void setPlotIds(List<Long> plotIds) {
-		this.plotIds = plotIds;
+	public void setChengjiu_ioc(String chengjiu_ioc) {
+		this.chengjiu_ioc = chengjiu_ioc;
+	}
+	public String getChengjiu_name() {
+		return chengjiu_name;
+	}
+	public void setChengjiu_name(String chengjiu_name) {
+		this.chengjiu_name = chengjiu_name;
+	}
+	public String getChengjiu_demand() {
+		return chengjiu_demand;
+	}
+	public void setChengjiu_demand(String chengjiu_demand) {
+		this.chengjiu_demand = chengjiu_demand;
+	}
+	public String getReward() {
+		return reward;
+	}
+	public void setReward(String reward) {
+		this.reward = reward;
+	}
+	public Date getChengjiu_time() {
+		return chengjiu_time;
+	}
+	public void setChengjiu_time(Date chengjiu_time) {
+		this.chengjiu_time = chengjiu_time;
+	}
+	public String getRank() {
+		return rank;
+	}
+	public void setRank(String rank) {
+		this.rank = rank;
+	}
+	public Integer getChengjiu_flag() {
+		return chengjiu_flag;
+	}
+	public void setChengjiu_flag(Integer chengjiu_flag) {
+		this.chengjiu_flag = chengjiu_flag;
+	}
+	public Date getStartTime() {
+		return startTime;
+	}
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+	}
+	public Date getEndTime() {
+		return endTime;
+	}
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
+	}
+	public Integer getOtalkou_num() {
+		return otalkou_num;
+	}
+	public void setOtalkou_num(Integer otalkou_num) {
+		this.otalkou_num = otalkou_num;
+	}
+	public Integer getDaykou_num() {
+		return daykou_num;
+	}
+	public void setDaykou_num(Integer daykou_num) {
+		this.daykou_num = daykou_num;
+	}
+	public String getSex() {
+		return sex;
+	}
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+	public Integer getAge() {
+		return age;
+	}
+	public void setAge(Integer age) {
+		this.age = age;
+	}
+	public String getSmoke_age() {
+		return smoke_age;
+	}
+	public void setSmoke_age(String smoke_age) {
+		this.smoke_age = smoke_age;
+	}
+	public Date getTime() {
+		return time;
+	}
+	public void setTime(Date time) {
+		this.time = time;
 	}
 	public MultipartFile getFileImg() {
 		return fileImg;
