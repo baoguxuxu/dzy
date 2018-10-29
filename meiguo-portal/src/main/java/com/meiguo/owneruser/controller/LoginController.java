@@ -74,6 +74,8 @@ public class LoginController extends BaseController {
 		return "index";
 	}
 	
+
+	
 	@Log("请求访问主页")
 	@GetMapping({ "/index" })
 	String index(Model model) {
@@ -144,26 +146,25 @@ public class LoginController extends BaseController {
 	@Log("注册")
 	@PostMapping("/zhuce")
 	@ResponseBody
-	R ajaxZhuce(String username, String password, String nickname, String codenum) {
+	R ajaxZhuce(OwnerUserDO ownerUserDO) {
+		String username = ownerUserDO.getUsername();
+		String password = ownerUserDO.getPassword();
 		if (StringUtils.isBlank(username)) {
 			return R.error("手机号码不能为空");
 		}
-		password = MD5Utils.encrypt(username, password);
-		OwnerUserDO udo= new OwnerUserDO();
 		Map<String, Object> mapP = new HashMap<String, Object>();
 		mapP.put("username", username);
 		boolean flag = userService.exit(mapP);
 		if (flag) {
 			return R.error("手机号码已存在");
 		}
-		udo.setUsername(username);
-		udo.setPhone(username);
-		udo.setPassword(password);
-		udo.setNickname(nickname);
-		udo.setBalance(0.00);
-		udo.setDeleteFlag(0);
-		udo.setRegisterTime(new Date());
-		if (userService.save(udo) > 0) {
+		password = MD5Utils.encrypt(username, password);
+		ownerUserDO.setPassword(password);
+		ownerUserDO.setPhone(username);
+		ownerUserDO.setBalance(0.00);
+		ownerUserDO.setDeleteFlag(0);
+		ownerUserDO.setRegisterTime(new Date());
+		if (userService.save(ownerUserDO) > 0) {
 			return R.ok();
 		}
 		return R.error();

@@ -44,7 +44,7 @@ public class OwnerUserController extends BaseController {
 		return prefix + "/gerenzhongxin";
 	}
 	/**
-	 * 获取用户信息
+	 * 获取用户基本信息
 	 * @return
 	 */
 	@GetMapping("/userInfo")
