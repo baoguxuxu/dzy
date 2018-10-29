@@ -68,7 +68,7 @@ public class OwnerUserDO implements Serializable {
   //结束时间
   private Date endTime; 
   //总口数
-  private Integer otalkou_num;
+  private Integer totalkou_num;
   //当天口数
   private Integer daykou_num;
   //性别
@@ -79,8 +79,24 @@ public class OwnerUserDO implements Serializable {
   private String smoke_age;
   //日期
   private Date time;
+  //注册码
+  private String zhucema;
+  public String getZhucema() {
+	return zhucema;
+}
+public void setZhucema(String zhucema) {
+	this.zhucema = zhucema;
+}
+
+//验证码（非数据库表中字段）
+  private String codenum;
   
-	
+	public String getCodenum() {
+	return codenum;
+}
+	public void setCodenum(String codenum) {
+		this.codenum = codenum;
+	}
 	/**
 	 * 设置：id
 	 */
@@ -358,11 +374,11 @@ public class OwnerUserDO implements Serializable {
 	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
 	}
-	public Integer getOtalkou_num() {
-		return otalkou_num;
+	public Integer getTotalkou_num() {
+		return totalkou_num;
 	}
-	public void setOtalkou_num(Integer otalkou_num) {
-		this.otalkou_num = otalkou_num;
+	public void setTotalkou_num(Integer totalkou_num) {
+		this.totalkou_num = totalkou_num;
 	}
 	public Integer getDaykou_num() {
 		return daykou_num;
