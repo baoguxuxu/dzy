@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.meiguo.goods.dao.GoodsDao">
+
+	<select id="get" resultType="com.meiguo.goods.domain.GoodsDO">
+		select `id`,`name`,`goods_number`,`tgoods_number`,`product_id`,`status`,`discount_price`,`pay_price`,`vip_price`,`promotion_price`,`create_time`,`create_by`,`update_time`,`update_by`,`remarks` from goods where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.meiguo.goods.domain.GoodsDO">
+		select goods.id,goods.name,product_product.name productName,goods.goods_number,goods.tgoods_number,goods.product_id,goods.status,goods.discount_price,goods.pay_price,goods.vip_price,goods.promotion_price,goods.create_time,goods.create_by,goods.update_time,goods.update_by,goods.remarks from goods,product_product
+        where goods.product_id=product_product.id and goods.deleteEnable=0
+		  		  
+		  		  <if test="name != null and name != ''"> and goods.name = #{name} </if>
+		  		  <if test="goodsNumber != null and goodsNumber != ''"> and goods.goods_number = #{goodsNumber} </if>
+		  		  <if test="tgoodsNumber != null and tgoodsNumber != ''"> and goods.tgoods_number = #{tgoodsNumber} </if>
+		  		  <if test="productId != null and productId != ''"> and goods.product_id = #{productId} </if>
+		  		  <if test="status != null and status != ''"> and goods.status = #{status} </if>
+		  		  <if test="discountPrice != null and discountPrice != ''"> and goods.discount_price = #{discountPrice} </if>
+		  		  <if test="payPrice != null and payPrice != ''"> and goods.pay_price = #{payPrice} </if>
+		  		  <if test="vipPrice != null and vipPrice != ''"> and goods.vip_price = #{vipPrice} </if>
+		  		  <if test="promotionPrice != null and promotionPrice != ''"> and goods.promotion_price = #{promotionPrice} </if>
+		  		  <if test="createTime != null and createTime != ''"> and goods.create_time = #{createTime} </if>
+		  		  <if test="createBy != null and createBy != ''"> and goods.create_by = #{createBy} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and goods.update_time = #{updateTime} </if>
+		  		  <if test="updateBy != null and updateBy != ''"> and goods.update_by = #{updateBy} </if>
+		  		  <if test="remarks != null and remarks != ''"> and goods.remarks = #{remarks} </if>
+		  		
+		  
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	<!-- 查询商品分类 -->
+	<select id="listCategory" resultType="com.meiguo.goods.domain.CategoryDO">
+	   select id,name from product_category
+	</select>
+	<!-- 查询商品分类的数量 -->
+	<select id="countCategory" resultType="int">
+		select count(*) from goods,product_product
+        where goods.product_id=product_product.id and goods.deleteEnable=0
+		  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="name != null and name != ''"> and goods.name = #{name} </if>
+		  		  <if test="goodsNumber != null and goodsNumber != ''"> and goods_number = #{goodsNumber} </if>
+		  		  <if test="tgoodsNumber != null and tgoodsNumber != ''"> and tgoods_number = #{tgoodsNumber} </if>
+		  		  <if test="productId != null and productId != ''"> and product_id = #{productId} </if>
+		  		  <if test="status != null and status != ''"> and goods.status = #{status} </if>
+		  		  <if test="discountPrice != null and discountPrice != ''"> and discount_price = #{discountPrice} </if>
+		  		  <if test="payPrice != null and payPrice != ''"> and pay_price = #{payPrice} </if>
+		  		  <if test="vipPrice != null and vipPrice != ''"> and vip_price = #{vipPrice} </if>
+		  		  <if test="promotionPrice != null and promotionPrice != ''"> and promotion_price = #{promotionPrice} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="createBy != null and createBy != ''"> and create_by = #{createBy} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		  <if test="updateBy != null and updateBy != ''"> and update_by = #{updateBy} </if>
+		  		  <if test="remarks != null and remarks != ''"> and remarks = #{remarks} </if>
+		  		
+	</select>
+	<!-- 根据分类名称查询该分类下的所有产品 -->
+	<select id="getProductByCategoryName" resultType="com.meiguo.goods.domain.ProductDO">
+	   select id,name from product_product where 1=1
+	   <if test="name != null and name != ''"> and name = #{name} </if>
+	</select>
+	<!-- 根据产品Id查询货品 以及货品的列表图-->
+	<select id="getGoodsByProductId" resultType="com.meiguo.goods.domain.GoodsDO">
+		select goods.id,goods.name,goods.pay_price,goods_img.url from goods,goods_img where goods.product_id=#{id} and goods.deleteEnable=0
+		and goods.id=goods_img.goods_id and goods_img.type=0
+	</select>
+	<!-- 获取货品的图片 -->
+	<select id="getGoodsImgByGoodsDO"  resultType="com.meiguo.goods.domain.ImgDO">
+		select * from goods_img where type=#{i}
+		and goods_id in
+		<foreach collection="listGoodsDO" item="list1" index="index"
+			open="(" separator="," close=")">
+			#{list1.goods_id}
+		</foreach>
+	</select>
+	
+	<select id="listimg" resultType="com.meiguo.goods.domain.ImgDO" parameterType="int">
+		select * from goods_img where goods_id=#{goods_id} and type=#{type}
+	</select>
+ 	<select id="count" resultType="int">
+		select count(*) from goods,product_product
+        where goods.product_id=product_product.id and goods.deleteEnable=0
+		  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="name != null and name != ''"> and goods.name = #{name} </if>
+		  		  <if test="goodsNumber != null and goodsNumber != ''"> and goods_number = #{goodsNumber} </if>
+		  		  <if test="tgoodsNumber != null and tgoodsNumber != ''"> and tgoods_number = #{tgoodsNumber} </if>
+		  		  <if test="productId != null and productId != ''"> and product_id = #{productId} </if>
+		  		  <if test="status != null and status != ''"> and goods.status = #{status} </if>
+		  		  <if test="discountPrice != null and discountPrice != ''"> and discount_price = #{discountPrice} </if>
+		  		  <if test="payPrice != null and payPrice != ''"> and pay_price = #{payPrice} </if>
+		  		  <if test="vipPrice != null and vipPrice != ''"> and vip_price = #{vipPrice} </if>
+		  		  <if test="promotionPrice != null and promotionPrice != ''"> and promotion_price = #{promotionPrice} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="createBy != null and createBy != ''"> and create_by = #{createBy} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		  <if test="updateBy != null and updateBy != ''"> and update_by = #{updateBy} </if>
+		  		  <if test="remarks != null and remarks != ''"> and remarks = #{remarks} </if>
+		  		
+	</select>
+	 
+	<insert id="save" parameterType="com.meiguo.goods.domain.GoodsDO" useGeneratedKeys="true" keyProperty="id">
+		insert into goods
+		(
+			`name`, 
+			`goods_number`, 
+			`tgoods_number`, 
+			`product_id`, 
+			`status`, 
+			`discount_price`, 
+			`pay_price`, 
+			`vip_price`, 
+			`promotion_price`, 
+			`create_time`, 
+			`create_by`, 
+			`update_time`, 
+			`update_by`, 
+			`remarks`
+		)
+		values
+		(
+			#{name}, 
+			#{goodsNumber}, 
+			#{tgoodsNumber}, 
+			#{productId}, 
+			#{status}, 
+			#{discountPrice}, 
+			#{payPrice}, 
+			#{vipPrice}, 
+			#{promotionPrice}, 
+			#{createTime}, 
+			#{createBy}, 
+			#{updateTime}, 
+			#{updateBy}, 
+			#{remarks}
+		)
+	</insert>
+	
+	<insert id="saveImg" parameterType="com.meiguo.goods.domain.ImgDO" useGeneratedKeys="true" keyProperty="id">
+		insert into goods_img
+		(
+			`goods_id`, 
+			`add_time`, 
+			`create_by`, 
+			`update_time`, 
+			`update_by`,
+			 type,
+			 url 
+		)
+		values
+		(
+			#{goodsId}, 
+			#{addTime}, 
+			#{createBy}, 
+			#{updateTime}, 
+			#{updateBy}, 
+			#{type},
+			#{url}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.meiguo.goods.domain.GoodsDO">
+		update goods 
+		<set>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="goodsNumber != null">`goods_number` = #{goodsNumber}, </if>
+			<if test="tgoodsNumber != null">`tgoods_number` = #{tgoodsNumber}, </if>
+			<if test="productId != null">`product_id` = #{productId}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="discountPrice != null">`discount_price` = #{discountPrice}, </if>
+			<if test="payPrice != null">`pay_price` = #{payPrice}, </if>
+			<if test="vipPrice != null">`vip_price` = #{vipPrice}, </if>
+			<if test="promotionPrice != null">`promotion_price` = #{promotionPrice}, </if>
+			<if test="deleteEnable != null">`deleteEnable` = #{deleteEnable}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="createBy != null">`create_by` = #{createBy}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
+			<if test="updateBy != null">`update_by` = #{updateBy}, </if>
+			<if test="remarks != null">`remarks` = #{remarks}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from goods where id = #{value}
+	</delete>  
+	
+	<delete id="deleteImg" parameterType="int">
+		delete from goods_img where goods_id = #{goods_id}
+	</delete>
+	<delete id="removeImgByID" parameterType="int">
+		delete from goods_img where id = #{id}
+	</delete>
+	<delete id="batchRemove">
+		delete from goods where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>
