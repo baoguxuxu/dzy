@@ -21,19 +21,21 @@
         <p th:text="${user.nickname}"></p>
         <p th:text="${user.phone}"></p>
         <div class="my font-28">
-        	<a href="/owner/userPlot">我的房屋</a>
-            <a href="/information/order">我的账单</a>
+        	<a href="/owner/userPlot">口数记录</a>
+            <a href="/information/order">消费金额</a>
         </div>
         <a href="/owner/userInfo"><em></em></a>
     </div>
     <div class="zx-mid">
     	<ul>
-    		<a href="/information/questionnaire/myQuestionnaire"><li>我的活动</li></a>
-           <a href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa2ee172ca5977381&redirect_uri=https%3a%2f%2fmeiguo.wx.hg.jergavin.com%2finformation%2frepair%2flistMap&response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1#wechat_redirect"> <li class="fuw">我的服务</li></a>
+    		<!-- <a href="/information/questionnaire/myQuestionnaire"><li></li></a> -->
+           <!-- <a href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa2ee172ca5977381&redirect_uri=https%3a%2f%2fmeiguo.wx.hg.jergavin.com%2finformation%2frepair%2flistMap&response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1#wechat_redirect"> <li class="fuw">基本信息</li></a> -->
+    	   <a href="/owner/userInfo"><li class="fuw">基本信息</li></a>
+    		
     	</ul>
         <ul>
-    		<li class="tell">客服电话</li>
-            <a href="/jieshao"><li class="js">公司介绍</li></a>
+    		<!-- <li class="tell">客服电话</li> -->
+            <a href="/jieshao"><li class="js">任务达成展示</li></a>
     	</ul>
     </div>
     <div class="bottom font-22">
