@@ -91,12 +91,7 @@
 		 $.ajax({
 	            type: "POST",
 	            url: ctx+"zhuce",
-	            data : {
-					'username' : phoneVal,
-					'password' : pwdVal,
-					'nickname' : $('#nickname').val(),
-					'codenum' : codeVal,
-				},
+	            data : $("#signupForm").serialize(),
 	            success: function (r) {
 	                 if (r.code == 0) {
 	                	 layer.msg("注册成功");
@@ -167,7 +162,7 @@
 </script>
 </head>
 <body>
-<div class="Top"><a href=/login""><span>&nbsp;</span></a>注册</div>
+<div class="Top"><a href="/login"><span>&nbsp;</span></a>注册</div>
 <section class="zhuce">
     <div class="login">
        <form id="signupForm">
@@ -175,20 +170,45 @@
             <em></em>
             <input type="text"  placeholder="请输入昵称" id="nickname" name="nickname"  maxlength="10"/>
         </div>
+        <div class="tel psd st-psd">
+            <em></em>
+            <input class="loginPsd" type="text" maxlength="16" id="name" name="name" value="" placeholder="请输入真实姓名">
+        </div>
+        <div class="tel psd st-psd">
+            <em></em>
+            <input class="loginPsd" type="text" maxlength="16" id="age" name="age" value="" placeholder="请输入年龄">
+        </div>
         <div class="tel psd">
             <em></em>
-            <input class="loginPsd" type="text" maxlength="16" id="password" name="password" value="" placeholder="请输入密码">
-            <i id="closeEye" class="hid" onclick="ShutEye()"></i><i id="seeEye" onclick="OpenEye()"></i>
+            <input class="loginPsd" type="text" maxlength="16" id="sex" name="sex" value="" placeholder="请输入性别">
         </div>
        <div class="tel psd st-psd">
+            <em></em>
+            <input class="loginPsd" type="text" maxlength="16" id="smoke_age" name="smoke_age" value="" placeholder="请输入烟龄">
+        </div>
+         <div class="tel psd st-psd">
+            <em></em>
+            <input class="loginPsd" type="text" maxlength="16" id="identityCard" name="identityCard" value="" placeholder="请输入身份证号">
+        </div>
+        <div class="tel sent">
+            <em></em>
+            <input type="text" placeholder="请输入手机号" maxlength="16" id="username" name="username"/>
+          <!--   <span onclick="sendcode();" id="findDxCode">获取验证码</span> -->
+        </div>
+        <div class="tel psd st-psd">
+            <em></em>
+            <input class="loginPsd" type="text" maxlength="16" id="password" name="password" value="" placeholder="请输入密码">
+            <i id="st-closeEye" class="hid" onclick="st_ShutEye()"></i><i id="st-seeEye" onclick="st_OpenEye()"></i>
+        </div>
+        <div class="tel psd st-psd">
             <em></em>
             <input class="loginPsd" type="text" maxlength="16" id="st-password" name="st-password" value="" placeholder="请输入确认密码">
             <i id="st-closeEye" class="hid" onclick="st_ShutEye()"></i><i id="st-seeEye" onclick="st_OpenEye()"></i>
         </div>
-        <div class="tel sent">
+        <div class="tel psd st-psd">
             <em></em>
-            <input type="text" placeholder="请输入手机号" maxlength="11" id="username" name="username"/>
-          <!--   <span onclick="sendcode();" id="findDxCode">获取验证码</span> -->
+            <input class="loginPsd" type="text" maxlength="16" id="zhucema" name="zhucema" value="" placeholder="注册码">
+            <i id="st-closeEye" class="hid" onclick="st_ShutEye()"></i><i id="st-seeEye" onclick="st_OpenEye()"></i>
         </div>
         <!-- <div class="tel bh">  
             <em></em>
