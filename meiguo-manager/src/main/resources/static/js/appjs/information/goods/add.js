@@ -53,7 +53,6 @@ function validateRule() {
 				required : true
 			},
 			discountPrice : {
-				required : true,
 				number:true
 			},
 			payPrice : {
@@ -65,7 +64,6 @@ function validateRule() {
 				number:true
 			},
 			promotionPrice : {
-				required : true,
 				number:true
 			}
 		},
@@ -82,18 +80,41 @@ function validateRule() {
 			goodsNumber : {
 				required : icon + "请输入货品编号"
 			},
-			discountPrice : {
-				required : icon + "请输入折扣价"
-			},
 			payPrice : {
 				required : icon + "请输入售价"
 			},
 			vipPrice : {
 				required : icon + "请输入会员价"
-			},
-			promotionPrice : {
-				required : icon + "请输入促销价"
 			}
 		}
 	})
 }
+  //获取货品的规格
+	function getGoodsSpec(){
+		var productId = $("#productId").val();
+		$.ajax({
+			cache : true,
+			type : "POST",
+			url : "/information/goods/getGoodsSpec",
+			data : {'productId':productId},
+			async : false,
+			error : function(request) {
+				parent.layer.alert("Connection error");
+			},
+			success : function(data) {
+				$("[name='shanchu']").remove();
+				var html="";
+				for(var i=0;i<data.length;i++){
+					html+="<div class='form-group' name='shanchu'>";
+					html+="<label class='col-sm-2 control-label'>"+data[i].name+"：</label>";
+					html+="<div class='col-sm-8'>";
+					html+="<input  name='list["+i+"].specname' class='form-control' type='hidden' value='"+data[i].name+"'>";
+					html+="<input  name='list["+i+"].specdetail' class='form-control' type='text'>";
+					html+="</div></div>";
+					$("#add").after(html);
+					html="";
+				}
+			}
+		});
+	}
+	

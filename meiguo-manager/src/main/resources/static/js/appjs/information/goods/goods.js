@@ -81,6 +81,15 @@ function load() {
 																{
 									field : 'promotionPrice', 
 									title : ' 促销价' 
+								},								{
+									field : 'spec', 
+									title : '规格参数' 
+								},								{
+									field : 'total', 
+									title : '总量' 
+								},								{
+									field : 'surplus', 
+									title : '库存量' 
 								},
 																{
 									field : 'createTime', 
