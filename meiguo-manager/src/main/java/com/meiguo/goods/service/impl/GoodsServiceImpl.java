@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.meiguo.common.utils.ShiroUtils;
 import com.meiguo.goods.dao.GoodsDao;
 import com.meiguo.goods.domain.GoodsDO;
+import com.meiguo.goods.domain.GoodsDO.GoodsSpec;
 import com.meiguo.goods.domain.ImgDO;
 import com.meiguo.goods.service.GoodsService;
 
@@ -39,6 +40,15 @@ public class GoodsServiceImpl implements GoodsService {
 	@Transactional
 	@Override
 	public int save(GoodsDO goods){
+		List<GoodsSpec> list = goods.getList();
+		if(list!=null){
+			String rel="";
+			for(GoodsSpec goodsSpec :list){
+				rel+=goodsSpec.getSpecname()+":"+goodsSpec.getSpecdetail()+"  ";
+			}
+			goods.setSpec(rel);
+		}
+		goods.setSurplus(goods.getTotal());
 		goods.setCreateBy(ShiroUtils.getUser().getUsername());
 		goods.setCreateTime(new Date());
 		goods.setUpdateBy(ShiroUtils.getUser().getUsername());
