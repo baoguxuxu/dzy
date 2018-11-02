@@ -10,6 +10,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.meiguo.information.service.UserChengjiuMidService;
+
 import java.util.concurrent.TimeUnit;
 
 @RestController()
@@ -17,4 +19,5 @@ import java.util.concurrent.TimeUnit;
 @SpringBootTest
 public class TestDemo {
 
+	
 }

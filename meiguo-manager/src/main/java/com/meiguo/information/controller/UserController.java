@@ -3,6 +3,7 @@ package com.meiguo.information.controller;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,8 +28,10 @@ import com.meiguo.common.utils.FileUtil;
 import com.meiguo.common.utils.PageUtils;
 import com.meiguo.common.utils.Query;
 import com.meiguo.common.utils.R;
+import com.meiguo.information.domain.UserChengjiuMidDO;
 //import com.meiguo.information.dao.UserShopDao;
 import com.meiguo.information.domain.UserDO;
+import com.meiguo.information.service.UserChengjiuMidService;
 //import com.meiguo.information.domain.UserShopDO;
 import com.meiguo.information.service.UserService;
 //import com.meiguo.information.service.UserShopService;
@@ -51,7 +54,9 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
-	@Autowired
+	@Autowired 
+	private UserChengjiuMidService userChengjiuMidService;
+//	@Autowired
 //	private UserShopService userShopService;
 	
 	@GetMapping()
@@ -89,11 +94,14 @@ public class UserController {
 	
 	@GetMapping("/show/{id}")
 	@RequiresPermissions("information:user:chakan")
-	String show(@PathVariable("id") Integer id,Model model){
-		UserDO user = userService.get(id);	
+	String show(@PathVariable("id") Integer id, Model model){
+		UserDO user = userService.get(id);
+		user.setId(id);
 		model.addAttribute("user", user);
 	    return "information/users/show";
+	   	    
 	}
+	
 	/**
 	 * 保存
 	 */

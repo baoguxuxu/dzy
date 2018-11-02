@@ -32,4 +32,6 @@ public interface UserDao {
 	int remove(Integer id);
 	
 	int batchRemove(Integer[] ids);
+	
+	UserDO userCheng(Integer id);
 }

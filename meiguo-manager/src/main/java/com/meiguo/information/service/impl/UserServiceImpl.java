@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 
+import com.meiguo.chengjiumanager.dao.ChengjiuAddDao;
 import com.meiguo.information.dao.UserDao;
 import com.meiguo.information.domain.UserDO;
 import com.meiguo.information.service.UserService;
@@ -61,6 +62,12 @@ public class UserServiceImpl implements UserService {
 	public List<Map<String, Object>> exeList(Map<String, Object> map) {
 		// TODO Auto-generated method stub
 		return userDao.exeList(map);
+	}
+
+	@Override
+	public UserDO userCheng(Integer id) {
+		// TODO Auto-generated method stub
+		return userDao.userCheng(id);
 	}
 	
 }

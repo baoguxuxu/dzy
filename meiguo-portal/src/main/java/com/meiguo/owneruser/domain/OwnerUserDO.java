@@ -68,7 +68,7 @@ public class OwnerUserDO implements Serializable {
   //结束时间
   private Date endTime; 
   //总口数
-  private Integer totalkou_num;
+  private Integer otalkou_num;
   //当天口数
   private Integer daykou_num;
   //性别
@@ -79,23 +79,36 @@ public class OwnerUserDO implements Serializable {
   private String smoke_age;
   //日期
   private Date time;
-  //注册码
-  private String zhucema;
-  public String getZhucema() {
-	return zhucema;
-}
-public void setZhucema(String zhucema) {
-	this.zhucema = zhucema;
-}
-
-//验证码（非数据库表中字段）
-  private String codenum;
   
-	public String getCodenum() {
-	return codenum;
-}
-	public void setCodenum(String codenum) {
-		this.codenum = codenum;
+  private String zhucema;
+  
+  private Integer zhuceNum;
+  
+  private Integer dengluNum;
+  
+  
+  
+	
+	public String getZhucema() {
+		return zhucema;
+	}
+	public void setZhucema(String zhucema) {
+		this.zhucema = zhucema;
+	}
+	public Integer getZhuceNum() {
+		return zhuceNum;
+	}
+	public void setZhuceNum(Integer zhuceNum) {
+		this.zhuceNum = zhuceNum;
+	}
+	public Integer getDengluNum() {
+		return dengluNum;
+	}
+	public void setDengluNum(Integer dengluNum) {
+		this.dengluNum = dengluNum;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 	/**
 	 * 设置：id
@@ -374,11 +387,11 @@ public void setZhucema(String zhucema) {
 	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
 	}
-	public Integer getTotalkou_num() {
-		return totalkou_num;
+	public Integer getOtalkou_num() {
+		return otalkou_num;
 	}
-	public void setTotalkou_num(Integer totalkou_num) {
-		this.totalkou_num = totalkou_num;
+	public void setOtalkou_num(Integer otalkou_num) {
+		this.otalkou_num = otalkou_num;
 	}
 	public Integer getDaykou_num() {
 		return daykou_num;

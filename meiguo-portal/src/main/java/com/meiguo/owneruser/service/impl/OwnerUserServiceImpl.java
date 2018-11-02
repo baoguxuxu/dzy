@@ -2,6 +2,8 @@ package com.meiguo.owneruser.service.impl;
 
 import java.util.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -74,6 +76,11 @@ public class OwnerUserServiceImpl implements OwnerUserService {
 		return exit;
 	}
 
+	@Override
+	public boolean op(Map<String, Object> params) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 
 }

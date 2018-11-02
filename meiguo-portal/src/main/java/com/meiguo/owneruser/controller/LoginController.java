@@ -1,13 +1,14 @@
 package com.meiguo.owneruser.controller;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -21,6 +22,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.meiguo.carousel.domain.BannerDO;
@@ -28,6 +31,7 @@ import com.meiguo.carousel.service.BannerService;
 import com.meiguo.common.annotation.Log;
 import com.meiguo.common.controller.BaseController;
 import com.meiguo.common.utils.MD5Utils;
+import com.meiguo.common.utils.Query;
 import com.meiguo.common.utils.R;
 import com.meiguo.common.utils.ShiroUtils;
 import com.meiguo.information.domain.NoticeDO;
@@ -35,9 +39,12 @@ import com.meiguo.information.service.NoticeService;
 import com.meiguo.owneruser.comment.SMSContent;
 import com.meiguo.owneruser.comment.SMSPlatform;
 import com.meiguo.owneruser.comment.SMSTemplate;
+import com.meiguo.owneruser.comment.ZhuCeUtil;
 import com.meiguo.owneruser.domain.OwnerUserDO;
 import com.meiguo.owneruser.service.OwnerUserService;
 import com.meiguo.smsservice.service.ISMSService;
+
+import scala.annotation.elidable;
 
 
 @Controller
@@ -146,28 +153,33 @@ public class LoginController extends BaseController {
 	@Log("注册")
 	@PostMapping("/zhuce")
 	@ResponseBody
-	R ajaxZhuce(OwnerUserDO ownerUserDO) {
-		String username = ownerUserDO.getUsername();
-		String password = ownerUserDO.getPassword();
+	R ajaxZhuce(String username, String password, String nickname, String codenum,String zhucema,Integer zhuceNum) {		
 		if (StringUtils.isBlank(username)) {
 			return R.error("手机号码不能为空");
 		}
+		password = MD5Utils.encrypt(username, password);
+		OwnerUserDO udo= new OwnerUserDO();
 		Map<String, Object> mapP = new HashMap<String, Object>();
-		mapP.put("username", username);
+		mapP.put("username", username);		
 		boolean flag = userService.exit(mapP);
 		if (flag) {
 			return R.error("手机号码已存在");
 		}
-		password = MD5Utils.encrypt(username, password);
-		ownerUserDO.setPassword(password);
-		ownerUserDO.setPhone(username);
-		ownerUserDO.setBalance(0.00);
-		ownerUserDO.setDeleteFlag(0);
-		ownerUserDO.setRegisterTime(new Date());
-		if (userService.save(ownerUserDO) > 0) {
+		
+		udo.setUsername(username);
+		udo.setPhone(username);
+		udo.setPassword(password);
+		udo.setNickname(nickname);
+		udo.setBalance(0.00);
+		udo.setDeleteFlag(0);
+		udo.setRegisterTime(new Date());
+		udo.setZhucema(zhucema);                                                               
+		if (userService.save(udo) > 0) {
 			return R.ok();
-		}
+		}		
+		
 		return R.error();
+
 	}
 	
 	/*@Log("注册")
@@ -296,4 +308,35 @@ public class LoginController extends BaseController {
 			return R.error("验证码发送出现问题,请三分钟再试");
 		}
 	}
+	
+	/*
+	 * 邀请码
+	 */
+	
+//	public static String[] chars = new String[]{						
+//	  //    "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",
+//	      "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"
+//	  //    "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V","W", "X", "Y", "Z"
+//	};
+//	@GetMapping("/zhucema")
+//	@ResponseBody
+//	public String zhucema(){			
+//		StringBuffer stringBuffer = new StringBuffer(); 
+//		String uuid = UUID.randomUUID().toString().replace("-", ""); 
+//		for (int i = 0; i < 6; i++){ 
+//		    String str = uuid.substring(i * 4, i * 4 + 4); 
+//		    int strInteger = Integer.parseInt(str, 16); 
+//		    stringBuffer.append(chars[strInteger % 0x3E]); 
+//		} 
+//	    return stringBuffer.toString(); 			
+//	}	
+	@GetMapping("/zhucema")
+	@ResponseBody
+	public String Zhucema(String zhucema){
+		long id = 19;
+		String code = ZhuCeUtil.idToCode(id);
+		return code;
+		
+	}
+
 }

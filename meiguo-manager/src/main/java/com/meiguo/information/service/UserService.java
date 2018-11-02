@@ -31,4 +31,6 @@ public interface UserService {
 	int batchRemove(Integer[] ids);
 	
 	int updateStatus(UserDO user);
+	
+	UserDO userCheng(Integer id);
 }

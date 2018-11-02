@@ -14,7 +14,7 @@
 <script th:inline="javascript"> var ctx = [[@{/}]] ; </script>
 <script type="text/javascript" src="/js/Font.js"></script>
 <script src="/js/plugins/layer/layer.js"></script>
-<script type="text/javascript">
+<script type="text/javascript" defer="defer">
 	//密码可视设置
 	function OpenEye(){
 		 $('#seeEye').addClass('hid');
@@ -88,10 +88,30 @@
 			layer.msg("验证码不能为空");
 			return false;
 		}
+		//验证分享码
+		//var zhucemaVal =document.getElementById("zhucema").value;		
+		var zhucemaVal = $("#zhucema").val();
+		var maxChar = /\w{6}/;
+		if(maxChar.test(zhucemaVal)){			
+			false;					
+		}else if(zhucemaVal == null || zhucemaVal == ""){
+			false;
+		}else{
+			layer.msg("请输入六位分享码");
+			return false;
+		}		
+		
+
 		 $.ajax({
 	            type: "POST",
 	            url: ctx+"zhuce",
-	            data : $("#signupForm").serialize(),
+	            data : {
+					'username' : phoneVal,
+					'password' : pwdVal,
+					'nickname' : $('#nickname').val(),
+					'codenum' : codeVal,
+					'zhucema' : zhucemaVal,
+				},
 	            success: function (r) {
 	                 if (r.code == 0) {
 	                	 layer.msg("注册成功");
@@ -159,6 +179,7 @@
 	            },
 	        });
 	}
+	
 </script>
 </head>
 <body>
@@ -170,52 +191,30 @@
             <em></em>
             <input type="text"  placeholder="请输入昵称" id="nickname" name="nickname"  maxlength="10"/>
         </div>
-        <div class="tel psd st-psd">
-            <em></em>
-            <input class="loginPsd" type="text" maxlength="16" id="name" name="name" value="" placeholder="请输入真实姓名">
-        </div>
-        <div class="tel psd st-psd">
-            <em></em>
-            <input class="loginPsd" type="text" maxlength="16" id="age" name="age" value="" placeholder="请输入年龄">
-        </div>
         <div class="tel psd">
             <em></em>
-            <input class="loginPsd" type="text" maxlength="16" id="sex" name="sex" value="" placeholder="请输入性别">
+            <input class="loginPsd" type="text" maxlength="16" id="password" name="password" value="" placeholder="请输入密码">
+            <i id="closeEye" class="hid" onclick="ShutEye()"></i><i id="seeEye" onclick="OpenEye()"></i>
         </div>
        <div class="tel psd st-psd">
-            <em></em>
-            <input class="loginPsd" type="text" maxlength="16" id="smoke_age" name="smoke_age" value="" placeholder="请输入烟龄">
-        </div>
-         <div class="tel psd st-psd">
-            <em></em>
-            <input class="loginPsd" type="text" maxlength="16" id="identityCard" name="identityCard" value="" placeholder="请输入身份证号">
-        </div>
-        <div class="tel sent">
-            <em></em>
-            <input type="text" placeholder="请输入手机号" maxlength="16" id="username" name="username"/>
-          <!--   <span onclick="sendcode();" id="findDxCode">获取验证码</span> -->
-        </div>
-        <div class="tel psd st-psd">
-            <em></em>
-            <input class="loginPsd" type="text" maxlength="16" id="password" name="password" value="" placeholder="请输入密码">
-            <i id="st-closeEye" class="hid" onclick="st_ShutEye()"></i><i id="st-seeEye" onclick="st_OpenEye()"></i>
-        </div>
-        <div class="tel psd st-psd">
             <em></em>
             <input class="loginPsd" type="text" maxlength="16" id="st-password" name="st-password" value="" placeholder="请输入确认密码">
             <i id="st-closeEye" class="hid" onclick="st_ShutEye()"></i><i id="st-seeEye" onclick="st_OpenEye()"></i>
         </div>
-        <div class="tel psd st-psd">
+        <div class="tel sent">
             <em></em>
-            <input class="loginPsd" type="text" maxlength="16" id="zhucema" name="zhucema" value="" placeholder="注册码">
-            <i id="st-closeEye" class="hid" onclick="st_ShutEye()"></i><i id="st-seeEye" onclick="st_OpenEye()"></i>
+            <input type="text" placeholder="请输入手机号" maxlength="11" id="username" name="username"/>
+          <!--   <span onclick="sendcode();" id="findDxCode">获取验证码</span> -->
         </div>
         <!-- <div class="tel bh">  
             <em></em>
             <input type="text" placeholder="请输入验证码" id="codenum" name="codenum"/>
         </div> -->
-      	
-        <a class="denglu font-36" onclick="zhuce();" >注<i></i>册</a>
+      	<div class="tel bh">
+            <em></em>
+            <input type="text"  placeholder="请输入分享码" id="zhucema" name="zhucema" maxlength="6" onKeyUp="value=value.replace(/[\W]/g,'')"/>
+        </div>
+        <a class="denglu font-36" onclick="zhuce()" >注<i></i>册</a>
       </form>
     </div>
 </section>

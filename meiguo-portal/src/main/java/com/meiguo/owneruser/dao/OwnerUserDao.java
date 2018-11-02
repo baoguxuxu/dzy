@@ -28,5 +28,4 @@ public interface OwnerUserDao {
 	
 	int remove(Long userId);
 	
-
 }
