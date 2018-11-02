@@ -1,5 +1,7 @@
 package com.meiguo.goods.controller;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +33,9 @@ import com.meiguo.goods.domain.CategoryDO;
 import com.meiguo.goods.domain.GoodsDO;
 import com.meiguo.goods.domain.ImgDO;
 import com.meiguo.goods.domain.ProductDO;
+import com.meiguo.goods.domain.SpecDO;
 import com.meiguo.goods.service.GoodsService;
+import com.meiguo.order.domain.OrderDO;
 
 
 /**
@@ -48,14 +52,18 @@ public class GoodsController {
 	@Autowired
 	private GoodsService goodsService;
 	/**
-	 * 查询所有的分类
+	 * 查询所有的商品分类
 	 */
 	
 	@GetMapping()
 	String Goods(Model model){
+		CategoryDO categoryDO = new CategoryDO();
+		categoryDO.setName("全部");
+		List<CategoryDO> categoryList =  new ArrayList<CategoryDO>();
+		categoryList.add(0, categoryDO);
 		Map<String,Object> map = new HashMap<String,Object>();
-		List<CategoryDO> goodsList = goodsService.listCategory(map);
-		model.addAttribute("goodsList", goodsList);
+		categoryList.addAll(1,goodsService.listCategory(map));
+		model.addAttribute("categoryList", categoryList);
 	    return "goods/shangcheng";
 	}
 	
@@ -67,26 +75,80 @@ public class GoodsController {
 	@RequestMapping("/product")
 	 public List<ProductDO> getProductDOByCategoryName(String name){
 		 List<ProductDO> productList = goodsService.getProductByCategoryName(name);
+		 //获取第一个商品的列表图作为所属产品的列表图
+		 for(ProductDO productDO :productList){
+			 List<GoodsDO> list = goodsService.getGoodsByProductId(productDO.getId());
+			 if(list.size()>0){
+				 GoodsDO goodsDO = list.get(0);
+				 productDO.setUrl(goodsDO.getUrl());
+			 }
+		 }
 		 return productList;
 	 }
 	
-	/**
-	 * 查询货品的列表图和一些相关信息
-	 */
 	
-	@ResponseBody
-	@RequestMapping("/goodsImg")
-	public List<GoodsDO> getGoodsByProductId(Integer product_id){
-		List<GoodsDO> list  = goodsService.getGoodsByProductId(product_id);
-		return list;
+	/**
+	 * 查询产品中的第一个商品
+	 */
+	@GetMapping("/getGoodsDetail/{id}")
+	public String getGoodsDetail(Model model,@PathVariable("id") Integer id){
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("productId", id);
+		GoodsDO goodsDO = new GoodsDO();
+		List<GoodsDO> goodsDOList = goodsService.list(map);
+		if(goodsDOList.size()>0)
+			goodsDO=goodsDOList.get(0);
+		model.addAttribute("goods", goodsDO);
+		model.addAttribute("goodsimgList", goodsService.listGoodsimgAndDetailimg(goodsDO.getId(),1));
+		model.addAttribute("detailimgList", goodsService.listGoodsimgAndDetailimg(goodsDO.getId(),2));
+		//查询货品的所有规格参数
+		return "goods/detail";
 	}
 	
 	/**
-	 * 按货品的id查询货品详情
+	 * 立即购买
 	 */
-	@RequestMapping("/getGoodsDetail")
-	public List<GoodsDO> getGoodsDetail(Integer id){
-		return null;
+	
+	@GetMapping("/buy/{id}")
+	public String ByGoods(@PathVariable("id") Integer id,Model model){
+		//购买页，默认展示第一个商品
+		model.addAttribute("goodsimgList", goodsService.listGoodsimgAndDetailimg(id,1));
+		model.addAttribute("detailimgList", goodsService.listGoodsimgAndDetailimg(id,2));
+		GoodsDO goodsDO = goodsService.get(id);
+		model.addAttribute("goods", goodsDO);
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("productId", goodsDO.getProductId());
+		List<GoodsDO> goodsDOList = goodsService.list(map);
+		model.addAttribute("goodsDOList", goodsDOList);
+		return "goods/buy";
+	}
+	
+	/**
+	 * 选择购买商品的规格参数等
+	 */
+	
+	@ResponseBody
+	@PostMapping("/selectGoods")
+	public GoodsDO selectGoods(Integer goodsId,Model model){
+		GoodsDO goodsDO = goodsService.get(goodsId);
+		return goodsDO;
+	}
+	
+	/**
+	 * 生成订单
+	 */
+	@GetMapping("/bull/{id}/{payPrice}")
+	public String createBull(@PathVariable("id") Integer id,@PathVariable("payPrice") String payPrice,Model model){
+		GoodsDO goodsDO = goodsService.get(id);
 		
+		List<ImgDO> imgDOList = goodsService.getGoodsImgByGoodsDO(id,0);
+		if(imgDOList.size()>0)
+			goodsDO.setUrl(imgDOList.get(0).getUrl());
+		model.addAttribute("goodsDO",goodsDO);
+		OrderDO orderDO = new OrderDO();
+		orderDO.setMobile(ShiroUtils.getUser().getPhone());
+		orderDO.setConsignee(ShiroUtils.getUser().getName());
+		model.addAttribute("orderDO",orderDO);
+		return "order/order";
 	}
 }

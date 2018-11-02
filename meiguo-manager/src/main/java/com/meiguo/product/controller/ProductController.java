@@ -1,5 +1,6 @@
 package com.meiguo.product.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,13 +17,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.meiguo.common.config.BootdoConfig;
+import com.meiguo.common.utils.FileUtil;
 import com.meiguo.common.utils.PageUtils;
 import com.meiguo.common.utils.Query;
 import com.meiguo.common.utils.R;
 import com.meiguo.product.domain.CategoryDO;
 import com.meiguo.product.domain.ProductDO;
 import com.meiguo.product.domain.SpecDO;
-import com.meiguo.product.domain.Spec_Product;
 import com.meiguo.product.service.CategoryService;
 import com.meiguo.product.service.ProductService;
 import com.meiguo.product.service.SpecService;
@@ -45,6 +47,9 @@ public class ProductController {
 	private SpecService specService;
 	@Autowired
 	private CategoryService categoryService;
+	@Autowired
+	private BootdoConfig bootdoConfig;
+
 	@GetMapping()
 	@RequiresPermissions("information:product:product")
 	String Product(Model model){
@@ -62,7 +67,7 @@ public class ProductController {
         query.put("status",params.get("status"));
         query.put("name",params.get("name"));
 		List<ProductDO> productList = productService.list(query);
-		if(productList.size()!=0){
+		/*if(productList.size()!=0){
 			for(ProductDO productDO :productList){
 				List<Spec_Product> list = productService.listSpec(productDO.getId());
 				if(list.size()!=0){
@@ -73,7 +78,7 @@ public class ProductController {
 					productDO.setSpec_dis(re);
 				}
 			}
-		}
+		}*/
 		int total = productService.count(query);
 		PageUtils pageUtils = new PageUtils(productList, total);
 		return pageUtils;
@@ -96,7 +101,7 @@ public class ProductController {
 	String edit(@PathVariable("id") Long id,Model model){
 		model.addAttribute("product", productService.get(id));
 		model.addAttribute("list1",categoryService.list(new HashMap<String,Object>()));
-		model.addAttribute("list",productService.listSpec(id));
+//		model.addAttribute("list",productService.listSpec(id));
 	    return "information/product/edit";
 	}
 	
@@ -113,15 +118,7 @@ public class ProductController {
 		if(listP.size()>0)
 			return R.error("产品编号已存在，请重新输入");
 		if(productService.save(product)>0){
-		    //保存产品的规格
-			List<Spec_Product> list = product.getList();
-			if(list!=null && list.size()!=0){
-				for(Spec_Product spec_Product :list){
-					spec_Product.setProductId(product.getId());//设置数据库生成的产品主键
-					productService.saveSpec(spec_Product);
-				}
-			}
-			return R.ok();
+			return R.ok(); 
 		}
 		return R.error();
 	}
@@ -133,14 +130,6 @@ public class ProductController {
 	@RequiresPermissions("information:product:edit")
 	public R update( ProductDO product){
 		productService.update(product);
-		//修改产品的规格
-		List<Spec_Product> list = product.getList();
-		if(list!=null && list.size()!=0){
-			for(Spec_Product spec_Product :list){
-				productService.updateSpec(spec_Product);
-			}
-		}
-		
 		return R.ok();
 	}
 	
@@ -184,6 +173,9 @@ public class ProductController {
 		return R.ok();
 	}
 	
+	/**
+	 * 检查父规格下是否有详细的子规格
+	 */
 	@ResponseBody
 	@PostMapping("/getSpec")
 	@RequiresPermissions("information:product:add")

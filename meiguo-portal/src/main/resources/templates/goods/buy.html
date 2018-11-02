@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="format-detection" content="telephone=no">
+<link rel="shortcut icon" href="images/logo_bank_gfyh.png" type="image/x-icon"/>
+<link rel="stylesheet" href="/css/base.css" type="text/css">
+<title>首页</title>
+<script type="text/javascript" src="/js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/js/TouchSlide.1.1.js"></script>
+<script type="text/javascript" src="/js/Font.js"></script>
+<script src="/js/plugins/layer/layer.js"></script>
+</head>
+<body>
+<!--头部切换-->
+<div id="focus" class="focus">
+	<div class="title">
+		<!-- <a  href="/owner/shoudingwei"><img class="fl" src="/img/index-add.png" alt=""/></a> -->
+		<span>银网物业</span>
+		<a  href="/information/msg"><img class="fr" src="/img/index-msg.png" alt="购物车"/></a>
+	</div>
+	<div class="hd"> <ul></ul></div>
+	<div class="bd">
+		<ul>
+			<li><a href="#"><img src="" alt="" id="goodsimg"></a></li>
+		</ul>
+	</div>
+</div>
+
+<!--货品的名称  价格-->
+<div style="font-size: 15px;color: red">
+	<input id="jiage" type="hidden" th:value="${goods.payPrice}"/>
+	<span th:text="'原价￥ ' + ${goods.payPrice}" id="payPrice">原价￥ </span>&nbsp;&nbsp;
+	<span th:text="'加入会员￥ ' + ${goods.vipPrice}" id="vipPrice"></span>&nbsp;&nbsp;
+	<span th:if="${goods.promotionPrice!=''}" th:text="'促销价￥ ' + ${goods.promotionPrice}" id="promotionPrice">view</span>
+	<span th:if="${goods.promotionPrice=='' &&goods.discountPrice!='' }" th:text="'折扣价￥ ' + ${goods.discountPrice}" id="discountPrice">view</span>
+</div>
+<!-- 剩余量 -->
+<div style="font-size: 15px">
+ <span id="surplus" th:text="'库存   '+${goods.surplus}"></span>
+</div>
+<!--货品的描述-->
+<div style="font-size: 15px;width: 750px;min-height:15px;" >
+	<span style="color: red">宝贝描述:</span>&nbsp;<span th:text="${goods.remarks}" id="remarks"></span>
+</div>
+
+<!--货品的规格参数-->
+<div style="font-size: 15px;width: 750px;min-height:15px;" >
+	<span style="color: red">选择参数</span>
+	<select class="form-control" name="spec" id="spec" onchange="getMoregoods()">
+        <option></option>
+        <option  th:each="list:${goodsDOList}" th:value="${list.id}" th:text="${list.spec }"></option>
+    </select><br>
+  <!--   
+    <span style="color: red">购买量</span>
+	<select>
+		<option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
+	</select> -->
+</div>
+
+
+<!--产品详图 -->
+<div th:each="list:${detailimgList}">
+	<img alt="" th:src="${list.url}" width="500px;" height="300px;">
+</div>
+
+
+<div style="font-size: 16px;color: blue; display: inline-block;">
+  	 <span onclick="goumai()">确认</span>	
+</div>
+
+</body>
+</html>
+
+<script th:inline="javascript">
+	//货品图片循环播放
+	$(function(){
+		var goodsimgList=  [[${goodsimgList}]];
+		var imgs=[];
+		var flag=0;
+		function getImgs(){
+			for(var i in goodsimgList){
+				imgs.push(goodsimgList[i].url);
+			}
+		}
+		getImgs();
+		function changeImg(){
+			flag = setInterval(function(){
+				$("#goodsimg").attr("src",imgs.pop());
+				if(imgs.length==0){
+					getImgs();
+				}
+			},2000);
+		}
+		changeImg();
+		var id=[[${goods.id}]];
+		$("#spec").find("option[value='"+id+"']").attr("selected",true);
+	});
+    
+	//购买选择的商品
+	function getMoregoods(){
+		var goodsId= $("#spec").val();
+		$.ajax({
+			cache : true,
+			type : "POST",
+			url : "/information/goods/selectGoods",
+			data : {"goodsId":goodsId},
+			async : false,
+			success : function(data) {
+				$("#promotionPrice").text("");
+				$("#discountPrice").text("");
+				$("#jiage").val(data.payPrice);
+				$("#payPrice").text("原价￥  "+data.payPrice);
+				$("#vipPrice").text("加入会员￥"+data.vipPrice);
+				if(data.promotionPrice!='')
+					$("#promotionPrice").text("促销价￥ "+data.promotionPrice);
+				if(data.promotionPrice=='' && goods.discountPrice!='')
+					$("#discountPrice").text("折扣价￥  "+discountPrice);
+				$("#remarks").text("宝贝描述  "+data.remarks);
+				$("#surplus").text("库存  "+data.surplus);
+			}
+		});
+	}
+	
+	//确认购买  生成订单
+	function goumai(){
+		var payPrice = $("#jiage").val();
+		var id=$("#spec").val();
+		window.location.href="/information/goods/bull/"+id+"/"+payPrice;
+	}
+	
+</script>
+<script type="text/javascript" src="/js/goods/detail.js"></script>
+

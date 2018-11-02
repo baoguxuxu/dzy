@@ -7,7 +7,6 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.meiguo.product.domain.ProductDO;
-import com.meiguo.product.domain.Spec_Product;
 
 /**
  * 产品表
@@ -32,9 +31,9 @@ public interface ProductDao {
 	
 	int batchRemove(Long[] ids);
 
-	int saveSpec(Spec_Product spec_Product);
+/*	int saveSpec(Spec_Product spec_Product);
 
 	List<Spec_Product> listSpec(Long id);
 
-	int updateSpec(Spec_Product spec_Product);
+	int updateSpec(Spec_Product spec_Product);*/
 }

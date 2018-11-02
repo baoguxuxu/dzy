@@ -31,7 +31,9 @@ import com.meiguo.goods.domain.GoodsDO;
 import com.meiguo.goods.domain.ImgDO;
 import com.meiguo.goods.service.GoodsService;
 import com.meiguo.product.domain.ProductDO;
+import com.meiguo.product.domain.SpecDO;
 import com.meiguo.product.service.ProductService;
+import com.meiguo.product.service.SpecService;
 
 
 /**
@@ -48,9 +50,12 @@ public class GoodsController {
 	@Autowired
 	private GoodsService goodsService;
 	@Autowired
-	private ProductService ProductService;
+	private ProductService productService;
 	@Autowired
 	private BootdoConfig bootdoConfig;
+	@Autowired
+	private SpecService specService;
+	
 	
 	@GetMapping()
 	@RequiresPermissions("information:goods:goods")
@@ -74,7 +79,7 @@ public class GoodsController {
 	@GetMapping("/add")
 	@RequiresPermissions("information:goods:add")
 	String add(Model model){
-		List<ProductDO> productList = ProductService.list(new HashMap<String,Object>());
+		List<ProductDO> productList = productService.list(new HashMap<String,Object>());
 	    model.addAttribute("productList", productList);
 		return "information/goods/add";
 	}
@@ -91,6 +96,8 @@ public class GoodsController {
 		model.addAttribute("listimg",imgDO);
 		model.addAttribute("goodsimg",goodsService.listimg(id,1));
 		model.addAttribute("detailimg",goodsService.listimg(id,2));
+		List<ProductDO> productList = productService.list(new HashMap<String,Object>());
+	    model.addAttribute("productList", productList);
 		if(type==1)
 			return "information/goods/edit";
 		else
@@ -279,4 +286,17 @@ public class GoodsController {
 		return R.ok();
 	}
 	
+	/**
+	 * 获取货品的规格
+	 */
+	@ResponseBody
+	@PostMapping( "/getGoodsSpec")
+	public List<SpecDO> getGoodsSpec(Long productId){
+		ProductDO productDO = productService.get(productId);
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("parent_id",productDO.getSpecId());
+		List<SpecDO> list = specService.list(map);
+		System.out.println(list);
+		return list;
+	}
 }

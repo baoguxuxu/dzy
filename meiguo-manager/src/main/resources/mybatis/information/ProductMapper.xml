@@ -4,11 +4,11 @@
 <mapper namespace="com.meiguo.product.dao.ProductDao">
 
 	<select id="get" resultType="com.meiguo.product.domain.ProductDO">
-		select `id`,`product_number`,`category_id`,`name`,`create_time`,`create_by`,`update_time`,`update_by`,`remarks` from product_product where id = #{value}
+		select `id`,url,spec_id,`product_number`,`category_id`,`name`,`create_time`,`create_by`,`update_time`,`update_by`,`remarks` from product_product where id = #{value}
 	</select>
 
 	<select id="list" resultType="com.meiguo.product.domain.ProductDO">
-		select pp.id,pp.status,pp.product_number,pc.name category_name,pp.name,pp.create_time,pp.create_by,pp.update_time,pp.update_by,pp.remarks from product_product pp,product_category pc 
+		select pp.id,pp.url,pp.status,pp.product_number,pc.name category_name,pp.name,pp.create_time,pp.create_by,pp.update_time,pp.update_by,pp.remarks from product_product pp,product_category pc 
         where pp.category_id=pc.id and pp.deleteEnable=0
 		  		  <if test="productNumber != null and productNumber != ''"> and product_number = #{productNumber} </if>
 		  		  <if test="categoryId != null and categoryId != ''"> and category_id = #{categoryId} </if>
@@ -32,9 +32,9 @@
 		</if>
 	</select>  
 	
-	<select id="listSpec" resultType="com.meiguo.product.domain.Spec_Product">
+	<!-- <select id="listSpec" resultType="com.meiguo.product.domain.Spec_Product">
 		select spec_product.id,product_spec.name,spec_product.remark from spec_product,product_spec where spec_product.spec_id=product_spec.id and  spec_product.product_id=#{id}
-	</select>
+	</select> -->
 	
  	<select id="count" resultType="int">
 		select count(*) from product_product pp,product_category pc 
@@ -62,7 +62,7 @@
 			`create_by`, 
 			`update_time`, 
 			`update_by`,
-			
+			 spec_id,
 			`remarks`
 		)
 		values
@@ -74,13 +74,13 @@
 			#{createBy}, 
 			#{updateTime}, 
 			#{updateBy}, 
-			
+			#{specId},
 			#{remarks}
 		)
 	</insert>
 	 
 	 
-	 <insert id="saveSpec" parameterType="com.meiguo.product.domain.Spec_Product" useGeneratedKeys="true" keyProperty="id">
+	 <!-- <insert id="saveSpec" parameterType="com.meiguo.product.domain.Spec_Product" useGeneratedKeys="true" keyProperty="id">
 		insert into spec_product
 		(
 			`product_id`, 
@@ -93,7 +93,7 @@
 			#{remark}, 
 			#{specId}
 		)
-	</insert>
+	</insert> -->
 	<update id="update" parameterType="com.meiguo.product.domain.ProductDO">
 		update product_product 
 		<set>
@@ -102,6 +102,7 @@
 <!-- 			<if test="categoryId != null">`category_id` = #{categoryId}, </if> -->
 <!-- 			<if test="name != null">`name` = #{name}, </if> -->
 			<if test="createTime != null">`create_time` = #{createTime}, </if>
+<!-- 			<if test="specId != null">`spec_id` = #{specId}, </if>  -->
 			<if test="deleteEnable != null">`deleteEnable` = #{deleteEnable}, </if>
 			<if test="createBy != null">`create_by` = #{createBy}, </if>
 			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
@@ -111,9 +112,9 @@
 		where id = #{id}
 	</update>
 	
-	<update id="updateSpec" parameterType="com.meiguo.product.domain.Spec_Product">
+	<!-- <update id="updateSpec" parameterType="com.meiguo.product.domain.Spec_Product">
 		update spec_product set remark=#{remark} where id = #{id}
-	</update>
+	</update> -->
 	<delete id="remove">
 		delete from product_product where id = #{value}
 	</delete>

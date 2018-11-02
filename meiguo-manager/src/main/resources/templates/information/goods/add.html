@@ -9,19 +9,18 @@
 				<div class="ibox float-e-margins">
 					<div class="ibox-content">
 						<form class="form-horizontal m-t" id="signupForm">
-																																			<div class="form-group">	
+						   <div class="form-group">	
 								<label class="col-sm-2 control-label">货品名称：</label>
 								<div class="col-sm-3">
 									<input id="name" name="name" class="form-control" type="text">
 								</div>
 								<label class="col-sm-2 control-label">所属产品：</label>
 								<div class="col-sm-3">
-									<select class="form-control" name="productId" id="productId" >
+									<select class="form-control" name="productId" id="productId" onchange="getGoodsSpec()">
 										<option value="">请选择产品类型</option>
                         				<option  th:each="list:${productList}" th:value="${list.id}" th:text="${list.name }"></option>
                     				</select>
 								</div>
-								
 							</div>
 																												
 							<div class="form-group">	
@@ -58,8 +57,15 @@
 								</div>
 							</div>
 																											
-																												
+										
+									
 							<div class="form-group">	
+								<label class="col-sm-2 control-label">库存总量：</label>
+								<div class="col-sm-8">
+									<input id="total" name="total" class="form-control" type="text">
+								</div>
+							</div>																		
+							<div class="form-group" id="add">	
 								<label class="col-sm-2 control-label">货品详情描述：</label>
 								<div class="col-sm-8">
 									<input id="remarks" name="remarks" class="form-control" type="text">

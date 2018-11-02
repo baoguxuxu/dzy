@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.meiguo.common.utils.ShiroUtils;
 import com.meiguo.product.dao.ProductDao;
 import com.meiguo.product.domain.ProductDO;
-import com.meiguo.product.domain.Spec_Product;
 import com.meiguo.product.service.ProductService;
 
 import java.util.Date;
@@ -67,7 +66,7 @@ public class ProductServiceImpl implements ProductService {
 		return productDao.batchRemove(ids);
 	}
 	
-	@Transactional
+	/*@Transactional
 	@Override
 	public int saveSpec(Spec_Product spec_Product) {
 		return productDao.saveSpec(spec_Product);
@@ -83,6 +82,6 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public int updateSpec(Spec_Product spec_Product) {
 		return productDao.updateSpec(spec_Product);
-	}
+	}*/
 	
 }

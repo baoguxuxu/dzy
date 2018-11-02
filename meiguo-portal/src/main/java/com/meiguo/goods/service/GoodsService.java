@@ -8,6 +8,7 @@ import com.meiguo.goods.domain.CategoryDO;
 import com.meiguo.goods.domain.GoodsDO;
 import com.meiguo.goods.domain.ImgDO;
 import com.meiguo.goods.domain.ProductDO;
+import com.meiguo.goods.domain.SpecDO;
 
 /**
  * 货品表
@@ -44,7 +45,13 @@ public interface GoodsService {
 
 	List<GoodsDO> getProductByProductId(Integer id);
 
-	List<GoodsDO> getGoodsByProductId(Integer id);
+	List<GoodsDO> getGoodsByProductId(Long id);
 
-	List<ImgDO> getGoodsImgByGoodsDO(List<GoodsDO> listGoodsDO, int i);
+	List<ImgDO> getGoodsImgByGoodsDO(Integer id, int i);
+
+	List<ImgDO> listGoodsimgAndDetailimg(Integer id, int i);
+
+	List<SpecDO> getGoodsSpec(Integer productId);
+
+	List<GoodsDO> list(Map<String, Object> map);
 }

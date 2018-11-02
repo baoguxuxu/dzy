@@ -10,6 +10,7 @@ import com.meiguo.goods.domain.CategoryDO;
 import com.meiguo.goods.domain.GoodsDO;
 import com.meiguo.goods.domain.ImgDO;
 import com.meiguo.goods.domain.ProductDO;
+import com.meiguo.goods.domain.SpecDO;
 import com.meiguo.goods.service.GoodsService;
 
 import java.util.Date;
@@ -96,14 +97,26 @@ public class GoodsServiceImpl implements GoodsService {
 		return null;
 	}
 	@Override
-	public List<GoodsDO> getGoodsByProductId(Integer id) {
+	public List<GoodsDO> getGoodsByProductId(Long id) {
 		// TODO Auto-generated method stub
 		return goodsDao.getGoodsByProductId(id);
 	}
 	@Override
-	public List<ImgDO> getGoodsImgByGoodsDO(List<GoodsDO> listGoodsDO, int i) {
+	public List<ImgDO> getGoodsImgByGoodsDO(Integer id, int i) {
 		// TODO Auto-generated method stub
-		return goodsDao.getGoodsImgByGoodsDO(listGoodsDO,i);
+		return goodsDao.getGoodsImgByGoodsDO(id,i);
+	}
+	@Override
+	public List<ImgDO> listGoodsimgAndDetailimg(Integer id, int i) {
+		return goodsDao.listGoodsimgAndDetailimg(id,i);
+	}
+	@Override
+	public List<SpecDO> getGoodsSpec(Integer productId) {
+		return goodsDao.getGoodsSpec(productId);
+	}
+	@Override
+	public List<GoodsDO> list(Map<String, Object> map) {
+		return goodsDao.list(map);
 	}
 	
 }

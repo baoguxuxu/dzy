@@ -38,20 +38,17 @@ function getSpec(){
 		cache : true,
 		type : "POST",
 		url : "/information/product/getSpec",
-		data : {id:$('#spec').val()},
+		data : {id:$("[name='specId']").val()},
 		async : false,
 
 		success : function(data) {
-			var html="";
-			for(var i = 0;i<data.length;i++) {
-  				html+='<label class="col-sm-3 control-label">';
-  				html+=data[i].name;
-  				html+=':   </label>';
-  				html+='<div class="col-sm-8">';
-  				html+='<input name="list['+i+'].specId" class="form-control" type="hidden" value="'+data[i].id+'">'
-  				html+='<input name="list['+i+'].remark" class="form-control" type="text"></div>';
-  			}
-  			$("#sppec").html(html);
+			if(data.length==0){
+				parent.layer.msg("父规格下没有子规格，请为此父规格添加字规格");
+				$("#submitSpec").attr("disabled","disabled");
+			}
+			else{
+				$("#submitSpec").removeAttr("disabled");
+			}
 		}
 	});
 }
