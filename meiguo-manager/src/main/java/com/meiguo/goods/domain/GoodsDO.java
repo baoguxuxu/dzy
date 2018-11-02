@@ -2,7 +2,9 @@ package com.meiguo.goods.domain;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -56,6 +58,38 @@ public class GoodsDO implements Serializable {
 	private Integer deleteEnable;
 	//保存图片表中失效的id值
 	private String imgids;
+	//货品具备的规格参数详情
+	private List<GoodsSpec> list = new ArrayList<GoodsSpec>();
+	//货品规格
+	private String spec;
+	//库存总量
+	private Long total;
+	//库存剩余量
+	private Long surplus;
+	public Long getTotal() {
+		return total;
+	}
+	public void setTotal(Long total) {
+		this.total = total;
+	}
+	public Long getSurplus() {
+		return surplus;
+	}
+	public void setSurplus(Long surplus) {
+		this.surplus = surplus;
+	}
+	public String getSpec() {
+		return spec;
+	}
+	public void setSpec(String spec) {
+		this.spec = spec;
+	}
+	public List<GoodsSpec> getList() {
+		return list;
+	}
+	public void setList(List<GoodsSpec> list) {
+		this.list = list;
+	}
 	public String getImgids() {
 		return imgids;
 	}
@@ -259,5 +293,26 @@ public class GoodsDO implements Serializable {
 	}
 	public void setListimg(MultipartFile listimg) {
 		this.listimg = listimg;
+	}
+	
+	/**
+	 * 货品具备的规格参数详情
+	 */
+	public static class GoodsSpec{
+		private String specname;
+		private String specdetail;
+		public String getSpecname() {
+			return specname;
+		}
+		public void setSpecname(String specname) {
+			this.specname = specname;
+		}
+		public String getSpecdetail() {
+			return specdetail;
+		}
+		public void setSpecdetail(String specdetail) {
+			this.specdetail = specdetail;
+		}
+		
 	}
 }
