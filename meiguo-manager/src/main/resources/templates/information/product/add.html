@@ -27,22 +27,18 @@
 																												<div class="form-group">	
 								<label class="col-sm-3 control-label">产品规格：</label>
 								<div class="col-sm-8">
-									 <select class="form-control" name="cid" onchange="getSpec()" id="spec">
+									 <select class="form-control" name="specId" onchange="getSpec()">
                         			 	<option></option>
                         				<option  th:each="list:${list}" th:value="${list.id}" th:text="${list.name }"></option>
                     				</select>
 								</div>
-							</div>
-							<div class="form-group" id="sppec">
-								
 							</div>
 																												<div class="form-group">	
 								<label class="col-sm-3 control-label">产品名称：</label>
 								<div class="col-sm-8">
 									<input id="name" name="name" class="form-control" type="text">
 								</div>
-							</div>
-																												
+							</div>																			
 																												<div class="form-group">	
 								<label class="col-sm-3 control-label">备注：</label>
 								<div class="col-sm-8">
@@ -51,7 +47,7 @@
 							</div>
 																					<div class="form-group">
 								<div class="col-sm-8 col-sm-offset-3">
-									<button type="submit" class="btn btn-primary">提交</button>
+									<button type="submit" class="btn btn-primary" id="submitSpec" >提交</button>
 								</div>
 							</div>
 						</form>
@@ -71,7 +67,25 @@
 			elem: '#updateTime',
 			type: 'datetime'
 		});
+		function udpateFileUrl(obj){
+			var fileURL = getObjectURL(obj.files[0]);
+			if(fileURL) {
+				$(obj).next().children("img").attr("src",fileURL);
+			}
+		}
 		
+		//建立一個可存取到該file的url
+		function getObjectURL(file) {
+			var url = null ; 
+			if (window.createObjectURL!=undefined) { // basic
+				url = window.createObjectURL(file) ;
+			} else if (window.URL!=undefined) { // mozilla(firefox)
+				url = window.URL.createObjectURL(file) ;
+			} else if (window.webkitURL!=undefined) { // webkit or chrome
+				url = window.webkitURL.createObjectURL(file) ;
+			}
+			return url;
+		}
 	</script>
 </body>
 </html>
