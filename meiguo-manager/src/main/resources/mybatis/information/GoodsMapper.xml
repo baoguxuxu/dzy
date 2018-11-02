@@ -4,11 +4,11 @@
 <mapper namespace="com.meiguo.goods.dao.GoodsDao">
 
 	<select id="get" resultType="com.meiguo.goods.domain.GoodsDO">
-		select `id`,`name`,`goods_number`,`tgoods_number`,`product_id`,`status`,`discount_price`,`pay_price`,`vip_price`,`promotion_price`,`create_time`,`create_by`,`update_time`,`update_by`,`remarks` from goods where id = #{value}
+		select `id`,`name`,surplus,`goods_number`,`tgoods_number`,`product_id`,`status`,`discount_price`,`pay_price`,`vip_price`,`promotion_price`,`create_time`,`create_by`,`update_time`,`update_by`,`remarks` from goods where id = #{value}
 	</select>
 
 	<select id="list" resultType="com.meiguo.goods.domain.GoodsDO">
-		select goods.id,goods.name,product_product.name productName,goods.goods_number,goods.tgoods_number,goods.product_id,goods.status,goods.discount_price,goods.pay_price,goods.vip_price,goods.promotion_price,goods.create_time,goods.create_by,goods.update_time,goods.update_by,goods.remarks from goods,product_product
+		select goods.id,goods.spec,goods.total,goods.surplus,goods.name,product_product.name productName,goods.goods_number,goods.tgoods_number,goods.product_id,goods.status,goods.discount_price,goods.pay_price,goods.vip_price,goods.promotion_price,goods.create_time,goods.create_by,goods.update_time,goods.update_by,goods.remarks from goods,product_product
         where goods.product_id=product_product.id and goods.deleteEnable=0
 		  		  
 		  		  <if test="name != null and name != ''"> and goods.name = #{name} </if>
@@ -69,6 +69,9 @@
 		insert into goods
 		(
 			`name`, 
+			total,
+			spec,
+			surplus,
 			`goods_number`, 
 			`tgoods_number`, 
 			`product_id`, 
@@ -86,6 +89,9 @@
 		values
 		(
 			#{name}, 
+			#{total},
+			#{spec},
+			#{surplus},
 			#{goodsNumber}, 
 			#{tgoodsNumber}, 
 			#{productId}, 
