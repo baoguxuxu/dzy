@@ -27,7 +27,9 @@
 								</div>
 								<label class="col-sm-2 control-label">所属产品：</label>
 								<div class="col-sm-3">
-									<input id="productId" name="productId" th:value="${goods.productId}" class="form-control" type="text" readonly="readonly">
+									<select class="form-control" name="productId" id="productId" disabled="disabled">
+                        				<option  th:each="list:${productList}" th:value="${list.id}" th:text="${list.name }"></option>
+                    				</select>
 								</div>
 							</div>
 							<div class="form-group">	
