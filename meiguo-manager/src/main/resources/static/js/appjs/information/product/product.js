@@ -65,10 +65,6 @@ function load() {
 									title : '产品分类' 
 								},
 																{
-									field : 'spec_dis', 
-									title : '产品规格' 
-								},
-																{
 									field : 'createTime', 
 									title : '创建时间' 
 								},
@@ -133,7 +129,7 @@ function reLoad() {
 	$('#exampleTable').bootstrapTable('refresh');
 }
 function add() {
-	layer.open({
+	var addPage =layer.open({
 		type : 2,
 		title : '增加',
 		maxmin : true,
@@ -141,6 +137,7 @@ function add() {
 		area : [ '800px', '520px' ],
 		content : prefix + '/add' // iframe的url
 	});
+	layer.full(addPage);
 }
 function edit(id) {
 	layer.open({
