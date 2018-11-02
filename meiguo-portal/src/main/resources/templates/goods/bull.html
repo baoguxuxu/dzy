@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="format-detection" content="telephone=no">
+<link rel="shortcut icon" href="images/logo_bank_gfyh.png" type="image/x-icon"/>
+<link rel="stylesheet" href="/css/base.css" type="text/css">
+<title>首页</title>
+<script type="text/javascript" src="/js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/js/TouchSlide.1.1.js"></script>
+<script type="text/javascript" src="/js/Font.js"></script>
+<script src="/js/plugins/layer/layer.js"></script>
+</head>
+<body>
+<!--头部切换-->
+<div id="focus" class="focus">
+	<div class="title">
+		<!-- <a  href="/owner/shoudingwei"><img class="fl" src="/img/index-add.png" alt=""/></a> -->
+		<span>银网物业</span>
+		<a  href="/information/msg"><img class="fr" src="/img/index-msg.png" alt="购物车"/></a>
+	</div>
+</div>
+<form id="signupForm">
+		<div class="Top">
+			确认订单
+		</div>
+
+		
+		<div class="fangwu-add-txt bg-white" id="fangzhudiv">
+			<ul>
+				<li><span>收货人</span><em><input id="username" maxlength="6" name="username"  type="text" value="zouying"></em></li>
+				<li><span>联系电话</span><em><input id="username" maxlength="6" name="username"  type="text" value="zouying"></em></li>
+				<li><span>收货地址</span><em><input id="identityCard" maxlength="18" name="identityCard"  type="text"></em></li><a href="#">></a>
+				<li>
+					<span th:text="${goodsDO.spec}" style="font-size: 15px;"></span>
+				     <span th:text="'￥ '+${goodsDO.payPrice}"></span>
+					<img alt="" th:src="${goodsDO.url}" width="100" height="100" >
+				</li>
+				<li><span>购买数量</span><em><input id="identityCard" maxlength="18" name="identityCard" type="text"></em>
+				<li><span>售后服务</span><em><input id="identityCard" maxlength="18" name="identityCard"  type="text"></em>
+				<li><span>店铺优惠</span><em><input id="identityCard" maxlength="18" name="identityCard"  type="text"></em>
+				<li><span>购买数量</span><em><input id="identityCard" maxlength="18" name="identityCard"  type="text" ></em>
+				<li><span>发票</span><em><input id="identityCard" maxlength="18" name="identityCard"  type="text"></em>
+				<li><span>买家留言</span><em><input id="identityCard" maxlength="18" name="identityCard"  type="text"></em>
+				<li><span>价格总计</span><em><input id="identityCard" maxlength="18" name="identityCard"  type="text"></em>
+				
+			</ul>
+		</div>
+		<input id="address" name="address" type="hidden" value="">
+		<input class="tijiao font-32" id="saveplot" onclick="submitplot()" type="button" value="提交">
+		</form>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

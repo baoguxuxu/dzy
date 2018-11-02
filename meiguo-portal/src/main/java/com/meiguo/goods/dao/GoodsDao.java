@@ -11,6 +11,7 @@ import com.meiguo.goods.domain.CategoryDO;
 import com.meiguo.goods.domain.GoodsDO;
 import com.meiguo.goods.domain.ImgDO;
 import com.meiguo.goods.domain.ProductDO;
+import com.meiguo.goods.domain.SpecDO;
 
 /**
  * 货品表
@@ -45,7 +46,13 @@ public interface GoodsDao {
 
 	List<ProductDO> getProductByCategoryName(@Param("name") String name);
 
-	List<GoodsDO> getGoodsByProductId(Integer id);
+	List<GoodsDO> getGoodsByProductId(Long id);
 
-	List<ImgDO> getGoodsImgByGoodsDO(@Param("listGoodsDO") List<GoodsDO> listGoodsDO, @Param("i") int i);
+	List<ImgDO> getGoodsImgByGoodsDO(@Param("id") Integer id, @Param("i") int i);
+
+	List<ImgDO> listGoodsimgAndDetailimg(@Param("id")Integer id, @Param("i") int i);
+
+	List<SpecDO> getGoodsSpec(Integer productId);
+
+	List<GoodsDO> list(Map<String, Object> map);
 }

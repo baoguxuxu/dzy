@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="format-detection" content="telephone=no">
+<link rel="shortcut icon" href="images/logo_bank_gfyh.png" type="image/x-icon"/>
+<link rel="stylesheet" href="/css/base.css" type="text/css">
+<title>首页</title>
+<script type="text/javascript" src="/js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/js/TouchSlide.1.1.js"></script>
+<script type="text/javascript" src="/js/Font.js"></script>
+<script src="/js/plugins/layer/layer.js"></script>
+</head>
+<body>
+<!--头部切换-->
+<div id="focus" class="focus">
+	<div class="title">
+		<!-- <a  href="/owner/shoudingwei"><img class="fl" src="/img/index-add.png" alt=""/></a> -->
+		<span>银网物业</span>
+		<a  href="/information/msg"><img class="fr" src="/img/index-msg.png" alt="购物车"/></a>
+	</div>
+	<div class="hd"> <ul></ul></div>
+	<div class="bd">
+		<ul>
+			<li><a href="#"><img src="" alt="" id="goodsimg"></a></li>
+		</ul>
+	</div>
+</div>
+
+<!--货品的名称  价格-->
+<div style="font-size: 15px;color: red">
+	<span th:text="'原价￥ ' + ${goods.payPrice}"></span>&nbsp;&nbsp;
+	<span th:text="'加入会员￥ ' + ${goods.vipPrice}"></span>&nbsp;&nbsp;
+	<span th:if="${goods.promotionPrice!=''}" th:text="'促销价￥ ' + ${goods.promotionPrice}">view</span>
+	<span th:if="${goods.promotionPrice=='' &&goods.discountPrice!='' }" th:text="'折扣价￥ ' + ${goods.discountPrice}">view</span>
+</div>
+
+<!--货品的描述-->
+<div style="font-size: 15px;width: 750px;min-height:15px;" >
+	<span style="color: red">宝贝描述:</span>&nbsp;<span th:text="${goods.remarks}"></span>
+</div>
+
+<!--货品的规格参数-->
+<div style="font-size: 15px;width: 750px;min-height:15px;" >
+	<span style="color: red">参数</span>
+	<span th:text="${goods.spec}"></span>
+	<div th:each="specDOList:${specDOList}">
+		<span th:text="${specDOList.name}"></span>&nbsp;&nbsp;&nbsp;&nbsp;<span th:text="${specDOList.remark}"></span>
+	</div>
+</div>
+
+<!--产品详图 -->
+<div th:each="list:${detailimgList}">
+	<img alt="" th:src="${list.url}" width="500px;" height="300px;">
+</div>
+
+<!--底部  购物车  联系客服-->
+<div>
+	<div style="font-size: 10px;display:inline-block;">
+  	 	<img alt="联系客服" src="/img/kefu.jpg" width="50px;" height="50px;"> <br><span>联系客服</span>  
+  	</div>
+  	<div style="font-size: 16px;color: blue; display: inline-block;">
+  	 <span onclick="gouwuche()">加入购物车</span>	<span onclick="goumai()">立即购买</span>
+  	</div>
+</div>
+
+
+</body>
+</html>
+
+<script th:inline="javascript">
+	//货品图片循环播放
+	$(function(){
+		var goodsimgList=  [[${goodsimgList}]];
+		var imgs=[];
+		var flag=0;
+		function getImgs(){
+			for(var i in goodsimgList){
+				imgs.push(goodsimgList[i].url);
+			}
+		}
+		getImgs();
+		function changeImg(){
+			flag = setInterval(function(){
+				$("#goodsimg").attr("src",imgs.pop());
+				if(imgs.length==0){
+					getImgs();
+				}
+			},2000);
+		}
+		changeImg();
+	});
+	
+	function gouwuche(){
+		alert("点击加入购物车");
+		
+	}
+	
+	function goumai(){
+		var id=[[${goods.id}]];
+		window.location.href="/information/goods/buy/"+id;
+	}
+</script>
+<script type="text/javascript" src="/js/goods/detail.js"></script>
+

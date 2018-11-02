@@ -43,14 +43,24 @@ public class ProductDO implements Serializable {
 	private Integer status;
 	//数据删除标志（0：数据没有被执行删除操作  1：数据执行了删除操作）
 	private Integer deleteEnable;
+	//产品具备的规格
+	private List<Spec_Product> list = new ArrayList<Spec_Product>();
+	//产品列表图地址
+	private String url;
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
+	
 	public Integer getDeleteEnable() {
 		return deleteEnable;
 	}
 	public void setDeleteEnable(Integer deleteEnable) {
 		this.deleteEnable = deleteEnable;
 	}
-	//产品具备的规格
-	private List<Spec_Product> list = new ArrayList<Spec_Product>();
+	
    /**
     * 设置规格
     */

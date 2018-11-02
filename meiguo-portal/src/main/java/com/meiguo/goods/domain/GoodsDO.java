@@ -54,35 +54,21 @@ public class GoodsDO implements Serializable {
 	private String productName;
 	//数据删除标志（0：该数据执行了删除操作   1：该数据没有被执行删除操作）
 	private Integer deleteEnable;
+	public Integer getSurplus() {
+		return surplus;
+	}
+	public void setSurplus(Integer surplus) {
+		this.surplus = surplus;
+	}
 	//保存图片表中失效的id值
 	private String imgids;
 	//产品的列表图
 	private String url;
-	public String getImgids() {
-		return imgids;
-	}
-	public String getUrl() {
-		return url;
-	}
-	public void setUrl(String url) {
-		this.url = url;
-	}
+	//货品规格
+	private String spec;
+	//剩余量
+	private Integer surplus;
 	
-	public void setImgids(String imgids) {
-		this.imgids = imgids;
-	}
-	public Integer getDeleteEnable() {
-		return deleteEnable;
-	}
-	public void setDeleteEnable(Integer deleteEnable) {
-		this.deleteEnable = deleteEnable;
-	}
-	public String getProductName() {
-		return productName;
-	}
-	public void setProductName(String productName) {
-		this.productName = productName;
-	}
 	/**
 	 * 设置：货品ID编号
 	 */
@@ -268,5 +254,36 @@ public class GoodsDO implements Serializable {
 	}
 	public void setListimg(MultipartFile listimg) {
 		this.listimg = listimg;
+	}
+	public String getSpec() {
+		return spec;
+	}
+	public void setSpec(String spec) {
+		this.spec = spec;
+	}
+	public String getImgids() {
+		return imgids;
+	}
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
+	
+	public void setImgids(String imgids) {
+		this.imgids = imgids;
+	}
+	public Integer getDeleteEnable() {
+		return deleteEnable;
+	}
+	public void setDeleteEnable(Integer deleteEnable) {
+		this.deleteEnable = deleteEnable;
+	}
+	public String getProductName() {
+		return productName;
+	}
+	public void setProductName(String productName) {
+		this.productName = productName;
 	}
 }
