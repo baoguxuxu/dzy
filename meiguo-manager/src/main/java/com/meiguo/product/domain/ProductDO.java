@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 
 
 /**
@@ -25,6 +27,9 @@ public class ProductDO implements Serializable {
 	private Long categoryId;
 	//产品分类名称
 	private String categoryName;
+	//产品具备的规格
+	private String specId;
+	
 	//产品名称
 	private String name;
 	//创建时间
@@ -43,25 +48,19 @@ public class ProductDO implements Serializable {
 	private Integer status;
 	//数据删除标志（0：数据没有被执行删除操作  1：数据执行了删除操作）
 	private Integer deleteEnable;
+	//图片地址
+	private String url;
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
 	public Integer getDeleteEnable() {
 		return deleteEnable;
 	}
 	public void setDeleteEnable(Integer deleteEnable) {
 		this.deleteEnable = deleteEnable;
-	}
-	//产品具备的规格
-	private List<Spec_Product> list = new ArrayList<Spec_Product>();
-   /**
-    * 设置规格
-    */
-	public List<Spec_Product> getList() {
-		return list;
-	}
-	/**
-	 * 获取规格
-	 */
-	public void setList(List<Spec_Product> list) {
-		this.list = list;
 	}
 	/**
 	 * 设置：产品ID
@@ -206,5 +205,17 @@ public class ProductDO implements Serializable {
 	 */
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+	/**
+	 * 获取产品规格
+	 */
+	public String getSpecId() {
+		return specId;
+	}
+	/**
+	 * 设置产品规格
+	 */
+	public void setSpecId(String specId) {
+		this.specId = specId;
 	}
 }
