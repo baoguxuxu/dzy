@@ -32,5 +32,5 @@ public interface UserService {
 	
 	int updateStatus(UserDO user);
 	
-	UserDO userCheng(Integer id);
+
 }

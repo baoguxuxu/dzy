@@ -76,11 +76,5 @@ public class OwnerUserServiceImpl implements OwnerUserService {
 		return exit;
 	}
 
-	@Override
-	public boolean op(Map<String, Object> params) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 
 }

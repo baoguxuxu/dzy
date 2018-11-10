@@ -1,14 +1,16 @@
-package com.meiguo.information.service.impl;
+package com.meiguo.owneruser.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.meiguo.owneruser.dao.UserChengjiuMidDao;
+import com.meiguo.owneruser.domain.UserChengjiuMidDO;
+import com.meiguo.owneruser.service.UserChengjiuMidService;
+
 import java.util.List;
 import java.util.Map;
 
-import com.meiguo.information.dao.UserChengjiuMidDao;
-import com.meiguo.information.domain.UserChengjiuMidDO;
-import com.meiguo.information.service.UserChengjiuMidService;
+
 
 
 
@@ -50,12 +52,6 @@ public class UserChengjiuMidServiceImpl implements UserChengjiuMidService {
 	@Override
 	public int batchRemove(Integer[] ids){
 		return userChengjiuMidDao.batchRemove(ids);
-	}
-
-	@Override
-	public UserChengjiuMidDO getListId(Integer id) {
-		// TODO Auto-generated method stub
-		return userChengjiuMidDao.getListId(id);
 	}
 	
 }

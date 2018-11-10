@@ -302,8 +302,8 @@
 					<div class="form-group" style="width:1040px;height:200px; overflow: auto;" align="center">
 						<div title="成就" style="display: flex" >
 							<div>
-								<img style="width: 80px; height: 100px; margin: 10px;" src="http://localhost:8066/img/miao.jpg" />
-								<div style="margin-left: 10px">成就名称</div>						      						 
+								<img style="width: 80px; height: 100px; margin: 10px;" src="http://localhost:8066/img/miao.jpg" th:each = "tu:${listId}" th:src = "${tu.chengjiuIco}" />
+								<div style="margin-left: 10px" th:each = "tu:${listId}" th:text = "${tu.chengjiuName}">成就名称</div>						      						 
 							</div>
 							<!--
 							<div>

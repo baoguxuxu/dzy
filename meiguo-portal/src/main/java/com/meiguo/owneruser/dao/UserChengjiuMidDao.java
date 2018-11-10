@@ -1,12 +1,13 @@
-package com.meiguo.information.dao;
+package com.meiguo.owneruser.dao;
 
-import com.meiguo.information.domain.UserChengjiuMidDO;
-import com.meiguo.information.domain.UserDO;
+
 
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+
+import com.meiguo.owneruser.domain.UserChengjiuMidDO;
 
 /**
  * 用户成就中间表
@@ -30,6 +31,5 @@ public interface UserChengjiuMidDao {
 	int remove(Integer id);
 	
 	int batchRemove(Integer[] ids);
-	
-	UserChengjiuMidDO getListId(Integer id);
+
 }

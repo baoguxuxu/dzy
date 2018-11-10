@@ -1,7 +1,16 @@
-package com.meiguo.information.domain;
+package com.meiguo.owneruser.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 
 
@@ -17,7 +26,7 @@ public class UserChengjiuMidDO implements Serializable {
 	
 	//id
 	private Integer id;
-	//用户id
+	//用户id	
 	private Integer userId;
 	//成就id
 	private Integer chengjiuId;
@@ -30,9 +39,12 @@ public class UserChengjiuMidDO implements Serializable {
 	//
 	private Integer beiyong3;
 
+
+	
 	/**
 	 * 设置：id
 	 */
+
 	public void setId(Integer id) {
 		this.id = id;
 	}

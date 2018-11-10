@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Repository;
  */
 @Mapper
 @Repository("UserDao")
-public interface UserDao {
+public interface UserDao{
 
 	UserDO get(Integer id);
 	
@@ -33,5 +34,5 @@ public interface UserDao {
 	
 	int batchRemove(Integer[] ids);
 	
-	UserDO userCheng(Integer id);
+
 }

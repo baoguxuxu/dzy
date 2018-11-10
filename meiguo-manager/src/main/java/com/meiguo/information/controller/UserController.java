@@ -54,10 +54,8 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
-	@Autowired 
+	@Autowired
 	private UserChengjiuMidService userChengjiuMidService;
-//	@Autowired
-//	private UserShopService userShopService;
 	
 	@GetMapping()
 	@RequiresPermissions("information:user:user")
@@ -86,8 +84,8 @@ public class UserController {
 
 	@GetMapping("/edit/{id}")
 	@RequiresPermissions("information:user:edit")
-	String edit(@PathVariable("id") Integer id,Model model){
-		UserDO user = userService.get(id);
+	String edit(@PathVariable("id") Integer id, Model model){				
+		UserDO user = userService.get(id);		
 		model.addAttribute("user", user);
 	    return "information/users/edit";
 	}
@@ -95,9 +93,10 @@ public class UserController {
 	@GetMapping("/show/{id}")
 	@RequiresPermissions("information:user:chakan")
 	String show(@PathVariable("id") Integer id, Model model){
-		UserDO user = userService.get(id);
-		user.setId(id);
+		UserChengjiuMidDO listId = userChengjiuMidService.getListId(id);
+		UserDO user = userService.get(id);		
 		model.addAttribute("user", user);
+		model.addAttribute("listId", listId);
 	    return "information/users/show";
 	   	    
 	}

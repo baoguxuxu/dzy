@@ -2,7 +2,16 @@ package com.meiguo.owneruser.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,6 +19,7 @@ public class OwnerUserDO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	//id
+
 	private Long id;
 	//微信id
 	private String openId;
@@ -82,24 +92,23 @@ public class OwnerUserDO implements Serializable {
   
   private String zhucema;
   
-  private Integer zhuceNum;
+  private Integer zhucemaNum;
   
   private Integer dengluNum;
   
-  
-  
-	
+
 	public String getZhucema() {
 		return zhucema;
 	}
 	public void setZhucema(String zhucema) {
 		this.zhucema = zhucema;
 	}
-	public Integer getZhuceNum() {
-		return zhuceNum;
+	
+	public Integer getZhucemaNum() {
+		return zhucemaNum;
 	}
-	public void setZhuceNum(Integer zhuceNum) {
-		this.zhuceNum = zhuceNum;
+	public void setZhucemaNum(Integer zhucemaNum) {
+		this.zhucemaNum = zhucemaNum;
 	}
 	public Integer getDengluNum() {
 		return dengluNum;
@@ -429,6 +438,6 @@ public class OwnerUserDO implements Serializable {
 	public void setFileImg(MultipartFile fileImg) {
 		this.fileImg = fileImg;
 	}
-	
+
 	
 }

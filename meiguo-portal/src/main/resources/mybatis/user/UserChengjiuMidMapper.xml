@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.meiguo.information.dao.UserChengjiuMidDao">
+<mapper namespace="com.meiguo.owneruser.dao.UserChengjiuMidDao">
 
-	<select id="get" resultType="com.meiguo.information.domain.UserChengjiuMidDO">
+	<select id="get" resultType="com.meiguo.owneruser.dao.UserChengjiuMidDao">
 		select `id`,`user_id`,`chengjiu_id`,`chengjiu_time`,`beiyong1`,`beiyong2`,`beiyong3` from t_user_chengjiu_mid where id = #{value}
 	</select>
 
-	<select id="list" resultType="com.meiguo.information.domain.UserChengjiuMidDO">
+	<select id="list" resultType="com.meiguo.owneruser.dao.UserChengjiuMidDao">
 		select `id`,`user_id`,`chengjiu_id`,`chengjiu_time`,`beiyong1`,`beiyong2`,`beiyong3` from t_user_chengjiu_mid
         <where>  
 		  		  <if test="id != null and id != ''"> and id = #{id} </if>
@@ -43,8 +43,8 @@
 		  		  <if test="beiyong3 != null and beiyong3 != ''"> and beiyong3 = #{beiyong3} </if>
 		  		</where>
 	</select>
-	 
-	<insert id="save" parameterType="com.meiguo.information.domain.UserChengjiuMidDO" useGeneratedKeys="true" keyProperty="id">
+
+	<insert id="save" parameterType="com.meiguo.owneruser.dao.UserChengjiuMidDao" useGeneratedKeys="true" keyProperty="id">
 		insert into t_user_chengjiu_mid
 		(
 			`user_id`, 
@@ -65,7 +65,7 @@
 		)
 	</insert>
 	 
-	<update id="update" parameterType="com.meiguo.information.domain.UserChengjiuMidDO">
+	<update id="update" parameterType="com.meiguo.owneruser.dao.UserChengjiuMidDao">
 		update t_user_chengjiu_mid 
 		<set>
 			<if test="userId != null">`user_id` = #{userId}, </if>
@@ -88,11 +88,5 @@
 			#{id}
 		</foreach>
 	</delete>
-	<select id="getListId" resultType="com.meiguo.information.domain.UserChengjiuMidDO">
-		select 
-			   tc.chengjiu_name , tc.chengjiu_ico , tc.chengjiu_demand , tc.reward
-		from t_user_chengjiu_mid tuc
-		LEFT JOIN t_user tu on tu.id = tuc.user_id 
-	    LEFT JOIN  t_chengjiu_add tc on tc.id = tuc.chengjiu_id where tuc.user_id = #{id}			
-	</select>
+
 </mapper>

@@ -1,8 +1,9 @@
-package com.meiguo.chengjiumanager.domain;
+package com.meiguo.owneruser.domain;
 
 import java.io.Serializable;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -14,7 +15,7 @@ import javax.persistence.ManyToMany;
 import org.joda.time.DateTime;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.meiguo.information.domain.UserDO;
+
 
 
 /**
@@ -28,6 +29,7 @@ public class ChengjiuAddDO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	//id
+	
 	private Integer id;
 	//成就名称
 	private String chengjiuName;
@@ -56,8 +58,7 @@ public class ChengjiuAddDO implements Serializable {
 	
 	private Long userId;
 	
-
-
+	
 
 	public String getUrl() {
 		return url;
@@ -212,6 +213,5 @@ public class ChengjiuAddDO implements Serializable {
 		this.userId = userId;
 	}
 
-	
 	
 }
