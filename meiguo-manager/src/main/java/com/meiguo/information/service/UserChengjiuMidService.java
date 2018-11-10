@@ -28,5 +28,6 @@ public interface UserChengjiuMidService {
 	
 	int batchRemove(Integer[] ids);
 	
-	UserChengjiuMidDO getListId(Long id);
+	UserChengjiuMidDO getListId(Integer id);
+
 }

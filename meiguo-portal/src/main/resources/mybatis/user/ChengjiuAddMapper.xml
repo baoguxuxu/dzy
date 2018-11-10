@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.meiguo.chengjiumanager.dao.ChengjiuAddDao">
+<mapper namespace="com.meiguo.owneruser.dao.ChengjiuAddDao">
 
-	<select id="get" resultType="com.meiguo.chengjiumanager.domain.ChengjiuAddDO">
+	<select id="get" resultType="com.meiguo.owneruser.dao.ChengjiuAddDao">
 		select `id`,`chengjiu_name`,`chengjiu_ico`,`chengjiu_demand`,`reward`,`add_time`,`update_time`,`delete_flag`,`username`,`start_time`,`end_time` from t_chengjiu_add where id = #{value}
 	</select>
 
-	<select id="list" resultType="com.meiguo.chengjiumanager.domain.ChengjiuAddDO">
+	<select id="list" resultType="com.meiguo.owneruser.dao.ChengjiuAddDao">
 		select `id`,`chengjiu_name`,`chengjiu_ico`,`chengjiu_demand`,`reward`,`add_time`,`update_time`,`delete_flag`,`username`,`start_time`,`end_time` from t_chengjiu_add
         <where>  
 		  		  <if test="id != null and id != ''"> and id = #{id} </if>
@@ -52,7 +52,7 @@
 		  		</where>
 	</select>
 	 
-	<insert id="save" parameterType="com.meiguo.chengjiumanager.domain.ChengjiuAddDO" useGeneratedKeys="true" keyProperty="id">
+	<insert id="save" parameterType="com.meiguo.owneruser.dao.ChengjiuAddDao" useGeneratedKeys="true" keyProperty="id">
 		insert into t_chengjiu_add
 		(
 			`chengjiu_name`, 
@@ -81,7 +81,7 @@
 		)
 	</insert>
 	 
-	<update id="update" parameterType="com.meiguo.chengjiumanager.domain.ChengjiuAddDO">
+	<update id="update" parameterType="com.meiguo.owneruser.dao.ChengjiuAddDao">
 		update t_chengjiu_add 
 		<set>
 			<if test="chengjiuName != null">`chengjiu_name` = #{chengjiuName}, </if>
@@ -108,5 +108,4 @@
 			#{id}
 		</foreach>
 	</delete>
-
 </mapper>

@@ -53,7 +53,7 @@ public class UserChengjiuMidServiceImpl implements UserChengjiuMidService {
 	}
 
 	@Override
-	public 	UserChengjiuMidDO getListId(Long id) {
+	public UserChengjiuMidDO getListId(Integer id) {
 		// TODO Auto-generated method stub
 		return userChengjiuMidDao.getListId(id);
 	}

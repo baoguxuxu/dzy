@@ -1,6 +1,7 @@
 package com.meiguo.information.dao;
 
 import com.meiguo.information.domain.UserChengjiuMidDO;
+import com.meiguo.information.domain.UserDO;
 
 import java.util.List;
 import java.util.Map;
@@ -30,5 +31,5 @@ public interface UserChengjiuMidDao {
 	
 	int batchRemove(Integer[] ids);
 	
-	UserChengjiuMidDO getListId(Long id);
+	UserChengjiuMidDO getListId(Integer id);
 }

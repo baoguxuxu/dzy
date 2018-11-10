@@ -18,7 +18,7 @@ public class UserChengjiuMidDO implements Serializable {
 	//id
 	private Integer id;
 	//用户id
-	private Long userId;
+	private Integer userId;
 	//成就id
 	private Integer chengjiuId;
 	//达成时间
@@ -45,13 +45,13 @@ public class UserChengjiuMidDO implements Serializable {
 	/**
 	 * 设置：用户id
 	 */
-	public void setUserId(Long userId) {
+	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
 	/**
 	 * 获取：用户id
 	 */
-	public Long getUserId() {
+	public Integer getUserId() {
 		return userId;
 	}
 	/**
