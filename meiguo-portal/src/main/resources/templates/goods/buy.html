@@ -54,12 +54,10 @@
 	<select class="form-control" name="spec" id="spec" onchange="getMoregoods()">
         <option></option>
         <option  th:each="list:${goodsDOList}" th:value="${list.id}" th:text="${list.spec }"></option>
-    </select><br>
-  <!--   
+    </select>
+  
     <span style="color: red">购买量</span>
-	<select>
-		<option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
-	</select> -->
+    <em><input id="buyNumber"  name="buyNumber" type="text"></em>
 </div>
 
 
@@ -70,7 +68,7 @@
 
 
 <div style="font-size: 16px;color: blue; display: inline-block;">
-  	 <span onclick="goumai()">确认</span>	
+  	 <span onclick="goumai()">确定</span>	
 </div>
 
 </body>
@@ -128,11 +126,12 @@
 	
 	//确认购买  生成订单
 	function goumai(){
-		var payPrice = $("#jiage").val();
+		var buyNumber=$("#buyNumber").val();
 		var id=$("#spec").val();
-		window.location.href="/information/goods/bull/"+id+"/"+payPrice;
+		window.location.href="/system/order/bull/"+id+"/"+buyNumber;
 	}
 	
+	  
 </script>
 <script type="text/javascript" src="/js/goods/detail.js"></script>
 

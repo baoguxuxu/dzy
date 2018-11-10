@@ -19,7 +19,7 @@ public class GoodsDO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	//货品ID编号
-	private Integer id;
+	private Long id;
 	//货品名称
 	private String name;
 	//货品编号
@@ -72,13 +72,13 @@ public class GoodsDO implements Serializable {
 	/**
 	 * 设置：货品ID编号
 	 */
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	/**
 	 * 获取：货品ID编号
 	 */
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 	/**

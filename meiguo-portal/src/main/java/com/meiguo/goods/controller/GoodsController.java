@@ -35,7 +35,9 @@ import com.meiguo.goods.domain.ImgDO;
 import com.meiguo.goods.domain.ProductDO;
 import com.meiguo.goods.domain.SpecDO;
 import com.meiguo.goods.service.GoodsService;
+import com.meiguo.order.domain.AddressDO;
 import com.meiguo.order.domain.OrderDO;
+import com.meiguo.order.service.AddressService;
 
 
 /**
@@ -51,6 +53,8 @@ import com.meiguo.order.domain.OrderDO;
 public class GoodsController {
 	@Autowired
 	private GoodsService goodsService;
+	@Autowired
+	private AddressService addressService;
 	/**
 	 * 查询所有的商品分类
 	 */
@@ -91,7 +95,7 @@ public class GoodsController {
 	 * 查询产品中的第一个商品
 	 */
 	@GetMapping("/getGoodsDetail/{id}")
-	public String getGoodsDetail(Model model,@PathVariable("id") Integer id){
+	public String getGoodsDetail(Model model,@PathVariable("id") Long id){
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("productId", id);
 		GoodsDO goodsDO = new GoodsDO();
@@ -101,7 +105,6 @@ public class GoodsController {
 		model.addAttribute("goods", goodsDO);
 		model.addAttribute("goodsimgList", goodsService.listGoodsimgAndDetailimg(goodsDO.getId(),1));
 		model.addAttribute("detailimgList", goodsService.listGoodsimgAndDetailimg(goodsDO.getId(),2));
-		//查询货品的所有规格参数
 		return "goods/detail";
 	}
 	
@@ -110,7 +113,7 @@ public class GoodsController {
 	 */
 	
 	@GetMapping("/buy/{id}")
-	public String ByGoods(@PathVariable("id") Integer id,Model model){
+	public String ByGoods(@PathVariable("id") Long id,Model model){
 		//购买页，默认展示第一个商品
 		model.addAttribute("goodsimgList", goodsService.listGoodsimgAndDetailimg(id,1));
 		model.addAttribute("detailimgList", goodsService.listGoodsimgAndDetailimg(id,2));
@@ -129,26 +132,8 @@ public class GoodsController {
 	
 	@ResponseBody
 	@PostMapping("/selectGoods")
-	public GoodsDO selectGoods(Integer goodsId,Model model){
+	public GoodsDO selectGoods(Long goodsId,Model model){
 		GoodsDO goodsDO = goodsService.get(goodsId);
 		return goodsDO;
-	}
-	
-	/**
-	 * 生成订单
-	 */
-	@GetMapping("/bull/{id}/{payPrice}")
-	public String createBull(@PathVariable("id") Integer id,@PathVariable("payPrice") String payPrice,Model model){
-		GoodsDO goodsDO = goodsService.get(id);
-		
-		List<ImgDO> imgDOList = goodsService.getGoodsImgByGoodsDO(id,0);
-		if(imgDOList.size()>0)
-			goodsDO.setUrl(imgDOList.get(0).getUrl());
-		model.addAttribute("goodsDO",goodsDO);
-		OrderDO orderDO = new OrderDO();
-		orderDO.setMobile(ShiroUtils.getUser().getPhone());
-		orderDO.setConsignee(ShiroUtils.getUser().getName());
-		model.addAttribute("orderDO",orderDO);
-		return "order/order";
 	}
 }

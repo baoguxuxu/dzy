@@ -64,7 +64,7 @@
   	 	<img alt="联系客服" src="/img/kefu.jpg" width="50px;" height="50px;"> <br><span>联系客服</span>  
   	</div>
   	<div style="font-size: 16px;color: blue; display: inline-block;">
-  	 <span onclick="gouwuche()">加入购物车</span>	<span onclick="goumai()">立即购买</span>
+  	 <span onclick="jiarugouwuche()">加入购物车</span>	<span onclick="goumai()">立即购买</span>   <span onclick="gouwuche()">购物车</span>
   	</div>
 </div>
 
@@ -95,14 +95,36 @@
 		changeImg();
 	});
 	
-	function gouwuche(){
-		alert("点击加入购物车");
+	function jiarugouwuche(){
+		var goodsId=[[${goods.id}]];
 		
+		$.ajax({
+			type : "POST",
+			url : "/system/cart/save",
+			data : {'goodsId':goodsId},
+			async : false,
+			error : function(request) {
+				parent.layer.alert("Connection error");
+			},
+			success : function(data) {
+				if (data.code == 0) {
+					alert('加入购物车成功');
+
+				} else {
+					alert('加入失败');
+				}
+
+			}
+		});
 	}
 	
 	function goumai(){
 		var id=[[${goods.id}]];
 		window.location.href="/information/goods/buy/"+id;
+	}
+	
+	function gouwuche(){
+		window.location.href="/system/cart/list";
 	}
 </script>
 <script type="text/javascript" src="/js/goods/detail.js"></script>

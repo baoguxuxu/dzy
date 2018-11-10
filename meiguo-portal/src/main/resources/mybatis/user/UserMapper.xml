@@ -148,9 +148,9 @@
 			<if test="loginTime != null">`login_time` = #{loginTime}, </if>
 			<if test="addTime != null">`add_time` = #{addTime}, </if>
 			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
-			<if test="deleteFlag != null">`delete_flag` = #{deleteFlag}</if>
-			<if test="zhucema != null">`zhucema` = #{zhucema} </if>
-		  	<if test="zhuceNum != null"> `zhucema_num` = #{zhuceNum} </if>
+			<if test="deleteFlag != null">`delete_flag` = #{deleteFlag},</if>
+			<if test="zhucema != null">`zhucema` = #{zhucema} ,</if>
+		  	<if test="zhuceNum != null"> `zhucema_num` = #{zhuceNum} ,</if>
 		  	<if test="dengluNum != null">`denglu_num` = #{dengluNum} </if>
 		</set>
 		where id = #{id}

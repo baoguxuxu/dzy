@@ -1,0 +1,77 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="format-detection" content="telephone=no">
+<link rel="shortcut icon" href="images/logo_bank_gfyh.png" type="image/x-icon"/>
+<link rel="stylesheet" href="/css/base.css" type="text/css">
+<title>首页</title>
+<script type="text/javascript" src="/js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/js/TouchSlide.1.1.js"></script>
+<script type="text/javascript" src="/js/Font.js"></script>
+<script src="/js/plugins/layer/layer.js"></script>
+</head>
+<body>
+<!--头部切换-->
+
+
+		  <div th:each="op:${oplist}">
+			
+			
+			<span><img alt="" th:src="${op.picImg}" width="50" height="50"/></span>
+			<span th:text="${op.productSpecName}" style="font-size: 15px;"></span>
+			<span th:text="'￥  '+${op.price}" style="font-size: 15px;color: red"></span>
+			<span style="font-size: 15px;"></span>
+			<span th:text="'购买量 '+${op.buyNumber}" style="font-size: 15px;"></span>
+		<a th:href="@{/system/productComment/add(goodsId=${op.goodsId},orderProductId=${op.orderProductId},orderId=${orderDO.id})}">	<span style="color: red;font-size: 18px;" th:if="${orderDO.orderStatus==0}" th:text="去评价" ></span></a>
+			  
+		  </div>                                                                                                              
+		<div style="font-size: 15px;color: green">
+		  <span th:text="'收货人：  '+${orderDO.consignee}"></span>
+		   <span th:text="'联系电话：  '+${orderDO.mobile}"></span>
+		    <span th:text="'收货人：  '+${orderDO.consignee}"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+		     
+			<!-- <ul>
+				<li><span>收货人</span><em><input id="consignee"  name="consignee"  type="text" th:value="${orderDO.consignee}"></em></li>
+			
+				<li><span>联系电话</span><em><input id="mobile"  name="mobile"  type="text" th:value="${orderDO.mobile}"></em></li>
+				<li><span>收货地址</span><em><input id="address"  name="address"  type="text" th:value="${orderDO.address}"></em><a href="/information/address/list"><span style="font-size: 16px">></span></a></li>
+			
+				<li><span>快递费</span><em><input id="shipmentAmount"  name="shipmentAmount"  type="text"></em></li>
+				<li><span>订单金额</span><em><input id="orderAmount" name="orderAmount"  type="text" th:value="${orderDO.orderAmount}"></em></li>
+				<li><span>支付金额</span><em><input id="payAmount"  name="payAmount"  type="text"></em>
+			
+			</ul> -->
+		</div>
+		
+  <script th:inline="javascript">
+    $("#shipmentAmount").blur(function(){
+    	var shipmentAmount=$(this).val();
+    	if(shipmentAmount=='')
+    		shipmentAmount=0;
+    	else
+    		shipmentAmount=parseInt(shipmentAmount);
+    	
+    	$("#payAmount").val(parseInt($("#orderAmount").val())+shipmentAmount);
+    });
+  
+    function pingjia(){
+    	window.location.href="/system/productComment/add"
+    }
+  </script>
+  <script type="text/javascript" src="/js/order/order.js"></script>
+  
+</body>
+</html>
+
+
+
+
+
+

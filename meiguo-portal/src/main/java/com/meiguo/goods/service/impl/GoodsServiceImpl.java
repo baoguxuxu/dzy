@@ -25,7 +25,7 @@ public class GoodsServiceImpl implements GoodsService {
 	private GoodsDao goodsDao;
 	
 	@Override
-	public GoodsDO get(Integer id){
+	public GoodsDO get(Long id){
 		return goodsDao.get(id);
 	}
 	//查询产品分类信息
@@ -102,12 +102,12 @@ public class GoodsServiceImpl implements GoodsService {
 		return goodsDao.getGoodsByProductId(id);
 	}
 	@Override
-	public List<ImgDO> getGoodsImgByGoodsDO(Integer id, int i) {
+	public List<ImgDO> getGoodsImgByGoodsDO(Long id, int i) {
 		// TODO Auto-generated method stub
 		return goodsDao.getGoodsImgByGoodsDO(id,i);
 	}
 	@Override
-	public List<ImgDO> listGoodsimgAndDetailimg(Integer id, int i) {
+	public List<ImgDO> listGoodsimgAndDetailimg(Long id, int i) {
 		return goodsDao.listGoodsimgAndDetailimg(id,i);
 	}
 	@Override

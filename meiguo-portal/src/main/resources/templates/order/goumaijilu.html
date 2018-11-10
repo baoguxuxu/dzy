@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="format-detection" content="telephone=no">
+<link rel="shortcut icon" href="/img/logo_bank_gfyh.png" type="image/x-icon"/>
+<link rel="stylesheet" href="/css/base.css" type="text/css">
+<title>新闻公告</title>
+<script type="text/javascript" src="/js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/js/Font.js"></script>
+</head>
+<body>
+<!--头部-->
+<div class="news-tit font-36">
+	<p class="fl" style="font-size: .3rem;width: .95rem;height: .9rem;text-align: right;background: url(../img/fanhui.png) no-repeat left center;-webkit-background-size: .24rem .44rem;background-size: .24rem .44rem; position: absolute;left: .24rem;top: 0;" 
+	onclick="javascript:location.href='/index';"></p>
+	<span onclick="javascript:location.href = '/index'">&nbsp;</span><span>银网物业</span>
+	
+</div>
+<!--新闻公告导航-->
+<div class="news-daoh bg-white font-30">
+	<ul>
+		<li th:class="${type == 0 ? 'on' : ''}" ><span onclick="dingdanjilu(0)">待支付</span></li>
+		<li th:class="${type == 1 ? 'on' : ''}" ><span onclick="dingdanjilu(1)">已支付</span></li>
+		<li th:class="${type == 2 ? 'on' : ''}" ><span onclick="dingdanjilu(2)">已发货</span></li>
+		<li th:class="${type == 1 ? 'on' : ''}" ><span onclick="dingdanjilu(3)">已完成</span></li>
+		<li th:class="${type == 2 ? 'on' : ''}" ><span onclick="dingdanjilu(-1)">已取消</span></li>
+	</ul>
+</div>
+<!--新闻公告详情-->
+<div class="news-xiang" id="jilu" style="font-size: 15px; display: inline-block;">
+		
+</div>
+
+
+
+
+<!--底部-->
+<div class="bottom font-22">
+	<ul>
+		<a href="/index"><li class="sy">首页</li></a>
+		<a href="/owner/user"><li class="wode on">我的</li></a>
+	</ul>
+	<a href="/jiaofei/wuye"><img  src="/img/jiaofei.png" alt=""/></a>
+</div>
+
+</body>
+</html>
+<script type="text/javascript">
+
+	 function dingdanjilu(orderStatus){
+		 $("#jilu").children().remove();
+		$.ajax({
+			cache : true,
+			type : "POST",
+			url : "/system/order/checkjilu",
+			data : {'orderStatus':orderStatus},
+			async : false,
+			error : function(request) {
+				parent.layer.alert("Connection error");
+			},
+			success : function(data) {
+				if (data) {
+					var jilu='';
+					for(var i=0;i<data.length;i++){
+						jilu+='<div><span onclick="getBullDetail('+data[i].id+')"><img width="50" height="50" alt="" src="'+data[i].url+'"></span>';
+						jilu+='<span>订单编号：'+data[i].orderNo+'</span>';
+						if(orderStatus==0)
+							jilu+='<span style="color:green;">去支付</span>&nbsp;&nbsp;<span style="color:red";>取消订单</span>';
+						if(orderStatus==3)
+							jilu+='<span style="color:green;">去评价</span>';
+						jilu+="<br>";
+						jilu+='<span>收货人：'+data[i].consignee+'</span><br>';
+						jilu+='<span>电话：'+data[i].mobile+'</span><br>';
+						jilu+='<span>地址：'+data[i].address+'</span></div><br>';
+						jilu+='<span>金额：'+data[i].payAmount+'</span></div>';
+						$("#jilu").append(jilu);
+						jilu='';
+					}
+				} else {
+					
+				}
+
+			}
+		});
+		}
+		dingdanjilu(0);
+		
+		function getBullDetail(id){alert(id);
+			window.location.href="/system/order/getBullDetail?id="+id;
+		}
+	
+</script>

@@ -19,7 +19,7 @@ import com.meiguo.goods.domain.SpecDO;
  */
 public interface GoodsService {
 	
-	GoodsDO get(Integer id);
+	GoodsDO get(Long id);
 	
 	List<CategoryDO> listCategory(Map<String, Object> map);
 	
@@ -47,9 +47,9 @@ public interface GoodsService {
 
 	List<GoodsDO> getGoodsByProductId(Long id);
 
-	List<ImgDO> getGoodsImgByGoodsDO(Integer id, int i);
+	List<ImgDO> getGoodsImgByGoodsDO(Long id, int i);
 
-	List<ImgDO> listGoodsimgAndDetailimg(Integer id, int i);
+	List<ImgDO> listGoodsimgAndDetailimg(Long id, int i);
 
 	List<SpecDO> getGoodsSpec(Integer productId);
 

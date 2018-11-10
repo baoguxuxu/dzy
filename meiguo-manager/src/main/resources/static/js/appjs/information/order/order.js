@@ -32,8 +32,8 @@ function load() {
 							return {
 								//说明：传入后台的参数包括offset开始索引，limit步长，sort排序列，order：desc或者,以及所有列的键值对
 								limit: params.limit,
-								offset:params.offset
-					           // name:$('#searchName').val(),
+								offset:params.offset,
+								orderStatus:$('#orderStatus').val()
 					           // username:$('#searchName').val()
 							};
 						},
@@ -48,34 +48,103 @@ function load() {
 									checkbox : true
 								},
 																{
-									field : 'body',
-									title : '服务名称'
+									field : 'orderNo', 
+									title : '订单编号' 
+								},
+																
+																{
+									field : 'shipmentType', 
+									title : '配送方式 ' 
+								},								{
+									field:'name',
+									title:'商品名称'
+								},								{
+									field:'goodsNumber',
+									title:'商品编号'
+								},								{
+									field:'tgoodsNumber',
+									title:'商品条形码号'
+								},
+																
+																{
+									field : 'postid', 
+									title : '运单号' 
+								},                  {
+																
+									field : 'createTime', 
+									title : '创建时间' 
+								},                             {
+									field : 'shipmentAmount', 
+									title : '快递费' 
+								}, 								{
+									field:'buyNumber',
+									title:'购买数量'
+									
 								},
 																{
-									field : 'nickname',
-									title : '用户名'
+									field : 'orderAmount', 
+									title : '订单金额' 
+								},                            {
+									field : 'payAmount', 
+									title : '支付金额'
+								},{
+									field : 'payType', 
+									title : '支付方式 ',
+									formatter : function(value, row, index) {
+										if(value=='0')
+											return '积分兑换';
+										if(value=='1')
+											return '现金支付';
+									}
 								},
 																{
-									field : 'attach',
-									title : '地址'
+									field : 'address', 
+									title : '收获地址' 
 								},
 																{
-									field : 'totalFee',
-									title : '缴费'
+									field : 'consignee', 
+									title : '收货人' 
 								},
 																{
-									field : 'month',
-									title : '月份'
+									field : 'mobile', 
+									title : '收货手机号' 
 								},
 																{
-									field : 'createTime',
-									title : '缴费时间'
+									field : 'orderScore', 
+									title : '订单积分' 
+								},  {
+									field : 'orderStatus', 
+									title : '订单状态 ',
+									formatter : function(value, row, index) {
+										if(value=='0')
+											return '待支付';
+										if(value=='1')
+											return '已支付';
+										if(value=='2')
+											return '已发货';
+										if(value=='3')
+											return '已完成';
+										if(value=='-1')
+											return '已取消';
+									}
 								},
 																{
-									field : 'groupType',
-									title : '类型'
-								}
-								]
+									title : '操作',
+									field : 'id',
+									align : 'center',
+									formatter : function(value, row, index) {
+										var e = '<a class="btn btn-primary btn-sm '+s_edit_h+'" href="#" mce_href="#" title="编辑" onclick="edit(\''
+												+ row.id
+												+ '\')"><i class="fa fa-edit"></i></a> ';
+										var d = '<a class="btn btn-warning btn-sm '+s_remove_h+'" href="#" title="删除"  mce_href="#" onclick="remove(\''
+												+ row.id+'\',\''+row.orderStatus
+												+ '\')"><i class="fa fa-remove"></i></a> ';
+										var f = '<a class="btn btn-success btn-sm" href="#" title="备用"  mce_href="#" onclick="resetPwd(\''
+												+ row.id
+												+ '\')"><i class="fa fa-key"></i></a> ';
+										return e + d ;
+									}
+								} ]
 					});
 }
 function reLoad() {
@@ -98,10 +167,14 @@ function edit(id) {
 		maxmin : true,
 		shadeClose : false, // 点击遮罩关闭层
 		area : [ '800px', '520px' ],
-		content : prefix + '/edit/' + id // iframe的url
+		content : prefix + '/edit/' + id// iframe的url
 	});
 }
-function remove(id) {
+function remove(id,orderStatus) {
+	if(orderStatus!=='3'){
+		layer.alert('交易未完成的订单不可删除');
+		return;
+	}
 	layer.confirm('确定要删除选中的记录？', {
 		btn : [ '确定', '取消' ]
 	}, function() {

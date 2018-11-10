@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.meiguo.order.dao.OrderProductDao">
+
+	<select id="get" resultType="com.meiguo.order.domain.OrderProductDO">
+		select `order_product_id`,`order_id`,`goods_id`,`name`,`pic_img`,`product_spec_id`,`product_spec_name`,`price`,`score`,`buy_number`,`product_score`,`product_amount`,`status` from goods_order_product where order_product_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.meiguo.order.domain.OrderProductDO">
+		select `order_product_id`,`order_id`,`goods_id`,`name`,`pic_img`,`product_spec_id`,`product_spec_name`,`price`,`score`,`buy_number`,`product_score`,`product_amount`,`status` from goods_order_product
+        <where>  
+		  		  <if test="orderProductId != null and orderProductId != ''"> and order_product_id = #{orderProductId} </if>
+		  		  <if test="orderId != null and orderId != ''"> and order_id = #{orderId} </if>
+		  		  <if test="goodsId != null and goodsId != ''"> and goods_id = #{goodsId} </if>
+		  		  <if test="name != null and name != ''"> and name = #{name} </if>
+		  		  <if test="picImg != null and picImg != ''"> and pic_img = #{picImg} </if>
+		  		  <if test="productSpecId != null and productSpecId != ''"> and product_spec_id = #{productSpecId} </if>
+		  		  <if test="productSpecName != null and productSpecName != ''"> and product_spec_name = #{productSpecName} </if>
+		  		  <if test="price != null and price != ''"> and price = #{price} </if>
+		  		  <if test="score != null and score != ''"> and score = #{score} </if>
+		  		  <if test="buyNumber != null and buyNumber != ''"> and buy_number = #{buyNumber} </if>
+		  		  <if test="productScore != null and productScore != ''"> and product_score = #{productScore} </if>
+		  		  <if test="productAmount != null and productAmount != ''"> and product_amount = #{productAmount} </if>
+		  		  <if test="status != null and status != ''"> and status = #{status} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by order_product_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from goods_order_product
+		 <where>  
+		  		  <if test="orderProductId != null and orderProductId != ''"> and order_product_id = #{orderProductId} </if>
+		  		  <if test="orderId != null and orderId != ''"> and order_id = #{orderId} </if>
+		  		  <if test="goodsId != null and goodsId != ''"> and goods_id = #{goodsId} </if>
+		  		  <if test="name != null and name != ''"> and name = #{name} </if>
+		  		  <if test="picImg != null and picImg != ''"> and pic_img = #{picImg} </if>
+		  		  <if test="productSpecId != null and productSpecId != ''"> and product_spec_id = #{productSpecId} </if>
+		  		  <if test="productSpecName != null and productSpecName != ''"> and product_spec_name = #{productSpecName} </if>
+		  		  <if test="price != null and price != ''"> and price = #{price} </if>
+		  		  <if test="score != null and score != ''"> and score = #{score} </if>
+		  		  <if test="buyNumber != null and buyNumber != ''"> and buy_number = #{buyNumber} </if>
+		  		  <if test="productScore != null and productScore != ''"> and product_score = #{productScore} </if>
+		  		  <if test="productAmount != null and productAmount != ''"> and product_amount = #{productAmount} </if>
+		  		  <if test="status != null and status != ''"> and status = #{status} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.meiguo.order.domain.OrderProductDO" useGeneratedKeys="true" keyProperty="orderProductId">
+		insert into goods_order_product
+		(
+			`order_id`, 
+			`goods_id`, 
+			`name`, 
+			`pic_img`, 
+			`product_spec_id`, 
+			`product_spec_name`, 
+			`price`, 
+			`score`, 
+			`buy_number`, 
+			`product_score`, 
+			`product_amount`, 
+			`status`
+		)
+		values
+		(
+			#{orderId}, 
+			#{goodsId}, 
+			#{name}, 
+			#{picImg}, 
+			#{productSpecId}, 
+			#{productSpecName}, 
+			#{price}, 
+			#{score}, 
+			#{buyNumber}, 
+			#{productScore}, 
+			#{productAmount}, 
+			#{status}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.meiguo.order.domain.OrderProductDO">
+		update goods_order_product 
+		<set>
+			<if test="orderId != null">`order_id` = #{orderId}, </if>
+			<if test="goodsId != null">`goods_id` = #{goodsId}, </if>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="picImg != null">`pic_img` = #{picImg}, </if>
+			<if test="productSpecId != null">`product_spec_id` = #{productSpecId}, </if>
+			<if test="productSpecName != null">`product_spec_name` = #{productSpecName}, </if>
+			<if test="price != null">`price` = #{price}, </if>
+			<if test="score != null">`score` = #{score}, </if>
+			<if test="buyNumber != null">`buy_number` = #{buyNumber}, </if>
+			<if test="productScore != null">`product_score` = #{productScore}, </if>
+			<if test="productAmount != null">`product_amount` = #{productAmount}, </if>
+			<if test="status != null">`status` = #{status}</if>
+		</set>
+		where order_product_id = #{orderProductId}
+	</update>
+	
+	<delete id="remove">
+		delete from goods_order_product where order_product_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from goods_order_product where order_product_id in 
+		<foreach item="orderProductId" collection="array" open="(" separator="," close=")">
+			#{orderProductId}
+		</foreach>
+	</delete>
+
+</mapper>

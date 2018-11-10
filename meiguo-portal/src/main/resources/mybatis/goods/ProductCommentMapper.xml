@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.meiguo.goods.dao.ProductCommentDao">
+
+	<select id="get" resultType="com.meiguo.goods.domain.ProductCommentDO">
+		select `id`,`product_id`,`user_id`,`nickname`,`headimgurl`,`order_id`,`star`,`content`,`praises`,`status`,`type`,`create_time`,`create_by`,`update_time`,`update_by`,`order_product_id` from goods_product_comment where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.meiguo.goods.domain.ProductCommentDO">
+		select `id`,`product_id`,`user_id`,`nickname`,`headimgurl`,`order_id`,`star`,`content`,`praises`,`status`,`type`,`create_time`,`create_by`,`update_time`,`update_by`,`order_product_id` from goods_product_comment
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="productId != null and productId != ''"> and product_id = #{productId} </if>
+		  		  <if test="userId != null and userId != ''"> and user_id = #{userId} </if>
+		  		  <if test="nickname != null and nickname != ''"> and nickname = #{nickname} </if>
+		  		  <if test="headimgurl != null and headimgurl != ''"> and headimgurl = #{headimgurl} </if>
+		  		  <if test="orderId != null and orderId != ''"> and order_id = #{orderId} </if>
+		  		  <if test="star != null and star != ''"> and star = #{star} </if>
+		  		  <if test="content != null and content != ''"> and content = #{content} </if>
+		  		  <if test="praises != null and praises != ''"> and praises = #{praises} </if>
+		  		  <if test="status != null and status != ''"> and status = #{status} </if>
+		  		  <if test="type != null and type != ''"> and type = #{type} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="createBy != null and createBy != ''"> and create_by = #{createBy} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		  <if test="updateBy != null and updateBy != ''"> and update_by = #{updateBy} </if>
+		  		  <if test="orderProductId != null and orderProductId != ''"> and order_product_id = #{orderProductId} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from goods_product_comment
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="productId != null and productId != ''"> and product_id = #{productId} </if>
+		  		  <if test="userId != null and userId != ''"> and user_id = #{userId} </if>
+		  		  <if test="nickname != null and nickname != ''"> and nickname = #{nickname} </if>
+		  		  <if test="headimgurl != null and headimgurl != ''"> and headimgurl = #{headimgurl} </if>
+		  		  <if test="orderId != null and orderId != ''"> and order_id = #{orderId} </if>
+		  		  <if test="star != null and star != ''"> and star = #{star} </if>
+		  		  <if test="content != null and content != ''"> and content = #{content} </if>
+		  		  <if test="praises != null and praises != ''"> and praises = #{praises} </if>
+		  		  <if test="status != null and status != ''"> and status = #{status} </if>
+		  		  <if test="type != null and type != ''"> and type = #{type} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="createBy != null and createBy != ''"> and create_by = #{createBy} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		  <if test="updateBy != null and updateBy != ''"> and update_by = #{updateBy} </if>
+		  		  <if test="orderProductId != null and orderProductId != ''"> and order_product_id = #{orderProductId} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.meiguo.goods.domain.ProductCommentDO" useGeneratedKeys="true" keyProperty="id">
+		insert into goods_product_comment
+		(
+			`product_id`, 
+			`user_id`, 
+			`nickname`, 
+			`headimgurl`, 
+			`order_id`, 
+			`star`, 
+			`content`, 
+			`praises`, 
+			`status`, 
+			`type`, 
+			`create_time`, 
+			`create_by`, 
+			`update_time`, 
+			`update_by`, 
+			`order_product_id`
+		)
+		values
+		(
+			#{productId}, 
+			#{userId}, 
+			#{nickname}, 
+			#{headimgurl}, 
+			#{orderId}, 
+			#{star}, 
+			#{content}, 
+			#{praises}, 
+			#{status}, 
+			#{type}, 
+			#{createTime}, 
+			#{createBy}, 
+			#{updateTime}, 
+			#{updateBy}, 
+			#{orderProductId}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.meiguo.goods.domain.ProductCommentDO">
+		update goods_product_comment 
+		<set>
+			<if test="productId != null">`product_id` = #{productId}, </if>
+			<if test="userId != null">`user_id` = #{userId}, </if>
+			<if test="nickname != null">`nickname` = #{nickname}, </if>
+			<if test="headimgurl != null">`headimgurl` = #{headimgurl}, </if>
+			<if test="orderId != null">`order_id` = #{orderId}, </if>
+			<if test="star != null">`star` = #{star}, </if>
+			<if test="content != null">`content` = #{content}, </if>
+			<if test="praises != null">`praises` = #{praises}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="type != null">`type` = #{type}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="createBy != null">`create_by` = #{createBy}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
+			<if test="updateBy != null">`update_by` = #{updateBy}, </if>
+			<if test="orderProductId != null">`order_product_id` = #{orderProductId}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from goods_product_comment where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from goods_product_comment where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

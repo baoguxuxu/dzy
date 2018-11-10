@@ -2,7 +2,9 @@ package com.meiguo.order.domain;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 
@@ -56,14 +58,24 @@ public class OrderDO implements Serializable {
 	private String consignee;
 	//收货手机号
 	private String mobile;
-   //商品id
-	private Integer goodsId;
-	public Integer getGoodsId() {
-		return goodsId;
+	//订单明细
+	private List<OrderProductDO> list = new ArrayList<OrderProductDO>();
+	//订单货品图
+	private String url;
+	public String getUrl() {
+		return url;
 	}
-	public void setGoods_id(Integer goodsId) {
-		this.goodsId = goodsId;
+	public void setUrl(String url) {
+		this.url = url;
 	}
+
+	public List<OrderProductDO> getList() {
+		return list;
+	}
+	public void setList(List<OrderProductDO> list) {
+		this.list = list;
+	}
+	
 	/**
 	 * 设置：订单ID
 	 */
