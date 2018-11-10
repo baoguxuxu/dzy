@@ -3,6 +3,19 @@ package com.meiguo.information.domain;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+
+
+import com.meiguo.chengjiumanager.domain.ChengjiuAddDO;
+
 
 
 
@@ -87,7 +100,6 @@ public class UserDO implements Serializable {
 	
 	private String personalchengjiu;
 	
-	
 
 	public String getPersonalchengjiu() {
 		return personalchengjiu;
@@ -107,6 +119,8 @@ public class UserDO implements Serializable {
 	public Integer getId() {
 		return id;
 	}
+	
+
 	/**
 	 * 设置：微信id
 	 */
@@ -503,4 +517,7 @@ public class UserDO implements Serializable {
 	public Date getTime() {
 		return time;
 	}
+
+	
+	
 }

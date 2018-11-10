@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,8 +41,12 @@ import com.meiguo.owneruser.comment.SMSContent;
 import com.meiguo.owneruser.comment.SMSPlatform;
 import com.meiguo.owneruser.comment.SMSTemplate;
 import com.meiguo.owneruser.comment.ZhuCeUtil;
+import com.meiguo.owneruser.domain.ChengjiuAddDO;
 import com.meiguo.owneruser.domain.OwnerUserDO;
+import com.meiguo.owneruser.domain.UserChengjiuMidDO;
+import com.meiguo.owneruser.service.ChengjiuAddService;
 import com.meiguo.owneruser.service.OwnerUserService;
+import com.meiguo.owneruser.service.UserChengjiuMidService;
 import com.meiguo.smsservice.service.ISMSService;
 
 import scala.annotation.elidable;
@@ -60,6 +65,8 @@ public class LoginController extends BaseController {
 	OwnerUserService userService;
 	@Autowired
 	private ISMSService sMSService;
+	@Autowired
+	private UserChengjiuMidService userChengjiuMidService;
 	
 	@Log("请求访问主页")
 	@GetMapping({ "" })
@@ -148,12 +155,13 @@ public class LoginController extends BaseController {
 			return R.error("用户或密码错误");
 		}
 	}
-	
+	private Integer zhucemaNum = 0;
 	//手机号密码注册
 	@Log("注册")
 	@PostMapping("/zhuce")
 	@ResponseBody
-	R ajaxZhuce(String username, String password, String nickname, String codenum,String zhucema,Integer zhuceNum) {		
+	R ajaxZhuce(String username, String password, String nickname, String codenum,String zhucema,Integer zhucemaNum,
+			Model model,Long id) {		
 		if (StringUtils.isBlank(username)) {
 			return R.error("手机号码不能为空");
 		}
@@ -165,7 +173,7 @@ public class LoginController extends BaseController {
 		if (flag) {
 			return R.error("手机号码已存在");
 		}
-		
+			
 		udo.setUsername(username);
 		udo.setPhone(username);
 		udo.setPassword(password);
@@ -173,11 +181,59 @@ public class LoginController extends BaseController {
 		udo.setBalance(0.00);
 		udo.setDeleteFlag(0);
 		udo.setRegisterTime(new Date());
-		udo.setZhucema(zhucema);                                                               
-		if (userService.save(udo) > 0) {
-			return R.ok();
-		}		
+		udo.setZhucemaNum(0);
 		
+		if(StringUtils.isNotBlank(zhucema)){
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("zhucema", zhucema);		
+			boolean zhu = userService.exit(map);
+			if (zhu) {
+				try {
+					String zhuce = zhucema;
+					long toId = ZhuCeUtil.codeToId(zhuce);
+					OwnerUserDO ownerUserDO = userService.get(toId);
+					Integer num = ownerUserDO.getZhucemaNum();
+					ownerUserDO.setZhucemaNum(num+1);					
+					if(userService.update(ownerUserDO)>0 && userService.save(udo)>0){
+					}
+					if(ownerUserDO.getZhucemaNum().equals(10)){
+						UserChengjiuMidDO midDO = new UserChengjiuMidDO();
+						midDO.setUserId((int) toId);
+						midDO.setChengjiuId(10);
+						midDO.setChengjiuTime(new Date());
+						if(userChengjiuMidService.save(midDO)>0){
+							return R.ok();
+						}
+					}else if(ownerUserDO.getZhucemaNum().equals(20)){
+						UserChengjiuMidDO midDO = new UserChengjiuMidDO();
+						midDO.setUserId((int) toId);
+						midDO.setChengjiuId(11);
+						midDO.setChengjiuTime(new Date());
+						if(userChengjiuMidService.save(midDO)>0){
+							return R.ok();
+						}
+					}else if(ownerUserDO.getZhucemaNum().equals(50)){
+						UserChengjiuMidDO midDO = new UserChengjiuMidDO();
+						midDO.setUserId((int) toId);
+						midDO.setChengjiuId(12);
+						midDO.setChengjiuTime(new Date());
+						if(userChengjiuMidService.save(midDO)>0){
+							return R.ok();
+						}
+					}			
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+																	
+			//	return R.error("存在");
+			}else if(!zhu){
+				return R.error("分享码不正确");
+			}
+		}
+		if(userService.save(udo)>0){
+			return R.ok();
+		}
+							
 		return R.error();
 
 	}
@@ -330,13 +386,13 @@ public class LoginController extends BaseController {
 //		} 
 //	    return stringBuffer.toString(); 			
 //	}	
-	@GetMapping("/zhucema")
-	@ResponseBody
-	public String Zhucema(String zhucema){
-		long id = 19;
-		String code = ZhuCeUtil.idToCode(id);
-		return code;
-		
-	}
+//	@GetMapping("/zhucema")
+//	@ResponseBody
+//	public String Zhucema(String zhucema){
+//		long id = 19;
+//		String code = ZhuCeUtil.idToCode(id);
+//		return code;
+//		
+//	}
 
 }

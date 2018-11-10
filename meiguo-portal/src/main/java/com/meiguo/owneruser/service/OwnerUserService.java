@@ -29,6 +29,4 @@ public interface OwnerUserService {
 
 	boolean exit(Map<String, Object> params);
 
-	boolean op(Map<String, Object> params);
-
 }

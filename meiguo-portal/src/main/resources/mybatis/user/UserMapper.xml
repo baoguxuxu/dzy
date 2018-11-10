@@ -34,7 +34,7 @@
 		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
 		  		  <if test="deleteFlag != null and deleteFlag != ''"> and delete_flag = #{deleteFlag} </if>
 		  		  <if test="zhucema != null and zhucema != ''"> and zhucema = #{zhucema} </if>
-		  		  <if test="zhuceNum != null and zhuceNum != ''"> and zhucema_num = #{zhuceNum} </if>
+		  		  <if test="zhuceNum != null and zhucemaNum != ''"> and zhucema_num = #{zhucemaNum} </if>
 		  		  <if test="dengluNum != null and dengluNum != ''"> and denglu_num = #{dengluNum} </if>	  		  
 		  		</where>
         <choose>
@@ -72,7 +72,7 @@
 		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
 		  		  <if test="deleteFlag != null and deleteFlag != ''"> and delete_flag = #{deleteFlag} </if>
 		  		  <if test="zhucema != null and zhucema != ''"> and zhucema = #{zhucema} </if>
-		  		  <if test="zhuceNum != null and zhuceNum != ''"> and zhucema_num = #{zhuceNum} </if>
+		  		  <if test="zhuceNum != null and zhucemaNum != ''"> and zhucema_num = #{zhucemaNum} </if>
 		  		  <if test="dengluNum != null and dengluNum != ''"> and denglu_num = #{dengluNum} </if>
 		  		</where>
 	</select>
@@ -123,7 +123,7 @@
 			#{deleteFlag},
 			#{username},
 			#{zhucema},
-			#{zhuceNum},
+			#{zhucemaNum},
 			#{dengluNum}
 			
 		)
@@ -148,9 +148,9 @@
 			<if test="loginTime != null">`login_time` = #{loginTime}, </if>
 			<if test="addTime != null">`add_time` = #{addTime}, </if>
 			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
-			<if test="deleteFlag != null">`delete_flag` = #{deleteFlag}</if>
-			<if test="zhucema != null">`zhucema` = #{zhucema} </if>
-		  	<if test="zhuceNum != null"> `zhucema_num` = #{zhuceNum} </if>
+			<if test="deleteFlag != null">`delete_flag` = #{deleteFlag},</if>
+			<if test="zhucema != null">`zhucema` = #{zhucema}, </if>
+		  	<if test="zhucemaNum != null"> `zhucema_num` = #{zhucemaNum}, </if>
 		  	<if test="dengluNum != null">`denglu_num` = #{dengluNum} </if>
 		</set>
 		where id = #{id}

@@ -287,14 +287,5 @@
 			#{id}
 		</foreach>
 	</delete>
-	<select id="userCheng" resultType="com.meiguo.information.domain.UserDO">
-		select
-			tu.id
-			tuc.chengjiu_id,
- 			tuc.user_id,
- 			tuc.chengjiu_time 
- 		from t_user tu 
- 		left join t_user_chengjiu_mid tuc on tu.id = tuc.user_id where tu.id = #{id}
-	</select>
 	
 </mapper>

@@ -60,14 +60,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public List<Map<String, Object>> exeList(Map<String, Object> map) {
-		// TODO Auto-generated method stub
 		return userDao.exeList(map);
 	}
 
-	@Override
-	public UserDO userCheng(Integer id) {
-		// TODO Auto-generated method stub
-		return userDao.userCheng(id);
-	}
 	
 }
