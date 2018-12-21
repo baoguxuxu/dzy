@@ -1,14 +1,15 @@
-package com.meiguo.order.service.impl;
+package com.meiguo.goods.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.meiguo.common.utils.ShiroUtils;
-import com.meiguo.order.dao.CartDao;
-import com.meiguo.order.domain.CartDO;
-import com.meiguo.order.service.CartService;
+import com.meiguo.goods.dao.CartDao;
+import com.meiguo.goods.domain.CartDO;
+import com.meiguo.goods.service.CartService;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,12 +36,19 @@ public class CartServiceImpl implements CartService {
 	
 	@Override
 	public int save(Long goodsId){
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("userId",ShiroUtils.getUserId());
+		List<CartDO> list = cartDao.list(map);
+		for(CartDO  cartDO :list){
+			if(cartDO.getGoodsId()==goodsId)
+				return -1;
+		}
 		CartDO cartDO = new CartDO();
 		cartDO.setUserId(ShiroUtils.getUserId());
-		cartDO.setBuyNumber(1);
+		cartDO.setBuyNumber(1);//初始化商品数量为1
 		cartDO.setCreateTime(new Date());
 		cartDO.setGoodsId(goodsId);
-		cartDO.setCheckStatus(0);
+		cartDO.setCheckStatus(0);//默认未选中
 		return cartDao.save(cartDO);
 	}
 	

@@ -40,28 +40,41 @@ public class AddressController {
 	
 	@GetMapping()
 	String Address(){
-	    return "information/address/address";
+//	    return "information/address/address";
+		return "address_01/address";
 	}
+	@ResponseBody
 	@GetMapping("/list")
-	public String list(Model model){
+	public List<AddressDO> list(Model model){
 		//查询列表数据
        Map<String,Object> map = new HashMap<String,Object>();
        map.put("userId",ShiroUtils.getUserId());
 	   List<AddressDO> addressList = addressService.list(map);
-	   model.addAttribute("addressList", addressList);
-		return "address/address";
+	/*   model.addAttribute("addressList", addressList);
+		return "address_01/address";*/
+	   return addressList;
 	}
 	
 	@GetMapping("/add")
 	String add(){
-	    return "address/add";
+//	    return "address/add";
+		return "address_01/add";
 	}
 
 	@GetMapping("/edit")
 	String edit(Integer id,Model model){
+//		AddressDO address = addressService.get(id);
+//		model.addAttribute("address", address);
+//	    return "address/edit";
+		model.addAttribute("id",id);
+		return "address_01/edit";
+	}
+	
+	@ResponseBody
+	@GetMapping("/info/{id}")
+	public AddressDO info(@PathVariable("id") Integer id){
 		AddressDO address = addressService.get(id);
-		model.addAttribute("address", address);
-	    return "address/edit";
+		return address;
 	}
 	
 	/**
@@ -89,7 +102,7 @@ public class AddressController {
 	/**
 	 * 删除
 	 */
-	@PostMapping( "/remove")
+	@GetMapping( "/remove")
 	@ResponseBody
 	public R remove( Integer id){
 		if(addressService.remove(id)>0){
@@ -98,14 +111,6 @@ public class AddressController {
 		return R.error();
 	}
 	
-	/**
-	 * 删除
-	 */
-	@PostMapping( "/batchRemove")
-	@ResponseBody
-	public R remove(@RequestParam("ids[]") Integer[] ids){
-		addressService.batchRemove(ids);
-		return R.ok();
-	}
+	
 	
 }

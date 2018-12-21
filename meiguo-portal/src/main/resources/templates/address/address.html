@@ -9,7 +9,10 @@
 <meta name="format-detection" content="telephone=no">
 <link rel="shortcut icon" href="images/logo_bank_gfyh.png" type="image/x-icon"/>
 <link rel="stylesheet" href="/css/base.css" type="text/css">
-<title>我的房屋</title>
+<style type="text/css">
+
+</style>
+<title>收货地址</title>
 <script type="text/javascript" src="/js/jquery-1.11.3.min.js"></script>
 <script type="text/javascript" src="/js/Font.js"></script>
 </head>
@@ -23,7 +26,7 @@
 <label th:each="address:${addressList}" class="checkbox-inline">
 <a th:href="@{/information/address/edit(id=${address.id})}">
 <div class="fangwu-msg font-24 bg-white"> 
-	<h3 >房屋信息</h3>
+	<h3 >我的地址</h3>
 	<p><i th:text="${address.name}"></i> <i th:text="${address.mobile}"></i> <i th:if=" ${address.defaultFlag=='1'}">默认地址</i> <span class="bg-blue" th:text="${address.consignee}"></span></p>
 	<p class="dizhi" th:text="${address.address}"></p>  
 </div>

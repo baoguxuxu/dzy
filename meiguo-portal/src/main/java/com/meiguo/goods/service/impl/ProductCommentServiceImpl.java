@@ -8,6 +8,7 @@ import com.meiguo.goods.dao.ProductCommentDao;
 import com.meiguo.goods.domain.ProductCommentDO;
 import com.meiguo.goods.service.ProductCommentService;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -35,9 +36,11 @@ public class ProductCommentServiceImpl implements ProductCommentService {
 	
 	@Override
 	public int save(ProductCommentDO productComment){
-		/*productComment.setUserId(ShiroUtils.getUserId());
+		productComment.setCreateBy(ShiroUtils.getUser().getName());
+		productComment.setCreateTime(new Date());
+		productComment.setUserId(ShiroUtils.getUserId());
 		productComment.setNickname(ShiroUtils.getUser().getNickname());
-		productComment.setHeadimgurl(ShiroUtils.getUser().getHeardUrl());*/
+		productComment.setHeadimgurl(ShiroUtils.getUser().getHeardUrl());
 		return productCommentDao.save(productComment);
 	}
 	

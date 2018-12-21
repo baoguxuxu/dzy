@@ -149,13 +149,8 @@
 			<if test="addTime != null">`add_time` = #{addTime}, </if>
 			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
 			<if test="deleteFlag != null">`delete_flag` = #{deleteFlag},</if>
-<<<<<<< HEAD
-			<if test="zhucema != null">`zhucema` = #{zhucema} ,</if>
-		  	<if test="zhuceNum != null"> `zhucema_num` = #{zhuceNum} ,</if>
-=======
-			<if test="zhucema != null">`zhucema` = #{zhucema}, </if>
+			<if test="zhucema != null">`zhucema` = #{zhucema} ,</if>  
 		  	<if test="zhucemaNum != null"> `zhucema_num` = #{zhucemaNum}, </if>
->>>>>>> 214ffab9385093e2071568de40f5767bd5fafd76
 		  	<if test="dengluNum != null">`denglu_num` = #{dengluNum} </if>
 		</set>
 		where id = #{id}

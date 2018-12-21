@@ -14,124 +14,175 @@
 <script type="text/javascript" src="/js/TouchSlide.1.1.js"></script>
 <script type="text/javascript" src="/js/Font.js"></script>
 <script src="/js/plugins/layer/layer.js"></script>
+<style type="text/css">
+  .zhx{ text-decoration:line-through;}
+  
+</style>
 </head>
 <body>
-<!--头部切换-->
+<!-- 商品图片展示 -->
 <div id="focus" class="focus">
-	<div class="title">
-		<!-- <a  href="/owner/shoudingwei"><img class="fl" src="/img/index-add.png" alt=""/></a> -->
-		<span>银网物业</span>
-		<a  href="/information/msg"><img class="fr" src="/img/index-msg.png" alt="购物车"/></a>
-	</div>
-	<div class="hd"> <ul></ul></div>
-	<div class="bd">
-		<ul>
-			<li><a href="#"><img src="" alt="" id="goodsimg"></a></li>
-		</ul>
-	</div>
+<div class="hd"><ul></ul></div>
+    <div class="bd">
+        <ul class="goodsimg">
+        </ul>
+    </div>
+    
 </div>
 
-<!--货品的名称  价格-->
-<div style="font-size: 15px;color: red">
-	<input id="jiage" type="hidden" th:value="${goods.payPrice}"/>
-	<span th:text="'原价￥ ' + ${goods.payPrice}" id="payPrice">原价￥ </span>&nbsp;&nbsp;
-	<span th:text="'加入会员￥ ' + ${goods.vipPrice}" id="vipPrice"></span>&nbsp;&nbsp;
-	<span th:if="${goods.promotionPrice!=''}" th:text="'促销价￥ ' + ${goods.promotionPrice}" id="promotionPrice">view</span>
-	<span th:if="${goods.promotionPrice=='' &&goods.discountPrice!='' }" th:text="'折扣价￥ ' + ${goods.discountPrice}" id="discountPrice">view</span>
-</div>
-<!-- 剩余量 -->
-<div style="font-size: 15px">
- <span id="surplus" th:text="'库存   '+${goods.surplus}"></span>
-</div>
-<!--货品的描述-->
-<div style="font-size: 15px;width: 750px;min-height:15px;" >
-	<span style="color: red">宝贝描述:</span>&nbsp;<span th:text="${goods.remarks}" id="remarks"></span>
-</div>
+
+
 
 <!--货品的规格参数-->
 <div style="font-size: 15px;width: 750px;min-height:15px;" >
 	<span style="color: red">选择参数</span>
-	<select class="form-control" name="spec" id="spec" onchange="getMoregoods()">
-        <option></option>
+	<select class="form-control" name="spec" id="spec" onchange="change()">
         <option  th:each="list:${goodsDOList}" th:value="${list.id}" th:text="${list.spec }"></option>
     </select>
-  
+  <br>
     <span style="color: red">购买量</span>
     <em><input id="buyNumber"  name="buyNumber" type="text"></em>
+    <!--货品的名称  价格-->
+	<div style="font-size: 15px;" >
+		<p>原价：￥<span class="payPrice">0.00</span></p>
+		<p style="display: none;">优惠价：￥<span class="vipPrice">0.00</span></p>
+		<p>库存：<span class="surplus"></span></p>	
+		<p>宝贝描述：<span class="remarks"></span></p>
+		<span style="display: none;" class="goodsId"></span>
+	</div>
 </div>
-
 
 <!--产品详图 -->
-<div th:each="list:${detailimgList}">
-	<img alt="" th:src="${list.url}" width="500px;" height="300px;">
+<div class="imgxingqing">
+	<p style="text-align: center;font-size: 15px">详情</p>
+	
 </div>
 
 
-<div style="font-size: 16px;color: blue; display: inline-block;">
-  	 <span onclick="goumai()">确定</span>	
+<!--底部  购物车  联系客服-->
+<div>
+	<div style="font-size: 10px;display:inline-block;">
+  	 	<img alt="联系客服" src="/img/kefu.jpg" width="50px;" height="50px;"> <br><span>联系客服</span>  
+  	</div>
+  	<div style="font-size: 16px;color: blue; display: inline-block;">
+  	 <span onclick="jiarugouwuche()">加入购物车</span>	<span onclick="goumai()">立即购买</span>
+  	</div>
 </div>
+
 
 </body>
 </html>
 
 <script th:inline="javascript">
-	//货品图片循环播放
-	$(function(){
-		var goodsimgList=  [[${goodsimgList}]];
-		var imgs=[];
-		var flag=0;
-		function getImgs(){
-			for(var i in goodsimgList){
-				imgs.push(goodsimgList[i].url);
+change();
+function change(){
+	var goodsId=$("#spec").val();
+	$.ajax({
+		cache : true,
+		type : "POST",
+		url : "/information/goods/selectGoods",
+		data : {"goodsId":goodsId},
+		async : false,
+		success : function(data) {console.info(data);
+			var goodsDO = data.goodsDO;
+			$(".payPrice").text(goodsDO.payPrice);
+			$(".goodsId").text(goodsDO.id);
+			if(goodsDO.vipPrice!=null){
+				$(".payPrice").addClass("zhx");
+				$(".vipPrice").text(goodsDO.vipPrice);
+				$(".vipPrice").parent().show();
+				$(".surplus").text(goodsDO.surplus);
+				$(".remarks").text(goodsDO.remarks);
 			}
+			var detailimgList=data.detailimgList;
+			var html="";
+			$(".imgxingqing").find("ul").remove();
+			for(var i=0;i<detailimgList.length;i++){
+				html+="<ul>";
+				html+="<li><img src='"+detailimgList[i].url+"'/></li>"
+			}
+			html+="</ul>";
+			$(".imgxingqing").append(html);
+			var goodsimgList=data.goodsimgList;
+			var html1="";
+			$(".goodsimg").html(html1);
+			for(var i=0;i<goodsimgList.length;i++){
+			   html1+="<li><a href=''><img src='"+goodsimgList[i].url+"'/></a></li>"
+			}
+			$(".goodsimg").html(html1);
+			TouchSlide({ 
+			    slideCell:"#focus",
+			    titCell:".hd ul", //开启自动分页 autoPage:true ，此时设置 titCell 为导航元素包裹层
+			    mainCell:".bd ul", 
+			    effect:"left", 
+			    autoPlay:true,//自动播放
+			    autoPage:true //自动分页c" 
+			});
 		}
-		getImgs();
-		function changeImg(){
-			flag = setInterval(function(){
-				$("#goodsimg").attr("src",imgs.pop());
-				if(imgs.length==0){
-					getImgs();
-				}
-			},2000);
-		}
-		changeImg();
-		var id=[[${goods.id}]];
-		$("#spec").find("option[value='"+id+"']").attr("selected",true);
 	});
-    
-	//购买选择的商品
-	function getMoregoods(){
-		var goodsId= $("#spec").val();
-		$.ajax({
-			cache : true,
-			type : "POST",
-			url : "/information/goods/selectGoods",
-			data : {"goodsId":goodsId},
-			async : false,
-			success : function(data) {
-				$("#promotionPrice").text("");
-				$("#discountPrice").text("");
-				$("#jiage").val(data.payPrice);
-				$("#payPrice").text("原价￥  "+data.payPrice);
-				$("#vipPrice").text("加入会员￥"+data.vipPrice);
-				if(data.promotionPrice!='')
-					$("#promotionPrice").text("促销价￥ "+data.promotionPrice);
-				if(data.promotionPrice=='' && goods.discountPrice!='')
-					$("#discountPrice").text("折扣价￥  "+discountPrice);
-				$("#remarks").text("宝贝描述  "+data.remarks);
-				$("#surplus").text("库存  "+data.surplus);
+}
+$("#buyNumber").blur(function(){
+	var number=$(this).val();
+	var surplus=$(".surplus").text();
+	if(parseInt(number)>parseInt(surplus)){
+		alert("库存不足");
+		$(this).val('');
+	}
+})
+//立即购买
+function goumai(){
+	var buyNumber = $("#buyNumber").val();
+	if(buyNumber==0)
+		buyNumber=1;
+	var pos = [{goodsId:$("#spec").val(),buyNumber:buyNumber}]; 
+	$.ajax({
+    	url: "/information/goods/buy",
+    	type: "POST",
+    	contentType: "application/json",
+	    data: JSON.stringify(pos),
+    	success: function(r){
+//    		l2.hide();
+   		if(r.code == 0){
+   			
+   			var orderNo = r.msg;
+//			window.location.href="/system/order/confirm/"+orderNo;
+   			window.location.href="/system/order?orderNo="+orderNo;
+   		}
+    		/* else if(r.errcode == 20110){
+    			alert(r.errmsg);
+    			$.go("/order/mylist.html");
+    			return;
+    		} */
+ //   		alert(r.errmsg);
+    	}
+	});
+}
+
+
+//加入购物车
+function jiarugouwuche(){
+	var goodsId =$(".goodsId").text();
+	$.ajax({
+		type : "POST",
+		url : "/system/cart/save",
+		data : {'goodsId':goodsId},
+		async : false,
+		error : function(request) {
+			parent.layer.alert("Connection error");
+		},
+		success : function(data) {console.info(data.code);
+			if (data.code==0) {
+				alert(data.msg);
+
 			}
-		});
-	}
+			else {
+				alert('加入失败');
+			}
+
+		}
+	}); 
+}
 	
-	//确认购买  生成订单
-	function goumai(){
-		var buyNumber=$("#buyNumber").val();
-		var id=$("#spec").val();
-		window.location.href="/system/order/bull/"+id+"/"+buyNumber;
-	}
-	
-	  
 </script>
 <script type="text/javascript" src="/js/goods/detail.js"></script>
 

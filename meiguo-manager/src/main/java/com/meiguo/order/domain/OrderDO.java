@@ -48,9 +48,7 @@ public class OrderDO implements Serializable {
 	private Integer orderScore;
 	//支付金额 = 订单金额 + 快递费
 	private BigDecimal payAmount;
-	//商品总数量
-	private Integer buyNumber;
-	//
+	//收货地址
 	private String address;
 	//收货人
 	private String consignee;
@@ -62,8 +60,6 @@ public class OrderDO implements Serializable {
 	private Integer goodsNumber;
 	//商品条形码号
 	private Integer tgoodsNumber;
-	//商品名字
-	private String name;
 	//订单删除标志
 	private Integer deleteEnable;
 	
@@ -72,12 +68,6 @@ public class OrderDO implements Serializable {
 	}
 	public void setDeleteEnable(Integer deleteEnable) {
 		this.deleteEnable = deleteEnable;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
 	}
 	public Integer getGoodsNumber() {
 		return goodsNumber;
@@ -283,18 +273,6 @@ public class OrderDO implements Serializable {
 	 */
 	public BigDecimal getPayAmount() {
 		return payAmount;
-	}
-	/**
-	 * 设置：商品总数量
-	 */
-	public void setBuyNumber(Integer buyNumber) {
-		this.buyNumber = buyNumber;
-	}
-	/**
-	 * 获取：商品总数量
-	 */
-	public Integer getBuyNumber() {
-		return buyNumber;
 	}
 	/**
 	 * 设置：

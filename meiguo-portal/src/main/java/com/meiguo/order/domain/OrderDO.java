@@ -50,8 +50,6 @@ public class OrderDO implements Serializable {
 	private Integer orderScore;
 	//支付金额 = 订单金额 + 快递费
 	private BigDecimal payAmount;
-	//商品总数量
-	private Integer buyNumber;
 	//收货地址
 	private String address;
 	//收货人
@@ -62,6 +60,14 @@ public class OrderDO implements Serializable {
 	private List<OrderProductDO> list = new ArrayList<OrderProductDO>();
 	//订单货品图
 	private String url;
+	private Integer deleteEnable;
+	
+	public Integer getDeleteEnable() {
+		return deleteEnable;
+	}
+	public void setDeleteEnable(Integer deleteEnable) {
+		this.deleteEnable = deleteEnable;
+	}
 	public String getUrl() {
 		return url;
 	}
@@ -268,18 +274,7 @@ public class OrderDO implements Serializable {
 	public BigDecimal getPayAmount() {
 		return payAmount;
 	}
-	/**
-	 * 设置：商品总数量
-	 */
-	public void setBuyNumber(Integer buyNumber) {
-		this.buyNumber = buyNumber;
-	}
-	/**
-	 * 获取：商品总数量
-	 */
-	public Integer getBuyNumber() {
-		return buyNumber;
-	}
+	
 	/**
 	 * 设置：
 	 */

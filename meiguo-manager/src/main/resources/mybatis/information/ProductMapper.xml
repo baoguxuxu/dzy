@@ -4,7 +4,7 @@
 <mapper namespace="com.meiguo.product.dao.ProductDao">
 
 	<select id="get" resultType="com.meiguo.product.domain.ProductDO">
-		select `id`,url,spec_id,`product_number`,`category_id`,`name`,`create_time`,`create_by`,`update_time`,`update_by`,`remarks` from product_product where id = #{value}
+		select `id`,url,`product_number`,`category_id`,`name`,`create_time`,`create_by`,`update_time`,`update_by`,`remarks` from product_product where id = #{value}
 	</select>
 
 	<select id="list" resultType="com.meiguo.product.domain.ProductDO">
@@ -62,7 +62,7 @@
 			`create_by`, 
 			`update_time`, 
 			`update_by`,
-			 spec_id,
+			 url,
 			`remarks`
 		)
 		values
@@ -74,7 +74,7 @@
 			#{createBy}, 
 			#{updateTime}, 
 			#{updateBy}, 
-			#{specId},
+			#{url},
 			#{remarks}
 		)
 	</insert>
@@ -101,13 +101,13 @@
 			<if test="productNumber != null">`product_number` = #{productNumber}, </if>
 <!-- 			<if test="categoryId != null">`category_id` = #{categoryId}, </if> -->
 <!-- 			<if test="name != null">`name` = #{name}, </if> -->
-			<if test="createTime != null">`create_time` = #{createTime}, </if>
-<!-- 			<if test="specId != null">`spec_id` = #{specId}, </if>  -->
+
 			<if test="deleteEnable != null">`deleteEnable` = #{deleteEnable}, </if>
 			<if test="createBy != null">`create_by` = #{createBy}, </if>
 			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
 			<if test="updateBy != null">`update_by` = #{updateBy}, </if>
-			<if test="remarks != null">`remarks` = #{remarks}</if>
+			<if test="remarks != null">`remarks` = #{remarks},</if>
+			<if test="url != null">`url` = #{url}</if>
 		</set>
 		where id = #{id}
 	</update>

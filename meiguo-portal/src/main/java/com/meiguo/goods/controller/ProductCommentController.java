@@ -1,5 +1,6 @@
 package com.meiguo.goods.controller;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -86,9 +87,6 @@ public class ProductCommentController {
 	@PostMapping("/save")
 	public R save( @RequestBody ProductCommentDO productComment){
 		if(productCommentService.save(productComment)>0){
-			productComment.setUserId(ShiroUtils.getUserId());
-			productComment.setNickname(ShiroUtils.getUser().getNickname());
-			productComment.setHeadimgurl(ShiroUtils.getUser().getHeardUrl());
 			List<OrderCommentImageDO> list = productComment.getOrderCommentImageDOList();
 			String namespace = "user/"+ShiroUtils.getUserId();
 			for(int sort=0;sort<list.size();sort++){
@@ -96,13 +94,13 @@ public class ProductCommentController {
 				String imgStr = orderCommentImageDO.getPicImg();
 				String  r = orderCommentImageService.uploadImg(namespace,imgStr, "png");
 				OrderCommentImageDO oCommentImageDO2 =  new OrderCommentImageDO();
-				oCommentImageDO2.setPicImg(imgStr);
+				oCommentImageDO2.setPicImg("/files/pingjia"+r);
 				oCommentImageDO2.setSort(1);
 				oCommentImageDO2.setCommentId(productComment.getId());
 				orderCommentImageService.save(oCommentImageDO2);
 			}
 		}
-		return R.error();
+		return R.ok();
 	}
 	/**
 	 * 修改

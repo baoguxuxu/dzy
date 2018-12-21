@@ -38,10 +38,6 @@ public class SpecServiceImpl implements SpecService {
 	@Transactional
 	@Override
 	public int save(SpecDO spec){
-		if(spec.getParentId()==null)//父规格的pareantId和parentName
-			spec.setParentId(0l);
-		if(spec.getParentName()==null)
-			spec.setParentName("0");
 		spec.setCreateBy(ShiroUtils.getUser().getUsername());
 		spec.setCreateTime(new Date());
 		spec.setUpdateBy(ShiroUtils.getUser().getUsername());

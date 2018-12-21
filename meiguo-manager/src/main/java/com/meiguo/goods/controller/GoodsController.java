@@ -89,11 +89,6 @@ public class GoodsController {
 	String edit(@PathVariable("id") Integer id,@PathVariable("type") Integer type,   Model model){
 		GoodsDO goods = goodsService.get(id);
 		model.addAttribute("goods", goods);
-		ImgDO imgDO = new ImgDO();
-		List<ImgDO> list =goodsService.listimg(id,0); 
-		if(list.size()>0)
-			imgDO=list.get(0);
-		model.addAttribute("listimg",imgDO);
 		model.addAttribute("goodsimg",goodsService.listimg(id,1));
 		model.addAttribute("detailimg",goodsService.listimg(id,2));
 		List<ProductDO> productList = productService.list(new HashMap<String,Object>());
@@ -124,17 +119,11 @@ public class GoodsController {
 		//上传图片，保存图片相关信息
 		//保存列表图
 		
-		String fileName = goods.getListimg().getOriginalFilename();
-		fileName = FileUtil.renameToUUID(fileName);
+		String fileName = "";
+		
 		ImgDO imgDO = new ImgDO();
 		try {
-			FileUtil.uploadFile(goods.getListimg().getBytes(), bootdoConfig.getUploadPath()+"goods/", fileName);
-			imgDO.setType(0);
-			imgDO.setAddTime(new Date());
-			imgDO.setGoodsId(goods.getId());
-			imgDO.setCreateBy(ShiroUtils.getUser().getUsername());
-			imgDO.setUrl("/files/goods/"+fileName);
-			goodsService.saveImg(imgDO);
+			
 			//保存货品图
 
 			 List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("goodsimg");
@@ -294,7 +283,7 @@ public class GoodsController {
 	public List<SpecDO> getGoodsSpec(Long productId){
 		ProductDO productDO = productService.get(productId);
 		Map<String,Object> map = new HashMap<String,Object>();
-		map.put("parent_id",productDO.getSpecId());
+//		map.put("parent_id",productDO.getSpecId());
 		List<SpecDO> list = specService.list(map);
 		System.out.println(list);
 		return list;

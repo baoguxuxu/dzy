@@ -19,6 +19,8 @@ import com.meiguo.common.utils.PageUtils;
 import com.meiguo.common.utils.Query;
 import com.meiguo.common.utils.R;
 import com.meiguo.order.domain.OrderDO;
+import com.meiguo.order.domain.OrderProductDO;
+import com.meiguo.order.service.OrderProductService;
 import com.meiguo.order.service.OrderService;
 
 /**
@@ -34,6 +36,8 @@ import com.meiguo.order.service.OrderService;
 public class OrderController {
 	@Autowired
 	private OrderService orderService;
+	@Autowired
+	private OrderProductService orderProductService;
 	
 	@GetMapping()
 	@RequiresPermissions("information:order:order")
@@ -66,6 +70,25 @@ public class OrderController {
 		OrderDO order = orderService.get(id);
 		model.addAttribute("order", order);
 	    return "information/order/edit";
+	}
+	@GetMapping("/look/{id}")
+	@RequiresPermissions("information:order:look")
+	public String look(@PathVariable("id") Long id,Model model){
+		model.addAttribute("id",id);
+		return "information/order/orderProduct";
+	}
+	
+	
+	@ResponseBody
+	@GetMapping("/listOrderProduct")
+	@RequiresPermissions("information:order:order")
+	public PageUtils listOrderProduct(@RequestParam Map<String, Object> params){
+		//查询列表数据
+        Query query = new Query(params);
+		List<OrderProductDO> orderList = orderProductService.list(query);
+		int total = orderProductService.count(params);
+		PageUtils pageUtils = new PageUtils(orderList, total);
+		return pageUtils;
 	}
 	
 	/**
@@ -116,5 +139,20 @@ public class OrderController {
 		orderService.batchRemove(ids);
 		return R.ok();
 	}
+	
+	@GetMapping("/fahuo/{orderNo}")
+	public String fahuo(@PathVariable String orderNo,Model model){
+		model.addAttribute("orderNo",orderNo);
+		return "information/order/fahuo";
+	}
+	
+	@PostMapping("/fahuoupdate")
+	@ResponseBody
+	public R fahuoupdate(OrderDO orderDO){
+		orderDO.setOrderStatus(2);
+		orderService.update(orderDO);
+		return R.ok();
+	}
+
 	
 }

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.meiguo.goods.dao.ProductDao">
+
+	<select id="get" resultType="com.meiguo.goods.domain.ProductDO">
+		select `id`,url,`product_number`,`category_id`,`name`,`create_time`,`create_by`,`update_time`,`update_by`,`remarks` from product_product where id = #{value}
+	</select>
+
+</mapper>

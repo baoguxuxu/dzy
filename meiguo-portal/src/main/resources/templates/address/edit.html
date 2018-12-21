@@ -26,6 +26,16 @@
 <script type="text/javascript" src="/plugins/picker/city.js"></script>
 <script type="text/javascript" src="/plugins/picker/picker.min.js"></script>
 <script type="text/javascript" src="/plugins/picker/setup.js"></script>
+<style type="text/css">
+./* new-dizhi p{border-bottom:1px solid #373c3f;padding:0 .3rem;line-height:.92rem;overflow: hidden;}
+.new-dizhi p i{float: left;width:25%;}
+.new-dizhi p input{float: left;width:75%;height:.92rem;background:none;font-size:.3rem;}
+.new-dizhi p span{float: right;color:#999;background:url(../new_images/arr-r.png) no-repeat right center;-webkit-background-size:.14rem .25rem;background-size:.14rem .25rem;padding-right:.35rem;}
+.new-dizhi p textarea{color:#fff;float: left;width:75%;padding:.2rem;height:1.2rem; resize:none;outline: none;font-size:.28rem;background:none;}
+.new-dizhi p.moren{background:url(../new_images/dizhi_no.png) no-repeat 6.8rem center;-webkit-background-size:.32rem .32rem;background-size:.32rem .32rem;}
+.new-dizhi p.on{background-image:url(../new_images/dizhi_yes.png);}
+.baocun{margin:1rem auto;width:66%;} */
+</style>
 <title>新增收货地址</title>
 </head>
 <body>
@@ -42,9 +52,11 @@
 	</div>
 	 <button type="submit" id="save-button" class="baocun font-28">保存</button>
 </form>
-<script type="text/javascript">
+<script th:inline="javascript">
 var pickerSetup = null;
 var areaCode = null;
+
+
 $(function () {
 	pickerSetup = new PickerSetup({
     	selected: [0,0,0],
@@ -72,6 +84,7 @@ $(function () {
 		address.address = $("textarea[name=address]").val();
 		address.name = $("input[name=name]").val();
 		address.mobile = $("input[name=mobile]").val();
+		
 		address.defaultFlag = $(".moren").hasClass("on")? 0: 1;
 		
 		if(!address.consignee || address.consignee == '' || address.consignee.length == 0){

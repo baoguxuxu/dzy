@@ -89,11 +89,11 @@ public class OwnerUserDO implements Serializable {
   private String smoke_age;
   //日期
   private Date time;
-  
+  //注册码
   private String zhucema;
-  
+  //注册人数
   private Integer zhucemaNum;
-  
+  //每人登录次数
   private Integer dengluNum;
   
 

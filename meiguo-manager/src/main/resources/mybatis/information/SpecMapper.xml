@@ -4,23 +4,24 @@
 <mapper namespace="com.meiguo.product.dao.SpecDao">
 
 	<select id="get" resultType="com.meiguo.product.domain.SpecDO">
-		select `id`,`parent_id`,`product_spec_id`,`name`,`create_time`,`update_time`,`create_by`,`update_by`,`remark`,`status` from product_spec where id = #{value}
+		select `id`,`product_spec_id`,`name`,`create_time`,`update_time`,`create_by`,`update_by`,`remark`,`status` from product_spec where id = #{value}
 	</select>
 
 	<select id="list" resultType="com.meiguo.product.domain.SpecDO">
-		select `id`,status,parent_name,`parent_id`,`product_spec_id`,`name`,`create_time`,`update_time`,`create_by`,`update_by`,`remark`,`status` from product_spec
-        where parent_id=#{parent_id} and deleteEnable=0
+		select product_spec.id,product_spec.status,product_spec.product_spec_id,product_spec.name,product_category.name categoryName,product_spec.create_time,product_spec.update_time,product_spec.create_by,product_spec.update_by,product_spec.remark from product_spec,product_category
+        where product_spec.deleteEnable=0 and product_category.id=product_spec.categoryId
          
 		  		
-		  		  <if test="parent_name != null and parent_name != ''"> and parent_name = #{parent_name} </if>
-		  		  <if test="productSpecId != null and productSpecId != ''"> and product_spec_id = #{productSpecId} </if>
-		  		  <if test="name != null and name != ''"> and name = #{name} </if>
-		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
-		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
-		  		  <if test="createBy != null and createBy != ''"> and create_by = #{createBy} </if>
-		  		  <if test="updateBy != null and updateBy != ''"> and update_by = #{updateBy} </if>
-		  		  <if test="remark != null and remark != ''"> and remark = #{remark} </if>
-		  		  <if test="status != null and status != ''"> and status = #{status} </if>
+		  		 		  		 
+		  		  <if test="id != null and id != ''"> and product_spec.id = #{id} </if>
+		  		  <if test="productSpecId != null and productSpecId != ''"> and product_spec.product_spec_id = #{productSpecId} </if>
+		  		 
+		  		  <if test="createTime != null and createTime != ''"> and product_spec.create_time = #{createTime} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and product_spec.update_time = #{updateTime} </if>
+		  		  <if test="createBy != null and createBy != ''"> and product_spec.create_by = #{createBy} </if>
+		  		  <if test="updateBy != null and updateBy != ''"> and product_spec.update_by = #{updateBy} </if>
+		  		  <if test="remark != null and remark != ''"> and product_spec.remark = #{remark} </if>
+		  		  <if test="status != null and status != ''"> and product_spec.status = #{status} </if>
 		  		
 		  		
         <choose>
@@ -38,9 +39,8 @@
 	
  	<select id="count" resultType="int">
 		select count(*) from product_spec
-		 where parent_id=#{parent_id} and deleteEnable=0
+		 where  deleteEnable=0
 		  		  <if test="id != null and id != ''"> and id = #{id} </if>
-		  		  <if test="parentId != null and parentId != ''"> and parent_id = #{parentId} </if>
 		  		  <if test="productSpecId != null and productSpecId != ''"> and product_spec_id = #{productSpecId} </if>
 		  		  <if test="name != null and name != ''"> and name = #{name} </if>
 		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
@@ -55,8 +55,7 @@
 	<insert id="save" parameterType="com.meiguo.product.domain.SpecDO" useGeneratedKeys="true" keyProperty="id">
 		insert into product_spec
 		(
-			parent_id,
-			parent_name,
+			categoryId,
 			`product_spec_id`, 
 			`name`, 
 			`create_time`, 
@@ -67,8 +66,7 @@
 		)
 		values
 		(
-			#{parentId},
-			#{parentName},
+			#{categoryId},
 			#{productSpecId}, 
 			#{name}, 
 			#{createTime}, 
@@ -82,10 +80,7 @@
 	<update id="update" parameterType="com.meiguo.product.domain.SpecDO">
 		update product_spec 
 		<set>
-			<!-- <if test="parentId != null">`parent_id` = #{parentId}, </if>
-			<if test="productSpecId != null">`product_spec_id` = #{productSpecId}, </if> -->
 			<if test="name != null">`name` = #{name}, </if>
-			<if test="parentName != null">`parent_name` = #{parentName}, </if>
 			<if test="deleteEnable != null">`deleteEnable` = #{deleteEnable}, </if>
 			<if test="createTime != null">`create_time` = #{createTime}, </if>
 			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
@@ -97,9 +92,6 @@
 		where id = #{id}
 	</update>
 	
-	<update id="updateByParentId" parameterType="com.meiguo.product.domain.SpecDO">
-		update product_spec set parent_name=#{parentName}  where parent_id = #{parentId}
-	</update>
 	
 	<delete id="remove">
 		delete from product_spec where id = #{value}

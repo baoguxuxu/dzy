@@ -1,5 +1,6 @@
 package com.meiguo.product.controller;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -67,18 +68,6 @@ public class ProductController {
         query.put("status",params.get("status"));
         query.put("name",params.get("name"));
 		List<ProductDO> productList = productService.list(query);
-		/*if(productList.size()!=0){
-			for(ProductDO productDO :productList){
-				List<Spec_Product> list = productService.listSpec(productDO.getId());
-				if(list.size()!=0){
-					String re="";
-					for(Spec_Product spec_Product :list){
-						re+=spec_Product.getName()+":"+spec_Product.getRemark()+"  ";
-					}
-					productDO.setSpec_dis(re);
-				}
-			}
-		}*/
 		int total = productService.count(query);
 		PageUtils pageUtils = new PageUtils(productList, total);
 		return pageUtils;
@@ -117,6 +106,14 @@ public class ProductController {
 		List<ProductDO> listP = productService.list(map);
 		if(listP.size()>0)
 			return R.error("产品编号已存在，请重新输入");
+		try {
+			String fileName = product.getImgFile().getOriginalFilename();
+			fileName = FileUtil.renameToUUID(fileName);
+			FileUtil.uploadFile(product.getImgFile().getBytes(), bootdoConfig.getUploadPath()+"goods/", fileName);
+			product.setUrl("/files/goods/"+fileName);
+		}  catch (Exception e) {
+			e.printStackTrace();
+		}
 		if(productService.save(product)>0){
 			return R.ok(); 
 		}
@@ -129,6 +126,17 @@ public class ProductController {
 	@RequestMapping("/update")
 	@RequiresPermissions("information:product:edit")
 	public R update( ProductDO product){
+		if(product.getImgFile() != null && product.getImgFile().getSize() > 0){
+			String fileName = product.getImgFile().getOriginalFilename();
+			fileName = FileUtil.renameToUUID(fileName);
+			try {
+				FileUtil.uploadFile(product.getImgFile().getBytes(), bootdoConfig.getUploadPath()+"goods/", fileName);
+				product.setUrl("/files/goods/"+fileName);
+			} catch (Exception e) {
+				return R.error();
+			}
+			
+		}
 		productService.update(product);
 		return R.ok();
 	}

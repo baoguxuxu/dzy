@@ -10,6 +10,8 @@
 <link rel="shortcut icon" href="/img/sy-ys.png" type="image/x-icon"/>
 <link rel="stylesheet" href="css/css.css" type="text/css">
 <link rel="stylesheet" href="plugins/dialog/diglog.css" type="text/css">
+<link rel="stylesheet" href="/css/new.css" type="text/css">
+
 <script type="text/javascript" src="/js/jquery-1.11.3.min.js"></script>
 <script type="text/javascript" src="/js/Font.js"></script>
 <script type="text/javascript" src="/js/TouchSlide.1.1.js"></script>
@@ -25,8 +27,26 @@
 <script type="text/javascript" src="/plugins/picker/city.js"></script>
 <script type="text/javascript" src="/plugins/picker/picker.min.js"></script>
 <script type="text/javascript" src="/plugins/picker/setup.js"></script>
-<script type="text/javascript" src="/js/libs/carts.js"></script>
+
 <style type="text/css">
+.gouwuche{overflow: hidden;}
+.gouwuche-box{position: relative;overflow: hidden;padding:.2rem .25rem;border-bottom:.04rem solid #d2d2d2;color:#040403;}
+.gouwuche-box p{position:absolute;left:2.6rem;top:1.45rem;color:#fa374a;font-size:.3rem;}
+.gouwuche-box img{width: 1.6rem;height: 1.6rem;float: left;margin-left:.25rem;border:1px solid #D9D7D7;border-radius:.05rem;}
+.gouwuche-box .txt{margin-left:.25rem;float: left;width:3.5rem;}
+.gouwuche-box .txt i{display: block;color:#999;font-size:.24rem;margin:.1rem 0;}
+.Num{float: right;line-height: .4rem;border:1px solid #6d4d4d;border-radius:.05rem;text-align: center;}
+.Num input{float: left;outline:none;background:none;width:.8rem;height:.4rem;color:#333;text-align: center;border-left:1px solid #6d4d4d;border-right:1px solid #6d4d4d;}
+.Num b{float: left;width: .5rem;display: inline-block;font-weight: normal;}
+.gouwuche-box em{float: left;width: .3rem;height:1.6rem;background:url(/img/buy00.png) no-repeat center;-webkit-background-size: contain;background-size: contain;}
+.gouwuche-box em.on{background-image: url(/img/wuliu.png);}
+.gouwuche-buy{position:fixed;width: 100%;max-width:750px;height: 1.2rem;line-height: 1.2rem;bottom: 0;padding-left:.2rem;color:#040403;}
+.gouwuche-buy span{float: left;background:url(/img/buy00.png) no-repeat left center;-webkit-background-size:.3rem .3rem;background-size:.3rem .3rem;padding-left:.45rem;}
+.gouwuche-buy span.on{background-image: url(/img/wuliu.png);}
+.gouwuche-buy p{float:left;margin-left:.5rem;text-align:right;}
+.gouwuche-buy p i{color:#fa374a;}
+.gouwuche-buy p em{font-size:.36rem;}
+.gouwuche-buy a{float: right;background:#fa374a;color:#fff;padding:0 .6rem;font-size:.4rem;}
 *{
 	font-size: 15px;
 }
@@ -42,20 +62,7 @@
 	
 	
 	
-	<div class="bg-white font-24 gouwuche" th:each="cart:${cartList}">
-		<div class="gouwuche-box" pid="'+item.cart.productSpecId+'">
-			<input type="checkbox" name="checkStatus" th:checked="${cart.checkStatus}" />
-			<input type="hidden" name="cartId" th:value="${cart.cartId}" />
-				<a ><img th:src="${cart.goodsDO.url}"/></a><span th:text="${cart.goodsDO.name}"></span><span th:text="${cart.goodsDO.spec}"></span>
-				<span style="color: red" class="price" th:text="'￥ '+${cart.goodsDO.payPrice}"></span>
-			
-			<span class="Num">
-				<b class="less">-</b>
-    			<input type="text" th:value="${cart.buyNumber}" th:max="${cart.goodsDO.surplus}" min="1" name="amount">
-    			<b class="add">+</b>
-			</span>
-			
-			</div>
+	<div class="bg-white font-24 gouwuche">
 	</div>
 
 
@@ -78,96 +85,8 @@
 
 </body>
 <script type="text/javascript">
-	/* function edit() {
-		var edit = document.getElementById("edit");
-		if (edit.innerHTML == "编辑") {
-			edit.innerHTML = "完成";
-			document.getElementById("jiesuan").style.display = "none";
-			document.getElementById("shanchu").style.display = "block";
-		} else {
-			edit.innerHTML = "编辑";
-			document.getElementById("jiesuan").style.display = "block";
-			document.getElementById("shanchu").style.display = "none";
-		}
-
-	}
 	
-	function calMoney(){
-		var totalMoney = 0;
-		var checkboxs = $("em.on");
-		checkboxs.each(function(i,e){
-			var box = $(e).parents(".gouwuche-box");
-			var pid = box.attr("pid");
-			var price = parseInt($(".price",box).text(),10),
-				amount = parseInt($("input[name=amount]",box).val(),10);
-			totalMoney += price * amount;
-		});
-		
-		$(".totalMoney").text(totalMoney);
-	}
-	
-	function isCheckAll(){
-		if($("em.checkbox").not(".on").length == 0){
-			$(".checkAllBtn").addClass("on");
-		}else{
-			$(".checkAllBtn").removeClass("on");
-		}
-	}
-	
-	function cartDraw(datas){
-		var html = "";
-		var isBlur = false;
-		for(var i=0;i<datas.length;i++){
-			var item = datas[i];
-			html += '<div class="gouwuche-box" pid="'+item.cart.productSpecId+'">';
-			html += '	<em class="checkbox';
-			if(item.cart.checkStatus == 1){
-				html += '	on';
-			}
-			var num = item.cart.buyNumber;
-			if(item.cart.buyNumber > item.spec.stock){
-				num = item.spec.stock;
-				isBlur = true;
-			}
-			html += '"></em>';
-			html += '	<a href="/mall/info/'+item.product.id+'.html">';
-			html += '		<img src="'+item.product.showPic+'" alt="" />';
-			html += '	</a>';
-			html += '	<div class="txt">';
-			html += '		<span>'+item.product.name+'</span> <i>'+item.specName+'：'+item.sepcAttrName+'</i>';
-			html += '	</div>';
-			html += '	<div class="Num">';
-			html += '       <b class="less">-</b>';
-    		html += '       <input type="text" value="'+num+'" max="'+item.spec.stock+'" min="1" name="amount">';
-    		html += '       <b class="add">+</b>';
-			html += '	</div>';
-			html += '	<p>￥<span class="price">'+item.spec.price+'</span></p>';
-			html += '</div>';
-		}
-		$(".gouwuche").html(html);
-		
-		calMoney();
-		
-		isCheckAll();
-		
-		$("input[name=amount]").on("blur",function(){
-			var s = $(this).val();
-			if(isNaN(s)){
-				s = s.replace(/[^\d.]/g,"");
-			}
-			$(this).val(s);
-			var box = $(this).parents(".gouwuche-box");
-			var pid = box.attr("pid");
-			var checkStatus = $("em",box).hasClass("on")? 1 :0;
-			carts.put(pid,$(this).val(),checkStatus,3);
-			carts.syncServer();
-		});
-		
-		if(isBlur){
-			$("input[name=amount]").trigger("blur");
-		}
-*/		
-		$("b.add").click("tap",function(){
+		$(".gouwuche").on("click","b.add",function(){
 			var iput = $(this).parent(".Num").find("input");
 			var num = parseInt(iput.val(),10),
 				max = parseInt(iput.attr("max"),10);
@@ -183,7 +102,7 @@
 			carts.put(pid,1,checkStatus,0);
 			carts.syncServer();
 		});
-		$("b.less").click("tap",function(){
+		$(".gouwuche").on("click","b.less",function(){
 			var iput = $(this).parent(".Num").find("input");
 			var num = parseInt(iput.val(),10),
 				min = parseInt(iput.attr("min"),10);
@@ -199,99 +118,15 @@
 			carts.put(pid,1,checkStatus,1);
 			carts.syncServer();
 		});
-/*		
-		$("em.checkbox").click("tap",function(){
-			var checked = $(this).hasClass("on");
-			if(checked){
-				$(this).removeClass("on");
-			}else{
-				$(this).addClass("on");
-			}
-			calMoney();
-			isCheckAll();
-			checked = $(this).hasClass("on");
-			var box = $(this).parents(".gouwuche-box");
-			var pid = box.attr("pid");
-			var checkStatus = checked? 1 :0;
-			carts.put(pid,0,checkStatus,3);
-			carts.syncServer();
-		});
-	}
-	
-	function loadCart(){
-		$.ajax({
-	    	url: "/mall/cart/mylist",
-	    	type: "get",
-	    	success: function(r){
-	    		if(r.errcode == 0){
-	    			if(r.data.length == 0){
-	    				carts.syncServer(function(){
-	    					loadCart();
-	    					carts.clearTemp();
-	    				});
-	    			}else{
-	    				var products = carts.getTemp();
-		    			if(products){
-		    				var result = confirm("您有尚未同步的商品，是否同步？");
-		    				if(result){
-		    					var l1 = $.loading().show({content:"数据同步中..."});
-		    					carts.syncServer(function(){
-		    						l1.hide();
-		    						carts.clearTemp();
-		    						loadCart();
-		    					});
-		    					return;
-		    				}else{
-		    					carts.clearTemp();
-		    				}
-		    			}
-		    			cartDraw(r.data);
-	    			}
-	    		}
-	    	}
-		});
-	}
-	
-	$(function(){
-		if(login.isLogin()){
-			loadCart();
-		}else{
-			var products = carts.get();
-			if(products){
-				var items = products.items;
-				var ids = [];
-				for(var i=0;i<items.length;i++){
-					ids[i] = items[i].productSpecId;
-				}
-				var l1 = $.loading({content:"加载中..."}).show();
-				$.ajax({
-			    	url: "/mall/cart/product/list",
-			    	type: "POST",
-			    	contentType: "application/json",
-				    data: JSON.stringify(ids),
-			    	success: function(r){
-			    		l1.hide();
-			    		if(r.errcode == 0){
-			    			for(var i=0;i<r.data.length;i++){
-			    				var a = products.get(r.data[i].cart.productSpecId);
-			    				r.data[i].cart.buyNumber = a.buyNumber;
-			    				r.data[i].cart.checkStatus = a.checkStatus;
-			    			}
-			    			cartDraw(r.data);
-			    		}
-			    	}
-				});
-			}
-		}
-*/		
+
 		$(".deleteBtn").click(function(){
-			var checkboxs = $("[name='checkStatus']:checked");
-			if(checkboxs.length == 0){
+			var checkbox = $("em.on");
+			if(checkbox.length == 0){
 				alert("请选删除的产品");
 				return;
 			}
 			var ids=[];	
-			checkboxs.each(function(){
+			checkbox.each(function(){
 			 	ids.push($(this).parent().find("[name='cartId']").val());
 			});
 			$.ajax({
@@ -300,7 +135,7 @@
 			    data: {'ids':ids},
 		    	success: function(r){
 		    		if(r.code == 0){
-		    			window.location.href="/system/cart/list";
+		    			window.location.href="/system/cart";
 		    			return;
 		    		}
 		    		else
@@ -312,47 +147,92 @@
 		});
 		
 		$(".confirmBtn").click(function(){
-			var checkboxs = $("[name='checkStatus']:checked");
-			if(checkboxs.length == 0){
+			var checkbox=$("em.on");
+//			var checkboxs = $("[name='checkStatus']:checked");
+			if(checkbox.length == 0){
 				alert("请选购买的产品");
 				return;
 			}
-			var ids=[];	
-			checkboxs.each(function(){
-			 	ids.push($(this).parent().find("[name='cartId']").val());
-			});
-			window.location.href="/system/order/bullcart/"+ids;
-			/* if(!login.isLogin()){
-				parent.location.href = loginCallUri();
-				return;
-			}
-			var pos = [];
-			checkboxs.each(function(i,e){
-				var box = $(e).parents(".gouwuche-box");
-				pos[i] = {productSpecId:box.attr("pid"),buyNumber:$("input[name=amount]",box).val()};
-			});
-			var l2 = $.loading({content:"结算中..."}).show();
+			var cartDOList=[];
+			checkbox.each(function(){
+				var cartDO={};
+				cartDO.goodsId=$(this).parent().find("[name='goodsId']").val();
+				cartDO.cartId=$(this).parent().find("[name='cartId']").val();
+				cartDO.buyNumber=$(this).parent().find("[name='amount']").val()
+				cartDOList.push(cartDO);
+			});console.info(cartDOList);
 			$.ajax({
-		    	url: "/mall/order/create",
+		    	url: "/information/goods/buy",
 		    	type: "POST",
 		    	contentType: "application/json",
-			    data: JSON.stringify(pos),
+			    data: JSON.stringify(cartDOList),
 		    	success: function(r){
-		    		l2.hide();
-		    		if(r.errcode == 0){
-		    			window.location.href="/order/confirm.html?orderNo="+r.data.orderNo;
-		    			return;
+//		    		 l2.hide();
+		    		if(r.code == 0){
+		    			var orderNo = r.msg;
+		    			window.location.href="/system/order?orderNo="+orderNo;
+		    			
 		    		}
-		    		alert(r.errmsg);
+		    		else{
+		    			alert(r.msg);
+		    		}
 		    	}
-			}); */
+			}); 
 			
 		});
 	
 		$(".checkAllBtn").click(function(){
-			$("[name='checkStatus']").each(function(){
-				$(this).attr("checked","true");
+			$(".checkbox").each(function(){
+				$(this).addClass("on");
 			})
+			countPrice();
 		});
+		
+		
+		
+		$(".gouwuche").on("click",".checkbox",function(){
+			$(this).toggleClass("on");
+			countPrice();
+		})
+		
+		function countPrice(){
+			var price,buyNumber,total=0;
+			$("em.checkbox").each(function(){
+				if($(this).hasClass('on')){
+					price=$(this).parent().find("[name='price']").text();
+					price=price.substr(price.lastIndexOf("￥")+1);
+					buyNumber=$(this).parent().find("[name='amount']").val();
+					if(!isNaN(price) && !isNaN(buyNumber))
+						total+=parseInt(price)*parseInt(buyNumber);
+				}
+			});
+			$(".totalMoney").text(total);
+		};
+		
+		
+		$.ajax({
+	    	url: "/system/cart/list",
+	    	type: "GET",
+	    	success: function(datas){
+	    		var html="";
+	    		for(var i=0;i<datas.length;i++){
+	    			var data=datas[i];
+	    			html+='<div class="gouwuche-box">';
+	    		    html+='<em class="checkbox" id="checkbox"></em>';
+	    			html+='<input type="hidden" name="goodsId" value="'+data.goodsId+'" />';
+	    			html+='<input type="hidden" name="cartId" value="'+data.cartId+'" />';
+	    			html+='<a><img src="'+data.goodsDO.url+'" width="50px;"height="50px;"/></a><span>'+data.goodsDO.name+'</span><span>'+data.goodsDO.spec+'</span>';
+	    			html+='<span style="color: red" class="price" name="price">￥'+data.goodsDO.payPrice+'</span>';
+	    			html+='<span class="Num">';
+	    			html+='<b class="less">-</b>';
+	    			html+='<input type="text" value="'+data.buyNumber+'" max="'+data.goodsDO.surplus+'" min="1" name="amount">';
+	    			html+='<b class="add">+</b>';
+	    			html+='</span>';
+	    			html+='</div>';
+	    		}
+	    		  $(".gouwuche").html(html);
+	    	}
+		}); 
+		
 </script>
 </html>

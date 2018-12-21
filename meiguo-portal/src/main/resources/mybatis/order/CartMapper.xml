@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.meiguo.order.dao.CartDao">
+<mapper namespace="com.meiguo.goods.dao.CartDao">
 
-	<select id="get" resultType="com.meiguo.order.domain.CartDO">
+	<select id="get" resultType="com.meiguo.goods.domain.CartDO">
 		select `cart_id`,`goods_id`,`user_id`,`buy_number`,`create_time`,`update_time`,`check_status` from mall_cart where cart_id = #{value}
 	</select>
 
-	<select id="list" resultType="com.meiguo.order.domain.CartDO">
+	<select id="list" resultType="com.meiguo.goods.domain.CartDO">
 		select `cart_id`,`goods_id`,`user_id`,`buy_number`,`create_time`,`update_time`,`check_status` from mall_cart
         <where>  
 		  		  <if test="cartId != null and cartId != ''"> and cart_id = #{cartId} </if>
@@ -44,7 +44,7 @@
 		  		</where>
 	</select>
 	 
-	<insert id="save" parameterType="com.meiguo.order.domain.CartDO" useGeneratedKeys="true" keyProperty="cartId">
+	<insert id="save" parameterType="com.meiguo.goods.domain.CartDO" useGeneratedKeys="true" keyProperty="cartId">
 		insert into mall_cart
 		(
 			`goods_id`, 
@@ -65,7 +65,7 @@
 		)
 	</insert>
 	 
-	<update id="update" parameterType="com.meiguo.order.domain.CartDO">
+	<update id="update" parameterType="com.meiguo.goods.domain.CartDO">
 		update mall_cart 
 		<set>
 			<if test="goodsId != null">`goods_id` = #{goodsId}, </if>

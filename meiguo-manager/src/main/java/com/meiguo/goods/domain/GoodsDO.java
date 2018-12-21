@@ -22,14 +22,14 @@ public class GoodsDO implements Serializable {
 	
 	//货品ID编号
 	private Integer id;
-	//货品名称
-	private String name;
 	//货品编号
 	private Integer goodsNumber;
 	//货品条形码号
 	private Integer tgoodsNumber;
-	//所属产品
+	//商品id
 	private Integer productId;
+	//商品名称
+	private String name;
 	//货品状态   0：上架   1：下架
 	private Integer status;
 	// 折扣价

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="format-detection" content="telephone=no">
+<link rel="shortcut icon" href="/img/sy-ys.png" type="image/x-icon"/>
+<link rel="stylesheet" href="/css/new.css" type="text/css">
+
+<script type="text/javascript" src="/js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/js/Font.js"></script>
+<!-- <script type="text/javascript" src="/js/libs/oauth2_token_listener.js"></script> -->
+<script type="text/javascript" src="/js/plugins/picker/city.js"></script>
+<script type="text/javascript" src="/js/plugins/picker/picker.min.js"></script>
+<script type="text/javascript" src="/js/plugins/picker/setup.js"></script>
+<title>新增收货地址</title>
+<style type="text/css">
+.new-dizhi p{border-bottom:1px solid #373c3f;padding:0 .3rem;line-height:.92rem;overflow: hidden;}
+.new-dizhi p i{float: left;width:25%;}
+.new-dizhi p input{float: left;width:75%;height:.92rem;background:none;font-size:.3rem;}
+.new-dizhi p span{float: right;color:#999;background:url(/img/arr-r.png) no-repeat right center;-webkit-background-size:.14rem .25rem;background-size:.14rem .25rem;padding-right:.35rem;}
+.new-dizhi p textarea{color:#fff;float: left;width:75%;padding:.2rem;height:1.2rem; resize:none;outline: none;font-size:.28rem;background:none;}
+.new-dizhi p.moren{background:url(/img/dizhi_no.png) no-repeat 6.8rem center;-webkit-background-size:.32rem .32rem;background-size:.32rem .32rem;}
+.new-dizhi p.on{background-image:url(/img/dizhi_yes.png);}
+.baocun{margin:1rem auto;width:66%;}
+
+
+</style>
+</head>
+<body>
+<div class="Top"><h3 onclick="javascript:$.go('/account/address.html');">编辑收货地址</h3></div>
+<form>
+	<div class="new-dizhi font-32">
+		<p><i>收货人</i><input type="text" name="consignee"/></p>
+	    <p><i>联系电话</i><input type="text" name="mobile"/></p>
+	    <p><i>所在地区</i><span class="addressSelected">请选择</span></p>
+	    <p><i>详细地址</i><textarea cols="30" rows="10" placeholder="请输入详细地址信息，如道路、门牌号、小区、楼栋号、单元室等" name="address"></textarea></p>
+	    <p><i>地址别名</i><input type="text" name="name"/></p>
+	    <p class="moren on">设置默认地址</p>
+	</div>
+	 <button type="submit" id="save-button" class="baocun font-40">保存</button>
+</form>
+<script th:inline="javascript">	var id = [[${id}]];
+var pickerSetup = null,areaCode = null,address={};
+$(function () {
+
+	id=parseInt(id);
+	pickerSetup = new PickerSetup({
+    	selected: [0,0,0],
+		title: "请选择地区",
+		onSelected: function(selected,text){
+			$(".addressSelected").html(text.toString().replace(new RegExp(",","gm")," "));
+			areaCode = selected.toString();
+		}
+	});
+//	var l1 = $.loading().show();
+	$.ajax({
+		type: "GET",
+	    url: "/information/address/info/"+id,
+	    success: function(data){
+//	    	l1.hide();
+//	    	if(r.errcode == 0){
+	    		var address = data;
+	    		$("input[name=consignee]").val(address.consignee);
+                pickerSetup.setSelected(address.areaCode.split(","));
+	    		$("textarea[name=address]").val(address.address);
+	    		$("input[name=name]").val(address.name);
+	    		$("input[name=mobile]").val(address.mobile);
+	    		if(address.defaultFlag == 1){
+	    			$(".moren").addClass("on");
+	    		}else{
+	    			$(".moren").removeClass("on");
+	    		}
+			/* }else{
+				alert(r.errmsg);
+			} */
+		}
+	});
+	
+	$(".addressSelected").click(function(){
+		pickerSetup.show();
+	});
+	
+	$(".moren").click(function(){
+		$(this).toggleClass("on");
+	});
+	
+	$('#save-button').click(function(event) {
+		event.preventDefault();
+		address.id=id;
+		address.consignee = $("input[name=consignee]").val();
+		address.areaCode = areaCode;
+		address.address = $("textarea[name=address]").val();
+		address.name = $("input[name=name]").val();
+		address.mobile = $("input[name=mobile]").val();
+		address.defaultFlag = $(".moren").hasClass("on")? 1: 0;
+		
+		if(!address.consignee || address.consignee == '' || address.consignee.length == 0){
+			alert("请您填写收货人姓名");
+			return;
+		}
+		if(!address.areaCode || address.areaCode == '' || address.areaCode.length == 0){
+			alert("请您填写完整的地区信息");
+			return;
+		}
+		if(!address.address || address.address == '' || address.address.length == 0){
+			alert("请您填写收货人详细地址");
+			return;
+		}
+		if(!address.mobile || address.mobile == '' || address.mobile.length == 0){
+			alert("请您填写收货人手机号码");
+			return;
+		}
+//		var l2 = $.loading({content:"处理中..."}).show()
+		console.info(address);
+		$.ajax({
+			type : "POST",
+			url : "/information/address/update",
+			contentType: "application/json",
+		    data: JSON.stringify(address),
+			dataType : "json",
+			success : function(result) {
+//				l2.hide();
+				if (result.code == 0) {//添加成功
+					alert("保存成功！");
+					window.location.href = '/information/address';
+				} else {
+					alert(result.msg);
+				}
+			}
+		});
+	});
+});
+</script>
+</body>
+</html>
+

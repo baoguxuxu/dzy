@@ -27,7 +27,7 @@ public class GoodsDO implements Serializable {
 	//货品条形码号
 	private Integer tgoodsNumber;
 	//所属产品
-	private Integer productId;
+	private Long productId;
 	//货品状态   0：上架   1：下架
 	private Integer status;
 	// 折扣价
@@ -62,7 +62,7 @@ public class GoodsDO implements Serializable {
 	}
 	//保存图片表中失效的id值
 	private String imgids;
-	//产品的列表图
+	//商品列表图
 	private String url;
 	//货品规格
 	private String spec;
@@ -120,13 +120,13 @@ public class GoodsDO implements Serializable {
 	/**
 	 * 设置：所属产品
 	 */
-	public void setProductId(Integer productId) {
+	public void setProductId(Long productId) {
 		this.productId = productId;
 	}
 	/**
 	 * 获取：所属产品
 	 */
-	public Integer getProductId() {
+	public Long getProductId() {
 		return productId;
 	}
 	/**

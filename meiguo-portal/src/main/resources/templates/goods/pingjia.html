@@ -14,8 +14,9 @@
 <script type="text/javascript" src="/js/Font.js"></script>
 <script src="/js/plugins/layer/layer.js"></script>
 <style>
-input{width: 3.5rem;height: .9rem;float: right;color: #8e8e8e;margin-right:.25rem;font-size:.3rem;line-height:.9rem;text-align: right;}
-.toux input{margin-top:.25rem;}
+/* input{width: 3.5rem;height: .9rem;float: right;color: #8e8e8e;margin-right:.25rem;font-size:.3rem;line-height:.9rem;text-align: right;}
+.toux input{margin-top:.25rem;} */
+
 </style>
 
 
@@ -31,12 +32,12 @@ input{width: 3.5rem;height: .9rem;float: right;color: #8e8e8e;margin-right:.25re
 	<input id="xFile" type="file" accept="image/png, image/jpeg, image/gif, image/jpg" name="xFile" style="display: none;">
 </form>
 <div class="tousu-online">
-    <div class="wenzi"><textarea name="content" id="content" cols="30" rows="10" placeholder="请输入你想说的内容，给其他想买的小伙伴做个参考呗" ></textarea></div>
+   <textarea name="content" id="content" cols="30" rows="2" placeholder="请输入你想说的内容，给其他想买的小伙伴做个参考呗" ></textarea>
     <ul class="tousu-pic">
-        <li><img src="/img/tousu-pic1.jpg" alt="" id="uploadBtn"/></li>
-        <li><input type="text" th:value="${goodsId}" name="productId" id="productId"></input></li>
-		<li><input type="text" th:value="${orderProductId}" name="orderProductId" id="orderProductId"></input></li>
-		<li><input type="text" th:value="${orderId}" name="orderId" id="orderId"></input></li>
+        <li><input type="hidden" th:value="${goodsId}" name="productId" id="productId"></input></li>
+		<li><input type="hidden" th:value="${orderProductId}" name="orderProductId" id="orderProductId"></input></li>
+		<li><input type="hidden" th:value="${orderId}" name="orderId" id="orderId"></input></li>
+		<li><img src="/img/tousu-pic1.jpg" alt="" id="uploadBtn"/></li>
     </ul>
 </div>
 
@@ -51,9 +52,9 @@ input{width: 3.5rem;height: .9rem;float: right;color: #8e8e8e;margin-right:.25re
 		pingjia.orderProductId = $("#orderProductId").val();
 		pingjia.orderId=$("#orderId").val();
 		pingjia.content=$("#content").val();
-		pingjia.picImgs=[];
+		pingjia.orderCommentImageDOList=[];
 		$(".showPic").each(function(i,e){
-			pingjia.picImgs[i] = {
+			pingjia.orderCommentImageDOList[i] = {
 				picImg: $(e).attr("src"),
 				sort: i
 			};
