@@ -1,13 +1,10 @@
 package com.meiguo.owneruser.controller;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
 
 
 import org.apache.commons.lang.StringUtils;
@@ -21,35 +18,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.meiguo.carousel.domain.BannerDO;
 import com.meiguo.carousel.service.BannerService;
 import com.meiguo.common.annotation.Log;
 import com.meiguo.common.controller.BaseController;
 import com.meiguo.common.utils.MD5Utils;
-import com.meiguo.common.utils.Query;
 import com.meiguo.common.utils.R;
 import com.meiguo.common.utils.ShiroUtils;
 import com.meiguo.information.domain.NoticeDO;
 import com.meiguo.information.service.NoticeService;
+import com.meiguo.owneruser.comment.GenerateCode;
 import com.meiguo.owneruser.comment.SMSContent;
 import com.meiguo.owneruser.comment.SMSPlatform;
 import com.meiguo.owneruser.comment.SMSTemplate;
 import com.meiguo.owneruser.comment.ZhuCeUtil;
-import com.meiguo.owneruser.domain.ChengjiuAddDO;
 import com.meiguo.owneruser.domain.OwnerUserDO;
-import com.meiguo.owneruser.domain.UserChengjiuMidDO;
-import com.meiguo.owneruser.service.ChengjiuAddService;
+import com.meiguo.owneruser.domain.UserCouponDO;
+import com.meiguo.owneruser.domain.UserRewardMidDO;
 import com.meiguo.owneruser.service.OwnerUserService;
-import com.meiguo.owneruser.service.UserChengjiuMidService;
+import com.meiguo.owneruser.service.UserRewardMidService;
 import com.meiguo.smsservice.service.ISMSService;
 
-import scala.annotation.elidable;
 
 
 @Controller
@@ -62,11 +53,11 @@ public class LoginController extends BaseController {
 	@Autowired
 	private NoticeService noticeService;
 	@Autowired
-	OwnerUserService userService;
+	private OwnerUserService userService;
 	@Autowired
 	private ISMSService sMSService;
 	@Autowired
-	private UserChengjiuMidService userChengjiuMidService;
+	private UserRewardMidService userRewardMidService;
 	
 	@Log("请求访问主页")
 	@GetMapping({ "" })
@@ -92,7 +83,8 @@ public class LoginController extends BaseController {
 	
 	@Log("请求访问主页")
 	@GetMapping({ "/index" })
-	String index(Model model) {
+	String index(Model model, Long inviterId) {
+		
 		
 		// 查询banner数据
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -104,10 +96,10 @@ public class LoginController extends BaseController {
 		if(udo != null)
 			paramsNotice.put("user_id", this.getUserId());
 		List<NoticeDO> noticeList = noticeService.list(paramsNotice);
-
 		model.addAttribute("bannerList", bannerList);
 		model.addAttribute("noticeList", noticeList);
 		return "index";
+
 	}	
 	
 	@GetMapping({ "/jieshao" })
@@ -147,6 +139,56 @@ public class LoginController extends BaseController {
 			if(udo.getDeleteFlag()==1){
 				return R.error("禁止登录，请联系客服");
 			}
+			
+			//OwnerUserDO user= userService.getbyname(username);
+			UserRewardMidDO urmDO = new UserRewardMidDO();
+			//UserCouponDO ucDO = new UserCouponDO();
+			if(udo != null && !"".equals(udo)){
+				Calendar calendar = Calendar.getInstance();
+				Date loginTime = udo.getLoginTime();
+				if(loginTime == null || "".equals(loginTime)){
+					calendar.set(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DATE),0,0,0);
+				}else{
+					calendar.setTime(loginTime);
+				}
+				Calendar today = Calendar.getInstance();
+				today.set(today.get(Calendar.YEAR),today.get(Calendar.MARCH),today.get(Calendar.DATE),0,0,0);
+				Calendar yesterday = calendar.getInstance();
+				yesterday.set(yesterday.get(Calendar.YEAR),yesterday.get(Calendar.MARCH),yesterday.get(Calendar.DATE)-1,0,0,0);
+				
+				if(calendar.before(today)){
+					if(calendar.before(yesterday)){
+						udo.setDengluNum(1);
+					}else{
+						Integer dengluNum = udo.getDengluNum();
+						dengluNum++;
+						if(dengluNum==7){
+							urmDO.setRewardId(1);
+							urmDO.setUserId(udo.getId());
+							urmDO.setWinTime(new Date());
+							//userRewardMidService.save(urmDO);
+						}else if(dengluNum==30){
+							urmDO.setRewardId(2);
+							urmDO.setUserId(udo.getId());
+							urmDO.setWinTime(new Date());
+							userRewardMidService.save(urmDO);
+						}else if(dengluNum==180){
+							urmDO.setRewardId(3);
+							urmDO.setUserId(udo.getId());
+							urmDO.setWinTime(new Date());
+							userRewardMidService.save(urmDO);
+							urmDO.setRewardId(1234546);
+							urmDO.setUserId(udo.getId());
+							urmDO.setWinTime(new Date());
+							userRewardMidService.save(urmDO);
+						}
+						udo.setDengluNum(dengluNum);
+					}
+//					user.setLoginTime(new Date());
+//					userService.update(user);
+//					return R.ok();
+				}
+			}
 			subject.login(token);
 			udo.setLoginTime(new Date());
 			userService.update(udo);
@@ -161,7 +203,7 @@ public class LoginController extends BaseController {
 	@PostMapping("/zhuce")
 	@ResponseBody
 	R ajaxZhuce(String username, String password, String nickname, String codenum,String zhucema,Integer zhucemaNum,
-			Model model,Long id) {		
+			Model model) {		
 		if (StringUtils.isBlank(username)) {
 			return R.error("手机号码不能为空");
 		}
@@ -173,7 +215,9 @@ public class LoginController extends BaseController {
 		if (flag) {
 			return R.error("手机号码已存在");
 		}
-			
+		
+//		Long userId = GenerateCode.gen16(9);
+//		udo.setUserId(userId);
 		udo.setUsername(username);
 		udo.setPhone(username);
 		udo.setPassword(password);
@@ -181,7 +225,10 @@ public class LoginController extends BaseController {
 		udo.setBalance(0.00);
 		udo.setDeleteFlag(0);
 		udo.setRegisterTime(new Date());
+		String yaoqing = ZhuCeUtil.getNewUserId();
+		udo.setZhucema(Long.parseLong(yaoqing.substring(8,14)));
 		udo.setZhucemaNum(0);
+		udo.setDengluNum(1);
 		
 		if(StringUtils.isNotBlank(zhucema)){
 			Map<String, Object> map = new HashMap<String, Object>();
@@ -189,37 +236,34 @@ public class LoginController extends BaseController {
 			boolean zhu = userService.exit(map);
 			if (zhu) {
 				try {
-					String zhuce = zhucema;
-					long toId = ZhuCeUtil.codeToId(zhuce);
-					OwnerUserDO ownerUserDO = userService.get(toId);
+					OwnerUserDO ownerUserDO = userService.getbyzhuce(zhucema);
+					Long ids =ownerUserDO.getUserId();
 					Integer num = ownerUserDO.getZhucemaNum();
-					ownerUserDO.setZhucemaNum(num+1);					
-					if(userService.update(ownerUserDO)>0 && userService.save(udo)>0){
+					ownerUserDO.setZhucemaNum(num+1);
+					udo.setInviterId(ids);
+					if(userService.update(ownerUserDO)>0){
+						//return R.ok();
 					}
-					if(ownerUserDO.getZhucemaNum().equals(10)){
-						UserChengjiuMidDO midDO = new UserChengjiuMidDO();
-						midDO.setUserId((int) toId);
-						midDO.setChengjiuId(10);
-						midDO.setChengjiuTime(new Date());
-						if(userChengjiuMidService.save(midDO)>0){
-							return R.ok();
-						}
-					}else if(ownerUserDO.getZhucemaNum().equals(20)){
-						UserChengjiuMidDO midDO = new UserChengjiuMidDO();
-						midDO.setUserId((int) toId);
-						midDO.setChengjiuId(11);
-						midDO.setChengjiuTime(new Date());
-						if(userChengjiuMidService.save(midDO)>0){
-							return R.ok();
-						}
-					}else if(ownerUserDO.getZhucemaNum().equals(50)){
-						UserChengjiuMidDO midDO = new UserChengjiuMidDO();
-						midDO.setUserId((int) toId);
-						midDO.setChengjiuId(12);
-						midDO.setChengjiuTime(new Date());
-						if(userChengjiuMidService.save(midDO)>0){
-							return R.ok();
-						}
+					//OwnerUserDO list = userService.getList(map);
+					
+					if(ownerUserDO.getZhucemaNum().equals(1)){
+						UserRewardMidDO midDO = new UserRewardMidDO();						
+						midDO.setUserId(ids);
+						midDO.setRewardId(1234546);
+						midDO.setWinTime(new Date());
+						userRewardMidService.save(midDO);
+					}else if(ownerUserDO.getZhucemaNum().equals(3)){
+						UserRewardMidDO midDO = new UserRewardMidDO();						
+						midDO.setUserId(ids);
+						midDO.setRewardId(1234546);
+						midDO.setWinTime(new Date());
+						userRewardMidService.save(midDO);
+					}else if(ownerUserDO.getZhucemaNum().equals(5)){
+						UserRewardMidDO midDO = new UserRewardMidDO();						
+						midDO.setUserId(ids);
+						midDO.setRewardId(1234546);
+						midDO.setWinTime(new Date());
+						userRewardMidService.save(midDO);
 					}			
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -233,7 +277,7 @@ public class LoginController extends BaseController {
 		if(userService.save(udo)>0){
 			return R.ok();
 		}
-							
+		
 		return R.error();
 
 	}
@@ -369,30 +413,13 @@ public class LoginController extends BaseController {
 	 * 邀请码
 	 */
 	
-//	public static String[] chars = new String[]{						
-//	  //    "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",
-//	      "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"
-//	  //    "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V","W", "X", "Y", "Z"
-//	};
-//	@GetMapping("/zhucema")
-//	@ResponseBody
-//	public String zhucema(){			
-//		StringBuffer stringBuffer = new StringBuffer(); 
-//		String uuid = UUID.randomUUID().toString().replace("-", ""); 
-//		for (int i = 0; i < 6; i++){ 
-//		    String str = uuid.substring(i * 4, i * 4 + 4); 
-//		    int strInteger = Integer.parseInt(str, 16); 
-//		    stringBuffer.append(chars[strInteger % 0x3E]); 
-//		} 
-//	    return stringBuffer.toString(); 			
-//	}	
-//	@GetMapping("/zhucema")
-//	@ResponseBody
-//	public String Zhucema(String zhucema){
-//		long id = 19;
-//		String code = ZhuCeUtil.idToCode(id);
-//		return code;
-//		
-//	}
+	@GetMapping("/zhucema")
+	String zhucema(Model model){
+		OwnerUserDO zcMa = userService.get(getUserId());		
+		model.addAttribute("zcMa",zcMa);
+		return "zhucema";			
+  			
+	}
+	
 
 }

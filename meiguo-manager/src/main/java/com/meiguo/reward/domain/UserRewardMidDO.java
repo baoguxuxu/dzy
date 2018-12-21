@@ -1,0 +1,87 @@
+package com.meiguo.reward.domain;
+
+import java.io.Serializable;
+import java.util.Date;
+
+
+
+/**
+ * 用户奖励中间表
+ * 
+ * @author wjl
+ * @email bushuo@163.com
+ * @date 2018-12-12 11:08:57
+ */
+public class UserRewardMidDO implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
+	//id
+	private Integer id;
+	//用户id
+	private Long userId;
+	//奖励id
+	private Integer rewardId;
+	//获得时间
+	private Date winTime;
+	//奖励名称
+	private String ctName; 
+
+	
+	
+	
+
+	public String getCtName() {
+		return ctName;
+	}
+	public void setCtName(String ctName) {
+		this.ctName = ctName;
+	}
+	/**
+	 * 设置：id
+	 */
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	/**
+	 * 获取：id
+	 */
+	public Integer getId() {
+		return id;
+	}
+	/**
+	 * 设置：用户id
+	 */
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+	/**
+	 * 获取：用户id
+	 */
+	public Long getUserId() {
+		return userId;
+	}
+	/**
+	 * 设置：奖励id
+	 */
+	public void setRewardId(Integer rewardId) {
+		this.rewardId = rewardId;
+	}
+	/**
+	 * 获取：奖励id
+	 */
+	public Integer getRewardId() {
+		return rewardId;
+	}
+	/**
+	 * 设置：获得时间
+	 */
+	public void setWinTime(Date winTime) {
+		this.winTime = winTime;
+	}
+	/**
+	 * 获取：获得时间
+	 */
+	public Date getWinTime() {
+		return winTime;
+	}
+}

@@ -14,9 +14,11 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface OwnerUserDao {
 
-	OwnerUserDO get(Long userId);
+	OwnerUserDO get(Long id);
 	
 	OwnerUserDO getbyname(String username);
+	
+	OwnerUserDO getList(Long inviterId);
 	
 	List<OwnerUserDO> list(Map<String,Object> map);
 	
@@ -27,5 +29,8 @@ public interface OwnerUserDao {
 	int update(OwnerUserDO user);
 	
 	int remove(Long userId);
+	
+	OwnerUserDO getbyzhuce(String zhucema);
+	
 	
 }

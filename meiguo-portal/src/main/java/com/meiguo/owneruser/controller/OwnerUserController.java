@@ -6,12 +6,18 @@ import com.meiguo.common.config.Constant;
 import com.meiguo.common.controller.BaseController;
 import com.meiguo.common.utils.*;
 import com.meiguo.information.domain.FilesDO;
+import com.meiguo.owneruser.comment.WeinXinUtil;
+import com.meiguo.owneruser.comment.WinXinEntity;
 import com.meiguo.owneruser.domain.OwnerUserDO;
+import com.meiguo.owneruser.domain.UserCouponDO;
 import com.meiguo.owneruser.domain.UserPlotDO;
+import com.meiguo.owneruser.domain.UserRewardMidDO;
 import com.meiguo.owneruser.service.OwnerUserService;
 import com.meiguo.owneruser.service.UserPlotService;
+import com.meiguo.owneruser.service.UserRewardMidService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,9 +25,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 
 @RequestMapping("/owner")
 @Controller
@@ -33,6 +43,8 @@ public class OwnerUserController extends BaseController {
 	UserPlotService plotService;
 	@Autowired
 	private BootdoConfig bootdoConfig;
+	@Autowired
+	UserRewardMidService userRewardMidService;
 	/**
 	 * 个人中心
 	 * @return
@@ -104,7 +116,16 @@ public class OwnerUserController extends BaseController {
 		PageUtils pageUtil = new PageUtils(sysUserList, total);
 		return pageUtil;
 	}
-
+	@ResponseBody
+	@GetMapping(value="/info")
+	List<OwnerUserDO> info(Model model,Long id){
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", this.getUserId());
+		List<OwnerUserDO> list = userService.list(map);
+		model.addAttribute("user", list);
+		return list;
+	}
+	
 	@Log("查看用户")
 	@GetMapping("/show/{id}")
 	String edit(Model model, @PathVariable("id") Long id) {
@@ -140,4 +161,52 @@ public class OwnerUserController extends BaseController {
 		return R.ok();
 	}
 
+	@ResponseBody
+	@RequestMapping(value="/payNum")
+	R payNum(Long id){
+		try {
+			OwnerUserDO uDO = userService.get(id);
+			UserRewardMidDO urm = new UserRewardMidDO();
+			if(uDO.getPayNum() == 350){
+				urm.setUserId(uDO.getId());
+				urm.setRewardId(6);
+				urm.setWinTime(new Date());
+				userRewardMidService.save(urm);
+			}else if(uDO.getPayNum() == 1000){
+				urm.setUserId(uDO.getId());
+				urm.setRewardId(7);
+				urm.setWinTime(new Date());
+				userRewardMidService.save(urm);
+			}else if(uDO.getPayNum() == 2000){
+				urm.setUserId(uDO.getId());
+				urm.setRewardId(8);
+				urm.setWinTime(new Date());
+				urm.setUserId(uDO.getId());
+				urm.setRewardId(1234546);
+				urm.setWinTime(new Date());
+				userRewardMidService.save(urm);
+			}else if(uDO.getPayNum() == 5000){
+				urm.setUserId(uDO.getId());
+				urm.setRewardId(9);
+				urm.setWinTime(new Date());
+				userRewardMidService.save(urm);
+			}
+			return R.ok();
+		} catch (Exception e) {
+			return R.error();
+		}
+		
+	}
+	
+	public String share(HttpServletRequest request){
+		String strUrl = "http://www.xxxxx.com"
+	            + request.getContextPath()   //项目名称  
+	            + request.getServletPath()   //请求页面或其他地址  
+	            + "?" + (request.getQueryString()); //参数  
+	    WinXinEntity wx = WeinXinUtil.getWinXinEntity(strUrl);
+	    //将wx的信息到给页面
+	    request.setAttribute("wx", wx);
+		return prefix + "/zhucema";
+	}
+	
 }
