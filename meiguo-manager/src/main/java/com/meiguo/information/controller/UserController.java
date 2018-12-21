@@ -19,21 +19,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.meiguo.common.utils.FileUtil;
 import com.meiguo.common.utils.PageUtils;
 import com.meiguo.common.utils.Query;
 import com.meiguo.common.utils.R;
-import com.meiguo.information.domain.UserChengjiuMidDO;
 //import com.meiguo.information.dao.UserShopDao;
 import com.meiguo.information.domain.UserDO;
-import com.meiguo.information.service.UserChengjiuMidService;
 //import com.meiguo.information.domain.UserShopDO;
 import com.meiguo.information.service.UserService;
+import com.meiguo.reward.domain.UserRewardMidDO;
+import com.meiguo.reward.service.UserRewardMidService;
 //import com.meiguo.information.service.UserShopService;
 import com.meiguo.common.utils.ExcelExportUtil4DIY;
 
@@ -55,7 +53,7 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	@Autowired
-	private UserChengjiuMidService userChengjiuMidService;
+	private UserRewardMidService userRewardMidService;
 	
 	@GetMapping()
 	@RequiresPermissions("information:user:user")
@@ -93,10 +91,10 @@ public class UserController {
 	@GetMapping("/show/{id}")
 	@RequiresPermissions("information:user:chakan")
 	String show(@PathVariable("id") Integer id, Model model){
-		UserChengjiuMidDO listId = userChengjiuMidService.getListId(id);
+		List<UserRewardMidDO> byListId = this.userRewardMidService.byListId(id);
 		UserDO user = userService.get(id);		
 		model.addAttribute("user", user);
-		model.addAttribute("listId", listId);
+		model.addAttribute("byListId", byListId);
 	    return "information/users/show";
 	   	    
 	}

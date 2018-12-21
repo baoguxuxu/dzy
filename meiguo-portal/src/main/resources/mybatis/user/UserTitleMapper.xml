@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.meiguo.owneruser.dao.UserTitleDao">
+
+	<select id="get" resultType="com.meiguo.owneruser.domain.UserTitleDO">
+		select `id`,`title_name`,`title_ico`,`title_demand`,`reward`,`status`,`add_time`,`update_time`,`start_time`,`end_time` from t_user_title where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.meiguo.owneruser.domain.UserTitleDO">
+		select `id`,`title_name`,`title_ico`,`title_demand`,`reward`,`status`,`add_time`,`update_time`,`start_time`,`end_time` from t_user_title
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="titleName != null and titleName != ''"> and title_name = #{titleName} </if>
+		  		  <if test="titleIco != null and titleIco != ''"> and title_ico = #{titleIco} </if>
+		  		  <if test="titleDemand != null and titleDemand != ''"> and title_demand = #{titleDemand} </if>
+		  		  <if test="reward != null and reward != ''"> and reward = #{reward} </if>
+		  		  <if test="status != null and status != ''"> and status = #{status} </if>
+		  		  <if test="addTime != null and addTime != ''"> and add_time = #{addTime} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		  <if test="startTime != null and startTime != ''"> and start_time = #{startTime} </if>
+		  		  <if test="endTime != null and endTime != ''"> and end_time = #{endTime} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from t_user_title
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="titleName != null and titleName != ''"> and title_name = #{titleName} </if>
+		  		  <if test="titleIco != null and titleIco != ''"> and title_ico = #{titleIco} </if>
+		  		  <if test="titleDemand != null and titleDemand != ''"> and title_demand = #{titleDemand} </if>
+		  		  <if test="reward != null and reward != ''"> and reward = #{reward} </if>
+		  		  <if test="status != null and status != ''"> and status = #{status} </if>
+		  		  <if test="addTime != null and addTime != ''"> and add_time = #{addTime} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		  <if test="startTime != null and startTime != ''"> and start_time = #{startTime} </if>
+		  		  <if test="endTime != null and endTime != ''"> and end_time = #{endTime} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.meiguo.owneruser.domain.UserTitleDO" useGeneratedKeys="true" keyProperty="id">
+		insert into t_user_title
+		(
+			`title_name`, 
+			`title_ico`, 
+			`title_demand`, 
+			`reward`, 
+			`status`, 
+			`add_time`, 
+			`update_time`, 
+			`start_time`, 
+			`end_time`
+		)
+		values
+		(
+			#{titleName}, 
+			#{titleIco}, 
+			#{titleDemand}, 
+			#{reward}, 
+			#{status}, 
+			#{addTime}, 
+			#{updateTime}, 
+			#{startTime}, 
+			#{endTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.meiguo.owneruser.domain.UserTitleDO">
+		update t_user_title 
+		<set>
+			<if test="titleName != null">`title_name` = #{titleName}, </if>
+			<if test="titleIco != null">`title_ico` = #{titleIco}, </if>
+			<if test="titleDemand != null">`title_demand` = #{titleDemand}, </if>
+			<if test="reward != null">`reward` = #{reward}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="addTime != null">`add_time` = #{addTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
+			<if test="startTime != null">`start_time` = #{startTime}, </if>
+			<if test="endTime != null">`end_time` = #{endTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from t_user_title where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from t_user_title where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -16,6 +16,8 @@ public interface OwnerUserService {
 	OwnerUserDO get(Long id);
 	
 	OwnerUserDO getbyname(String username);
+	
+	OwnerUserDO getList(Long inviterId);
 
 	List<OwnerUserDO> list(Map<String, Object> map);
 
@@ -28,5 +30,7 @@ public interface OwnerUserService {
 	int remove(Long userId);
 
 	boolean exit(Map<String, Object> params);
+	
+	OwnerUserDO getbyzhuce(String zhucema);
 
 }

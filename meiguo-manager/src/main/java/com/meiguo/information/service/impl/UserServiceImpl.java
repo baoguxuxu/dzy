@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 
-import com.meiguo.chengjiumanager.dao.ChengjiuAddDao;
 import com.meiguo.information.dao.UserDao;
 import com.meiguo.information.domain.UserDO;
 import com.meiguo.information.service.UserService;

@@ -76,5 +76,15 @@ public class OwnerUserServiceImpl implements OwnerUserService {
 		return exit;
 	}
 
+	@Override
+	public OwnerUserDO getbyzhuce(String zhucema) {
+		return ownerUserMapper.getbyzhuce(zhucema);
+	}
+
+	@Override
+	public OwnerUserDO getList(Long inviterId) {
+		return ownerUserMapper.getList(inviterId);
+	}
+
 
 }

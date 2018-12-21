@@ -12,9 +12,7 @@ function update() {
 		cache : true,
 		type : "POST",
 		url : "/information/users/update",
-		data : formData, //$('#signupForm').serialize(),// 你的formid
-		processData:false,
-		contentType:false,
+		data :$('#signupForm').serialize(),// 你的formid
 		async : false,
 		error : function(request) {
 			parent.layer.alert("Connection error");

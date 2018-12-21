@@ -78,9 +78,31 @@
 </div>    
 
 </body>
-</html>
 <script type="text/javascript">
+	$(function(){
+		$.ajax({
+			type: "GET",			
+            url: "/owner/info",
+			dataType:"json",
+			success:function(r){
+				//console.log(r[0].dengluNum);
+				var dl = r[0].dengluNum;
+					if(dl == 7){
+						alert("哇，你是小青果啦！");
+					}else if(dl == 30){
+						alert("哇，你是小黄果啦！");
+					}else if(dl == 180){
+						alert("哇，你是小红果啦！送你一张浆果票吧！");
+					}else {
+						//layer.msg(r.msg);
+	                }
+			}
+		})
+	})
 		
+/*
+
+
 	//banner切换
     TouchSlide({ 
         slideCell:"#focus",
@@ -123,6 +145,10 @@
 			}
 		});
 	}
+	
+*/	
 		
 </script>
+</html>
+
 
