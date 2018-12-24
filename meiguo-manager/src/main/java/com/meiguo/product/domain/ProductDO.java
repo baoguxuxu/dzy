@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 /**
- * 产品表
+ * 商品表
  * 
  * @author wjl
  * @email bushuo@163.com
@@ -19,18 +19,16 @@ import org.springframework.web.multipart.MultipartFile;
 public class ProductDO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	//产品ID
+	//商品ID
 	private Long id;
-	//产品编号
+	//商品编号
 	private Long productNumber;
-	//产品分类ID
+	//商品分类ID
 	private Long categoryId;
-	//产品分类名称
+	//商品分类名称
 	private String categoryName;
-	//产品具备的规格
-	private String specId;
 	
-	//产品名称
+	//商品名称
 	private String name;
 	//创建时间
 	private Date createTime;
@@ -50,9 +48,28 @@ public class ProductDO implements Serializable {
 	private Integer deleteEnable;
 	//图片地址
 	private String url;
+	private MultipartFile imgFile;
+	/**
+	 * 获取文件
+	 */
+	public MultipartFile getImgFile() {
+		return imgFile;
+	}
+	/**
+	 * 设置文件
+	 */
+	public void setImgFile(MultipartFile imgFile) {
+		this.imgFile = imgFile;
+	}
+	/**
+	 * 获取商品列表图地址
+	 */
 	public String getUrl() {
 		return url;
 	}
+	/**
+	 * 设置商品列表图地址
+	 */
 	public void setUrl(String url) {
 		this.url = url;
 	}
@@ -205,17 +222,5 @@ public class ProductDO implements Serializable {
 	 */
 	public void setStatus(Integer status) {
 		this.status = status;
-	}
-	/**
-	 * 获取产品规格
-	 */
-	public String getSpecId() {
-		return specId;
-	}
-	/**
-	 * 设置产品规格
-	 */
-	public void setSpecId(String specId) {
-		this.specId = specId;
 	}
 }

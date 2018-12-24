@@ -1,0 +1,139 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="format-detection" content="telephone=no">
+<link rel="shortcut icon" href="images/logo_bank_gfyh.png" type="image/x-icon"/>
+<link rel="stylesheet" href="/css/base.css" type="text/css">
+<title>首页</title>
+<script type="text/javascript" src="/js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/js/TouchSlide.1.1.js"></script>
+<script type="text/javascript" src="/js/Font.js"></script>
+<script src="/js/plugins/layer/layer.js"></script>
+</head>
+<body>
+<!--头部切换-->
+<div id="focus" class="focus">
+	<div class="title">
+		<!-- <a  href="/owner/shoudingwei"><img class="fl" src="/img/index-add.png" alt=""/></a> -->
+		<span>银网物业</span>
+		<a  href="/information/msg"><img class="fr" src="/img/index-msg.png" alt="购物车"/></a>
+	</div>
+</div>
+<form id="signupForm">
+		<div class="Top">
+			<a href="/owner/userPlot"><span>&nbsp;</span></a>订单确认
+		</div>
+
+		  <div id="oo">
+			
+		  </div>
+		<div class="fangwu-add-txt bg-white" id="fangzhudiv" style="font-size: 15px;">
+			<ul>
+				<li><span>收货人</span><em><input id="consignee"  name="consignee"  type="text" ></em></li>
+			
+				<li><span>联系电话</span><em><input id="mobile"  name="mobile"  type="text" ></em></li>
+				<li><span>收货地址</span><em><input id="address"  name="address"  type="text" ></em><a href="/information/address"><span style="font-size: 16px">></span></a></li>
+				
+			<!-- 	<li><span>售后服务</span><em><input id="identityCard"  name="identityCard"  type="text"></em>
+				<li><span>店铺优惠</span><em><input id="identityCard" name="identityCard"  type="text"></em> -->
+				<!-- <li><span>快递费</span><em><input id="shipmentAmount"  name="shipmentAmount"  type="text"></em></li> -->
+				<li><span>订单金额</span><em><input id="orderAmount" name="orderAmount"  type="text" ></em></li>
+				<!-- <li><span>支付金额</span><em><input id="payAmount"  name="payAmount"  type="text"></em> -->
+			<!-- 	<li><span>发票</span><em><input id="identityCard" maxlength="18" name="identityCard"  type="text"></em>
+				<li><span>买家留言</span><em><input id="identityCard" maxlength="18" name="identityCard"  type="text"></em> -->
+				<li><span>支付方式</span><select name="payType">
+											<!-- <option value="0">浆果票兑换</option> -->
+											<option value="1">在线支付</option>
+										</select>
+				</li>
+			</ul>
+		</div>
+		<input class="tijiao font-32" id="saveplot" onclick="save()" type="button" value="提交">
+		</form>
+  <script th:inline="javascript">
+  var orderNo=[[${orderNo}]];
+  var jiangguo=0;
+  $.ajax({
+		url: "/system/order/confirm/"+orderNo,
+		type: "GET",
+		success: function(data){
+			jiangguo=data.jiangguo;
+			var orderDO = data.orderDO;
+			if(orderDO.orderStatus!=0){
+				alert("该订单已支付，请勿重新 支付");
+				return;
+			}
+			$("#consignee").val(orderDO.consignee);
+			$("#mobile").val(orderDO.mobile);
+			$("#address").val(orderDO.address);
+			$("#orderAmount").val(orderDO.orderAmount);
+			var oplist=data.oplist,html='';
+			for(var i=0;i<oplist.length;i++){
+				var op=oplist[i];
+			   	html+='<span><img alt="" src="'+op.picImg+'" width="50" height="50"/></span>';
+				html+='<span style="font-size: 15px;">'+op.spec+'</span>';
+				html+='<span style="font-size: 15px;color: red" class="price">￥ '+op.price+'</span>';
+				html+='<span style="font-size: 15px;display: none;" class="pa">'+op.productAmount+'</span>';
+				html+='<span style="font-size: 15px;" class="buyNumber">购买量  '+op.buyNumber+'</span>';
+				html+='<span class="jiangguoPay" style="font-size: 15px;">'+op.jiangguoFlag+'</span>';
+				html+="<br>"
+			}
+			$("#oo").html(html);
+		}
+	});
+  
+  //发起支付
+  function save(){
+	  var freepay=[],freeMoney=0;
+	  $(".jiangguoPay").each(function(){
+		  if($(this).text()==0){
+			var productAmount=$(this).prevAll(".pa").text();
+			freepay.push(parseFloat(productAmount));
+		  }
+	  });
+	  if(freepay.length>0 && jiangguo>0){
+		  var result = confirm("是否用浆果票抵扣?");
+		  if(result){
+			var len=freepay.length<jiangguo ? freepay.length : jiangguo
+			for(var i=0;i<len;i++){
+				freeMoney+=freepay[i];
+			}
+			var totalMoney = $("[name='orderAmount']").val();
+			 $("[name='orderAmount']").val(parseInt(totalMoney)-freeMoney);
+		  }
+	  }
+		/* $.ajax({
+				url: "/system/order/getJiangguo"
+				type: "POST",
+				success: function(r){console.info(r);
+					var jflag=1;
+					if(r.code ==0){
+						var result = confirm(r.msg);
+	    				if(result)//浆果票参与支付
+	    					jflag=0;
+	    				
+					}
+					
+				}
+			}); */
+//		}
+  }
+  </script>
+ 
+  
+  
+</body>
+</html>
+
+
+
+
+
+

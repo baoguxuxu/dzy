@@ -8,14 +8,17 @@ $.validator.setDefaults({
 	}
 });
 function save() {
+	var formData = new FormData(document.getElementById("signupForm"));
 	$.ajax({
 		cache : true,
 		type : "POST",
 		url : "/information/product/save",
-		data : $('#signupForm').serialize(),// 你的formid
+		data : formData,// 你的formid
+		processData:false,
+		contentType:false,
 		async : false,
 		error : function(request) {
-			parent.layer.alert("Connection error");
+			parent.layer.alert("网络超时");
 		},
 		success : function(data) {
 			if (data.code == 0) {

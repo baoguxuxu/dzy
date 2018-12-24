@@ -4,11 +4,11 @@
 <mapper namespace="com.meiguo.goods.dao.GoodsDao">
 
 	<select id="get" resultType="com.meiguo.goods.domain.GoodsDO">
-		select `id`,`name`,surplus,`goods_number`,`tgoods_number`,`product_id`,`status`,`discount_price`,`pay_price`,`vip_price`,`promotion_price`,`create_time`,`create_by`,`update_time`,`update_by`,`remarks` from goods where id = #{value}
+		select `id`,spec,surplus,`goods_number`,total,`tgoods_number`,`product_id`,`status`,`discount_price`,`pay_price`,`vip_price`,`promotion_price`,`create_time`,`create_by`,`update_time`,`update_by`,`remarks` from goods where id = #{value}
 	</select>
 
 	<select id="list" resultType="com.meiguo.goods.domain.GoodsDO">
-		select goods.id,goods.spec,goods.total,goods.surplus,goods.name,product_product.name productName,goods.goods_number,goods.tgoods_number,goods.product_id,goods.status,goods.discount_price,goods.pay_price,goods.vip_price,goods.promotion_price,goods.create_time,goods.create_by,goods.update_time,goods.update_by,goods.remarks from goods,product_product
+		select goods.id,goods.spec,goods.total,goods.surplus,product_product.name ,goods.goods_number,goods.tgoods_number,goods.product_id,goods.status,goods.discount_price,goods.pay_price,goods.vip_price,goods.promotion_price,goods.create_time,goods.create_by,goods.update_time,goods.update_by,goods.remarks from goods,product_product
         where goods.product_id=product_product.id and goods.deleteEnable=0
 		  		  
 		  		  <if test="name != null and name != ''"> and goods.name = #{name} </if>
@@ -25,7 +25,7 @@
 		  		  <if test="updateTime != null and updateTime != ''"> and goods.update_time = #{updateTime} </if>
 		  		  <if test="updateBy != null and updateBy != ''"> and goods.update_by = #{updateBy} </if>
 		  		  <if test="remarks != null and remarks != ''"> and goods.remarks = #{remarks} </if>
-		  		
+		  		  <if test="spec != null and spec != ''"> and goods.spec = #{spec} </if>
 		  
         <choose>
             <when test="sort != null and sort.trim() != ''">
@@ -48,7 +48,7 @@
         where goods.product_id=product_product.id and goods.deleteEnable=0
 		  
 		  		  <if test="id != null and id != ''"> and id = #{id} </if>
-		  		  <if test="name != null and name != ''"> and goods.name = #{name} </if>
+
 		  		  <if test="goodsNumber != null and goodsNumber != ''"> and goods_number = #{goodsNumber} </if>
 		  		  <if test="tgoodsNumber != null and tgoodsNumber != ''"> and tgoods_number = #{tgoodsNumber} </if>
 		  		  <if test="productId != null and productId != ''"> and product_id = #{productId} </if>
@@ -68,7 +68,6 @@
 	<insert id="save" parameterType="com.meiguo.goods.domain.GoodsDO" useGeneratedKeys="true" keyProperty="id">
 		insert into goods
 		(
-			`name`, 
 			total,
 			spec,
 			surplus,
@@ -88,7 +87,6 @@
 		)
 		values
 		(
-			#{name}, 
 			#{total},
 			#{spec},
 			#{surplus},
@@ -134,7 +132,6 @@
 	<update id="update" parameterType="com.meiguo.goods.domain.GoodsDO">
 		update goods 
 		<set>
-			<if test="name != null">`name` = #{name}, </if>
 			<if test="goodsNumber != null">`goods_number` = #{goodsNumber}, </if>
 			<if test="tgoodsNumber != null">`tgoods_number` = #{tgoodsNumber}, </if>
 			<if test="productId != null">`product_id` = #{productId}, </if>
@@ -148,7 +145,8 @@
 			<if test="createBy != null">`create_by` = #{createBy}, </if>
 			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
 			<if test="updateBy != null">`update_by` = #{updateBy}, </if>
-			<if test="remarks != null">`remarks` = #{remarks}</if>
+			<if test="remarks != null">`remarks` = #{remarks},</if>
+			<if test="spec != null">`spec` = #{spec}</if>
 		</set>
 		where id = #{id}
 	</update>

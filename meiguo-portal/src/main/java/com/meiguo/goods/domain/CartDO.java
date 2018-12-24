@@ -1,4 +1,4 @@
-package com.meiguo.order.domain;
+package com.meiguo.goods.domain;
 
 import java.io.Serializable;
 import java.util.Date;

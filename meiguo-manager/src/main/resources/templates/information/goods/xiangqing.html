@@ -11,27 +11,16 @@
 						<form class="form-horizontal m-t" id="signupForm">
 						<input id="id" name="id" th:value="${goods.id}"  type="hidden">
 							<div class="form-group">	
-								<label class="col-sm-2 control-label">货品名称：</label>
+								<label class="col-sm-2 control-label">规格条形码号：</label>
 								<div class="col-sm-3">
-									<input id="name" name="name" th:value="${goods.name}" class="form-control" type="text" readonly="readonly">
+									<input id="tgoodsNumber" name="tgoodsNumber" th:value="${goods.tgoodsNumber}" class="form-control" type="text" readonly="readonly">
 								</div>
-								<label class="col-sm-2 control-label">货品编号：</label>
+								<label class="col-sm-2 control-label">规格编号：</label>
 								<div class="col-sm-3">
 									<input id="goodsNumber" name="goodsNumber" th:value="${goods.goodsNumber}" class="form-control" type="text" readonly="readonly">
 								</div>
 							</div>
-							<div class="form-group">	
-								<label class="col-sm-2 control-label">货品条形码号：</label>
-								<div class="col-sm-3">
-									<input id="tgoodsNumber" name="tgoodsNumber" th:value="${goods.tgoodsNumber}" class="form-control" type="text" readonly="readonly">
-								</div>
-								<label class="col-sm-2 control-label">所属产品：</label>
-								<div class="col-sm-3">
-									<select class="form-control" name="productId" id="productId" disabled="disabled">
-                        				<option  th:each="list:${productList}" th:value="${list.id}" th:text="${list.name }"></option>
-                    				</select>
-								</div>
-							</div>
+							
 							<div class="form-group">	
 								<label class="col-sm-2 control-label"> 折扣价：</label>
 								<div class="col-sm-3">
@@ -53,20 +42,25 @@
 								</div>
 							</div>
 							<div class="form-group">	
+								
+								<label class="col-sm-2 control-label">商品名称：</label>
+								<div class="col-sm-3">
+									<select class="form-control" name="productId" id="productId" disabled="disabled">
+                        				<option  th:each="list:${productList}" th:value="${list.id}" th:text="${list.name }"></option>
+                    				</select>
+								</div>
+								<label class="col-sm-2 control-label">库存总量：</label>
+								<div class="col-sm-3">
+									<input id="total" name="total" class="form-control" type="text" th:value="${goods.total}" readonly="readonly">
+								</div>
+							</div>
+							<div class="form-group" id="add">	
 								<label class="col-sm-2 control-label">货品详情描述：</label>
 								<div class="col-sm-8">
 									<input id="remarks" name="remarks" th:value="${goods.remarks}" class="form-control" type="text" readonly="readonly">
 								</div>
 							</div>
 							
-							 <div class="form-group" >	
-								<label class="col-sm-2 control-label">货品列表图：</label>
-								<div class="col-sm-8">
-									<input class="form-control" id="listimg" style="display: none;" type="file" name="listimg" onchange="udpateFileUrl(this)" readonly="readonly"/>
-									<label><img width="100" height="100" id="fileImgimgFile" alt="点击上传图片" th:src="${listimg.url}"></label>
-									<span style="color: red;">(750*718)</span>
-								</div>
-							</div>
 							<div class="form-group" >	
 								<label class="col-sm-2 control-label">货品图：</label>
 								<div class="col-sm-8" id="divimg" >
@@ -74,7 +68,7 @@
 									<input class="form-control" th:id="${img.id}" style="display: none;" type="file" name="goodsimg" onchange="udpateFileUrl(this)" readonly="readonly"/>
 									<label><img width="100" height="100" id="fileImgimgFile1" alt="点击上传图片" th:src="${img.url}"></label>
 								</span>
-									<label><img width="20" height="20" id="fileImgimgadd1" alt="点此继续添加图片" src="/img/add_icon.jpg"></label>
+									
 									<span style="color: red;">(750*718)</span>
 								</div>
 							</div>
@@ -85,9 +79,10 @@
 									<input class="form-control" th:id="${img.id}" style="display: none;" type="file" name="detailimg" onchange="udpateFileUrl(this)" readonly="readonly"/>
 									<label><img width="100" height="100" id="fileImgimgFile2" alt="点击上传图片" th:src="${img.url}"></label>
 								 </span>
-									<label><img width="20" height="20" id="fileImgimgadd2" alt="点此继续添加图片" src="/img/add_icon.jpg"></label>
+									
 									<span style="color: red;">(750*718)</span>
 								</div>
+							</div>
 						</form>
 					</div>
 				</div>
@@ -98,6 +93,50 @@
 	<script type="text/javascript" src="/js/appjs/information/goods/edit.js"></script>
 	<script th:inline="javascript">
 		$('#productId').find('option[value="'+[[${goods.productId}]]+'"]').attr('selected','selected');
+	</script>
+	<script th:inline="javascript">
+	//展示具备的具体规格
+		(function(){
+			var productId = $("#productId").val();
+			$.ajax({
+				cache : true,
+				type : "POST",
+				url : "/information/goods/getGoodsSpec",
+				data : {'productId':productId},
+				async : false,
+				error : function(request) {
+					parent.layer.alert("Connection error");
+				},
+				success : function(data) {
+					$("[name='shanchu']").remove();
+					var html="";
+					for(var i=0;i<data.length;i++){
+						html+="<div class='form-group' name='shanchu'>";
+						html+="<label class='col-sm-2 control-label'>"+data[i].name+"</label>";
+						html+="<div class='col-sm-8'>";
+						html+="<input  name='list["+i+"].specname' class='form-control' type='hidden' value='"+data[i].name+"'>";
+						html+="<input  name='list["+i+"].specdetail' class='form-control' type='text' readonly='readonly'>";
+						html+="</div></div>";
+						$("#add").after(html);
+						html="";
+					}
+					var spec=[[${goods.spec}]];
+					if(spec!=null && spec!=''){
+						var specarry = spec.split(' ');
+						for(var i=0;i<specarry.length;i++){
+							var specarry1=specarry[i].split(":");
+							$("[name='shanchu']").find("label").each(function(i){
+								if($(this).text()==specarry1[0])
+									$(this).next().children().eq(1).val(specarry1[1]);
+							}) ;
+						}
+					}
+					
+				}
+			});
+		})();
+	
+	
 	</script>
 </body>
 </html>

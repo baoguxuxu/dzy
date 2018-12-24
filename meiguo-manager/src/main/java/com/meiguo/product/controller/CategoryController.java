@@ -121,6 +121,22 @@ public class CategoryController {
 	}
 	
 	/**
+	 * 是否能用浆果票兑换
+	 */
+	@PostMapping( "/updateDuihuan")
+	@ResponseBody
+	@RequiresPermissions("information:category:remove")
+	public R updateDuihuan( Long id,Integer enable){
+		CategoryDO categoryDO = new CategoryDO();
+		categoryDO.setJiangguoFlag(enable);
+		categoryDO.setId(id);
+		categoryService.update(categoryDO);
+		return R.ok();
+		
+	}
+	
+	
+	/**
 	 * 删除
 	 */
 	@PostMapping( "/remove")

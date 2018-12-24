@@ -26,11 +26,9 @@ import com.meiguo.goods.domain.GoodsDO;
 import com.meiguo.goods.domain.ImgDO;
 import com.meiguo.goods.service.GoodsService;
 import com.meiguo.order.domain.AddressDO;
-import com.meiguo.order.domain.CartDO;
 import com.meiguo.order.domain.OrderDO;
 import com.meiguo.order.domain.OrderProductDO;
 import com.meiguo.order.service.AddressService;
-import com.meiguo.order.service.CartService;
 import com.meiguo.order.service.OrderProductService;
 import com.meiguo.order.service.OrderService;
 
@@ -49,24 +47,18 @@ import com.meiguo.order.service.OrderService;
 public class OrderController {
 	@Autowired
 	private OrderService orderService;
-	@Autowired
-	private GoodsService goodsService;
-	@Autowired
-	private AddressService addressService;
-	@Autowired
-	private CartService cartService;
+    
 	@Autowired
 	private OrderProductService orderProductService;
 	
 	@GetMapping()
-	@RequiresPermissions("system:order:order")
-	String Order(){
-	    return "system/order/order";
+	String Order(Model model,String orderNo){
+		model.addAttribute("orderNo",orderNo);
+	    return "order/order2";
 	}
 	
 	@ResponseBody
 	@GetMapping("/list")
-	@RequiresPermissions("system:order:order")
 	public PageUtils list(@RequestParam Map<String, Object> params){
 		//查询列表数据
         Query query = new Query(params);
@@ -77,18 +69,11 @@ public class OrderController {
 	}
 	
 	@GetMapping("/add")
-	@RequiresPermissions("system:order:add")
 	String add(){
 	    return "system/order/add";
 	}
 
-	@GetMapping("/edit/{id}")
-	@RequiresPermissions("system:order:edit")
-	String edit(@PathVariable("id") Long id,Model model){
-		OrderDO order = orderService.get(id);
-		model.addAttribute("order", order);
-	    return "system/order/edit";
-	}
+	
 	
 	/**
 	 * 保存
@@ -111,7 +96,6 @@ public class OrderController {
 	 */
 	@ResponseBody
 	@RequestMapping("/update")
-	@RequiresPermissions("system:order:edit")
 	public R update( OrderDO order){
 		orderService.update(order);
 		return R.ok();
@@ -120,122 +104,54 @@ public class OrderController {
 	/**
 	 * 删除
 	 */
-	@PostMapping( "/remove")
+	@PostMapping( "/remove/{id}")
 	@ResponseBody
-	@RequiresPermissions("system:order:remove")
-	public R remove( Long id){
+	public R remove(@PathVariable("id") Long id){
 		if(orderService.remove(id)>0){
-		return R.ok();
+			return R.ok();
 		}
 		return R.error();
 	}
 	
 	/**
-	 * 删除
+	 * 确认收货
 	 */
-	@PostMapping( "/batchRemove")
+	@PostMapping("/confirmReceive/{id}")
 	@ResponseBody
-	@RequiresPermissions("system:order:batchRemove")
-	public R remove(@RequestParam("ids[]") Long[] ids){
-		orderService.batchRemove(ids);
+	public R confirmReceive(@PathVariable("id") Long id){
+		OrderDO orderDO= new OrderDO();
+		orderDO.setId(id);
+		orderDO.setOrderStatus(3);
+		orderService.update(orderDO);
 		return R.ok();
 	}
 	
-	/**
-	 * 立即购买生成订单信息
-	 */
-	@GetMapping("/bull/{id}/{buyNumber}")
-	public String createBull(@PathVariable("id") Long id,@PathVariable("buyNumber") Integer buyNumber  ,Model model){
-		List<OrderProductDO> oplist = new ArrayList<OrderProductDO>();
-		OrderProductDO orderProductDO = new OrderProductDO();
-		//所购商品信息
-		GoodsDO goodsDO = goodsService.get(id);
-		orderProductDO.setGoodsId(id);
-		orderProductDO.setName(goodsDO.getName());
-		orderProductDO.setBuyNumber(buyNumber);
-		orderProductDO.setPrice(goodsDO.getPayPrice());
-		orderProductDO.setProductSpecName(goodsDO.getSpec());
-		List<ImgDO> imgDOList = goodsService.getGoodsImgByGoodsDO(id,0);
-		if(imgDOList.size()>0){
-			orderProductDO.setPicImg(imgDOList.get(0).getUrl());
-		}
-		oplist.add(orderProductDO);
-		model.addAttribute("oplist",oplist);
-		//收获联系人信息
-		Map<String,Object> map = new HashMap<String,Object>();
-		map.put("userId",ShiroUtils.getUserId());
-		map.put("defaultFlag","1");
-		List<AddressDO> list = addressService.list(map);
-		OrderDO orderDO = new OrderDO();
-		AddressDO addressDO = new AddressDO();
-		if(list.size()>0)
-			addressDO = list.get(0);
-		orderDO.setAddress(addressDO.getAddress());
-		orderDO.setMobile(addressDO.getMobile());
-		orderDO.setConsignee(addressDO.getConsignee());
-		BigDecimal num = new BigDecimal(buyNumber);
-		orderDO.setOrderAmount(num.multiply(orderProductDO.getPrice()));
-		model.addAttribute("orderDO", orderDO);
-		return "order/order";
-	}
 	
 	/**
-	 * 购物车生成订单信息
+	 * 确认订单
 	 */
-	@GetMapping("/bullcart/{ids}")
-	public String createBullfromCart(@PathVariable("ids") Long[] ids,Model model){
-		List<OrderProductDO> oplist = new ArrayList<OrderProductDO>();
-		for(int i=0;i<ids.length;i++){
-			CartDO cartDO =  cartService.get(ids[i]);
-			GoodsDO goodsDO= goodsService.get(cartDO.getGoodsId());
-			if(cartDO!=null && goodsDO!=null){
-				OrderProductDO orderProductDO = new OrderProductDO();
-				orderProductDO.setGoodsId(cartDO.getGoodsId());
-				orderProductDO.setBuyNumber(cartDO.getBuyNumber());
-				orderProductDO.setName(goodsDO.getName());
-				orderProductDO.setPrice(goodsDO.getPayPrice());
-				orderProductDO.setProductSpecName(goodsDO.getSpec());
-				List<ImgDO> imgDOList = goodsService.getGoodsImgByGoodsDO(cartDO.getGoodsId(),0);
-				if(imgDOList.size()>0){
-					orderProductDO.setPicImg(imgDOList.get(0).getUrl());
-				}
-				oplist.add(orderProductDO);
-			}
-			
-		}
-		model.addAttribute("oplist",oplist);
-		//收获联系人信息
+	@ResponseBody
+	@GetMapping("/confirm/{orderNo}")
+	public Map<String,Object> confirmOrder(@PathVariable("orderNo") String orderNo){
+		OrderDO orderDO=  orderService.get(orderNo,ShiroUtils.getUserId());
 		Map<String,Object> map = new HashMap<String,Object>();
-		map.put("userId",ShiroUtils.getUserId());
-		map.put("defaultFlag","1");
-		List<AddressDO> list = addressService.list(map);
-		OrderDO orderDO = new OrderDO();
-		AddressDO addressDO = new AddressDO();
-		if(list.size()>0)
-			addressDO = list.get(0);
-		orderDO.setAddress(addressDO.getAddress());
-		orderDO.setMobile(addressDO.getMobile());
-		orderDO.setConsignee(addressDO.getConsignee());
-		//计算价格
-		BigDecimal orderMount = new BigDecimal(0);
-		for(OrderProductDO opdo :oplist){
-			BigDecimal num = new BigDecimal(opdo.getBuyNumber());
-			BigDecimal omount = num.multiply(opdo.getPrice());
-			orderMount=orderMount.add(omount);
-		}
-		
-		orderDO.setOrderAmount(orderMount);
-		model.addAttribute("orderDO", orderDO);
-		return "order/order";
+		map.put("orderId",orderDO.getId());
+		List<OrderProductDO> oplist = orderProductService.list(map);
+		map.put("oplist",oplist);
+		map.put("orderDO", orderDO);
+		map.put("jiangguo", 2);//此处为该用户的浆果票数，数据库查询得到
+		return map;
 	}
+	
+
+	
+	
+	
 	/**
 	 * 	购买记录
 	 */
 	@GetMapping("/jilu")
 	public String lookJilu(Integer orderStatus,Model model){
-		Map<String,Object> map = new HashMap<String,Object>();
-		map.put("orderStatus",orderStatus);
-		List<OrderDO> list = orderService.list(map);
 		return "order/goumaijilu";
 	}
 	
@@ -247,31 +163,35 @@ public class OrderController {
 	@RequestMapping("/checkjilu")
 	public List<OrderDO> lookJilu(Integer orderStatus){
 		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("userId",ShiroUtils.getUserId());
 		map.put("orderStatus",orderStatus);
 		List<OrderDO> list = orderService.list(map);
-		//获取订单中的第一个商品图片展示
 		for(OrderDO o:list){
 			Map<String,Object> map1 = new HashMap<String,Object>();
 			map1.put("orderId",o.getId());
 			List<OrderProductDO> oList = orderProductService.list(map1);
-			if(oList.size()>0)
-			o.setUrl(oList.get(0).getPicImg());
+			o.setList(oList);
 		}
 		return list;
  	}
 	
 	/**
-	 * 查看订单详情
+	 * 订单支付
+	 */
+	@ResponseBody
+	@RequestMapping("/pay")
+	public R pay(String orderNo,Integer jflag){
+		
+		return R.error();
+	}
+	
+	/**
+	 * 查看物流
 	 */
 	
-	@RequestMapping("/getBullDetail")
-	public String getBullDetail(Long id,Model model){
-		OrderDO orderDO = orderService.get(id);
-		model.addAttribute("orderDO", orderDO);
-		Map<String,Object> map = new HashMap<String,Object>();
-		map.put("orderId",orderDO.getId());
-		List<OrderProductDO> oList = orderProductService.list(map);
-		model.addAttribute("oplist", oList);
-		return "order/bulldetail";
-	} 
+	@ResponseBody
+	@RequestMapping("/kuaid100Query")
+	public Map<String,Object> kuaid100Query(String postid){
+		return orderService.kuaid100QueryBase(postid);
+	}
 }

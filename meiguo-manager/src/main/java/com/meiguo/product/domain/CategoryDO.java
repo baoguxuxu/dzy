@@ -35,6 +35,14 @@ public class CategoryDO implements Serializable {
 	private String remarks;
     //数据删除标志(0:数据没有被执行删除操作   1：数据执行了删除操作)
 	private Integer deleteEnable;
+	//0  可以用浆果票兑换   1 不能用浆果票兑换
+	private Integer jiangguoFlag;
+	public Integer getJiangguoFlag() {
+		return jiangguoFlag;
+	}
+	public void setJiangguoFlag(Integer jiangguoFlag) {
+		this.jiangguoFlag = jiangguoFlag;
+	}
 	public Integer getDeleteEnable() {
 		return deleteEnable;
 	}

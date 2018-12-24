@@ -56,9 +56,6 @@ $(function(){
 			//获取产品列表
 			function getProduct(obj){
 				var name = $(obj).children("span").text();
-				if(name==='全部'){
-					name='';
-				}
 				$.ajax({
 					cache : true,
 					type : "POST",
@@ -69,12 +66,12 @@ $(function(){
 						$("#divProduct").html("");
 						var tr="";
 						if(data.length==0){
-						    tr = "<tr><td>该类下没有产品</td></tr>";
+						    tr = "<tr><td>亲 ，该类下没有产品</td></tr>";
 							$("#divProduct").append(tr);
 						}
 						else{
 							for(var i=0;i<data.length;i++){
-								tr+="<tr><td><img ondblclick='getGoodsDetail(this)' width='200px;' name='"+data[i].id+"' src='"+data[i].url+"'></img></td>";
+								tr+="<tr><td><img onclick='getGoodsDetail(this)' width='200px;' name='"+data[i].id+"' src='"+data[i].url+"'></img></td>";
 								tr+="<td>"+data[i].remarks+"</td></tr>";
 								$("#divProduct").append(tr);
 								tr="";
@@ -115,7 +112,9 @@ $(function(){
 			
 			//获取货品详情
 			function getGoodsDetail(obj) {
-				var id = $(obj).attr("name");
-				window.location.href="/information/goods/getGoodsDetail/"+id
+				var productId = $(obj).attr("name");
+				window.location.href="/information/goods/getGoodsDetail?productId="+productId;		
+				//window.location.href="/information/goods/buy/"+id;//此处直接进入商品选择购买页面
+
 			}
 			

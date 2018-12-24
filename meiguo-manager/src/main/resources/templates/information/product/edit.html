@@ -45,6 +45,15 @@
 									<input id="remarks" name="remarks" th:value="${product.remarks}" class="form-control" type="text">
 								</div>
 							</div>
+							
+							<div class="form-group" >	
+								<label class="col-sm-3 control-label">商列表图：</label>
+								<div class="col-sm-8" >
+									<input class="form-control" id="imgFile" style="display: none;" type="file" name="imgFile" onchange="udpateFileUrl(this)" />
+									<label for="imgFile"><img width="100" height="100" id="fileImgimgFile" alt="点击上传图片" th:src="${product.url}"></label>
+									<span style="color: red;">(750*718)</span>
+								</div>
+							</div>
 																					<div class="form-group">
 								<div class="col-sm-8 col-sm-offset-3">
 									<button type="submit" class="btn btn-primary">提交</button>
@@ -58,22 +67,6 @@
 	</div>
 	<div th:include="include::footer"></div>
 	<script type="text/javascript" src="/js/appjs/information/product/edit.js"></script>
-	<script th:inline="javascript">
-	 $('#categoryId').find('option[value="'+[[${product.categoryId}]]+'"]').attr('selected','selected');
-    
-	 
-		 var list = [[${list}]];
-		 var html="";
-		for(i=0;i<list.length;i++){
-			html+='<label class="col-sm-3 control-label">'+list[i].name+'</label>';
-			html+='<div class="col-sm-8">';
-			html+='<input  name="list['+i+'].id" value="'+list[i].id+'" class="form-control" type="hidden">';
-			html+='<input  name="list['+i+'].remark" value="'+list[i].remark+'" class="form-control" type="text">';
-			html+='</div>';
-		}
-		$("#specEdit").html(html); 
-	</script>
-	
 	<script type="text/javascript">
 		laydate.render({
 			elem: '#createTime',
@@ -83,6 +76,26 @@
 			elem: '#updateTime',
 			type: 'datetime'
 		});
+		
+		function udpateFileUrl(obj){
+			var fileURL = getObjectURL(obj.files[0]);
+			if(fileURL) {
+				$("#fileImgimgFile").attr("src", fileURL) ;
+			}
+		}
+		
+		//建立一個可存取到該file的url
+		function getObjectURL(file) {
+			var url = null ; 
+			if (window.createObjectURL!=undefined) { // basic
+				url = window.createObjectURL(file) ;
+			} else if (window.URL!=undefined) { // mozilla(firefox)
+				url = window.URL.createObjectURL(file) ;
+			} else if (window.webkitURL!=undefined) { // webkit or chrome
+				url = window.webkitURL.createObjectURL(file) ;
+			}
+			return url;
+		}
 		
 	</script>
 </body>

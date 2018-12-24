@@ -33,7 +33,7 @@ function load() {
 								//说明：传入后台的参数包括offset开始索引，limit步长，sort排序列，order：desc或者,以及所有列的键值对
 								limit: params.limit,
 								offset:params.offset,
-					           name:$('#name option:selected').val(),
+					           spec:$('#name option:selected').val(),
 					           status:$('#status').val()
 							};
 						},
@@ -53,7 +53,7 @@ function load() {
 								},
 																{
 									field : 'name', 
-									title : '货品名称' 
+									title : '商品名称' 
 								},
 																{
 									field : 'goodsNumber', 
@@ -62,11 +62,7 @@ function load() {
 																{
 									field : 'tgoodsNumber', 
 									title : '货品条形码号' 
-								},
-																{
-									field : 'productName', 
-									title : '所属产品名称' 
-								},								{
+								},{
 									field : 'discountPrice', 
 									title : ' 折扣价' 
 								},

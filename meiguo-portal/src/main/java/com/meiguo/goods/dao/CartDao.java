@@ -1,11 +1,12 @@
-package com.meiguo.order.dao;
+package com.meiguo.goods.dao;
 
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.meiguo.order.domain.CartDO;
+import com.meiguo.goods.domain.CartDO;
+
 
 /**
  * 购物车表

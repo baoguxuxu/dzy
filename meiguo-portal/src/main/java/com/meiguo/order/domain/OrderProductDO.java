@@ -28,8 +28,6 @@ public class OrderProductDO implements Serializable {
 	private String picImg;
 	//商品规格编号
 	private Long productSpecId;
-	//商品规格名称
-	private String productSpecName;
 	//价格
 	private BigDecimal price;
 	//积分
@@ -40,9 +38,29 @@ public class OrderProductDO implements Serializable {
 	private Integer productScore;
 	//商品总金额
 	private BigDecimal productAmount;
-	//订单状态 0=待发货，2=已发货，3=待评价，4=已评价
-	private Integer status;
-
+	//是否可以用浆果票支付  0 可以用浆果票支付   1 不能用浆果票支付
+	private Integer jiangguoFlag;
+	public Integer getJiangguoFlag() {
+		return jiangguoFlag;
+	}
+	public void setJiangguoFlag(Integer jiangguoFlag) {
+		this.jiangguoFlag = jiangguoFlag;
+	}
+	//商品规格
+	private String spec;
+	
+    /**
+     * 获取 ：商品规格
+     */
+	public String getSpec() {
+		return spec;
+	}
+	/**
+	 *设置：商品规格
+	 */
+	public void setSpec(String spec) {
+		this.spec = spec;
+	}
 	/**
 	 * 设置：订单商品ID
 	 */
@@ -116,18 +134,6 @@ public class OrderProductDO implements Serializable {
 		return productSpecId;
 	}
 	/**
-	 * 设置：商品规格名称
-	 */
-	public void setProductSpecName(String productSpecName) {
-		this.productSpecName = productSpecName;
-	}
-	/**
-	 * 获取：商品规格名称
-	 */
-	public String getProductSpecName() {
-		return productSpecName;
-	}
-	/**
 	 * 设置：价格
 	 */
 	public void setPrice(BigDecimal price) {
@@ -186,17 +192,5 @@ public class OrderProductDO implements Serializable {
 	 */
 	public BigDecimal getProductAmount() {
 		return productAmount;
-	}
-	/**
-	 * 设置：订单状态 0=待发货，2=已发货，3=待评价，4=已评价
-	 */
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
-	/**
-	 * 获取：订单状态 0=待发货，2=已发货，3=待评价，4=已评价
-	 */
-	public Integer getStatus() {
-		return status;
 	}
 }

@@ -58,11 +58,20 @@ function load() {
 									title : '产品编号' 
 								},								{
 									field : 'name', 
-									title : '产品名称' 
+									title : '商品名称' 
+								},
+								
+								{
+									field : 'url',
+									title : '图片',
+									formatter : function(value, row, index) {
+										var e = '<div class="image"><img width="90" height="100" alt="image" class="img-responsive" src="' + value + '"></div>'
+										return e;
+									}
 								},
 																{
 									field : 'categoryName', 
-									title : '产品分类' 
+									title : '商品分类' 
 								},
 																{
 									field : 'createTime', 

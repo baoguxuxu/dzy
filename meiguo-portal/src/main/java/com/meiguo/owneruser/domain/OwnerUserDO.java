@@ -21,8 +21,6 @@ public class OwnerUserDO implements Serializable {
 	//id
 
 	private Long id;
-	//用户ID
-	private Long userId;
 	//微信id
 	private String openId;
 	//昵称
@@ -63,71 +61,49 @@ public class OwnerUserDO implements Serializable {
 	private Integer deleteFlag;
 	//成就图标
     private String chengjiu_ioc ;
-	//成就名称
-	private String chengjiu_name; 
-	//获取条件
-	private String chengjiu_demand;
-	//奖励
-	private String reward;
-	//达成时间
-	private Date chengjiu_time;
-	// 排名
-	private String rank;
-	//'0：解锁1：未解锁'
-	private Integer chengjiu_flag;
-	//开始时间'
-	private Date startTime;
-	//结束时间
-	private Date endTime; 
-	//总口数
-	private Integer otalkou_num;
-	//当天口数
-	private Integer daykou_num;
-	//性别
-	private String sex;
-	//年龄
-	private Integer age;
-	//烟龄
-	private String smoke_age;
-	//日期
-	private Date time;
-	//注册码
-	private Long zhucema;
-	//邀请人Id
-	private Long inviterId;
-	//注册人数
-	private Integer zhucemaNum;
-	//登陆次数
-	private Integer dengluNum;
-	//总积分
-	private Integer total_jifen;
+    //成就名称
+   private String chengjiu_name; 
+    //获取条件
+   private String chengjiu_demand;
+    //奖励
+   private String reward;
+    //达成时间
+   private Date chengjiu_time;
+   // 排名
+   private String rank;
+   //'0：解锁1：未解锁'
+   private Integer chengjiu_flag;
+  //开始时间'
+  private Date startTime;
+  //结束时间
+  private Date endTime; 
+  //总口数
+  private Integer otalkou_num;
+  //当天口数
+  private Integer daykou_num;
+  //性别
+  private String sex;
+  //年龄
+  private Integer age;
+  //烟龄
+  private String smoke_age;
+  //日期
+  private Date time;
+  //注册码
+  private String zhucema;
+  //注册人数
+  private Integer zhucemaNum;
+  //每人登录次数
+  private Integer dengluNum;
+  
 
-	
-	
-	public Long getUserId() {
-		return userId;
+	public String getZhucema() {
+		return zhucema;
 	}
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
-	public Long getZhucema() {
-	return zhucema;
-	}
-	public void setZhucema(Long zhucema) {
+	public void setZhucema(String zhucema) {
 		this.zhucema = zhucema;
 	}
-	public Long getInviterId() {
-		return inviterId;
-	}
-	public void setInviterId(Long inviterId) {
-		this.inviterId = inviterId;
-	}
-	public Integer getTotal_jifen() {
-		return total_jifen;
-	}
-	public void setTotal_jifen(Integer total_jifen) {
-		this.total_jifen = total_jifen;
-	}
+	
 	public Integer getZhucemaNum() {
 		return zhucemaNum;
 	}

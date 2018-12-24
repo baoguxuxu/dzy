@@ -28,40 +28,40 @@
 </div>
 <form id="signupForm">
 		<div class="Top">
-			<a href="/owner/userPlot"><span>&nbsp;</span></a>新增房屋
+			<a href="/owner/userPlot"><span>&nbsp;</span></a>订单确认
 		</div>
 
 		  <div th:each="op,in:${oplist}">
 			
-			<input type="hidden" name="list[0].productSpecName" th:value="${op.productSpecName}">
-			<input type="hidden" name="list[0].picImg" th:value="${op.picImg}">
-			<input type="hidden" name="list[0].price" th:value="${op.price}">
-			<input type="hidden" name="list[0].buyNumber" th:value="${op.buyNumber}">
-			<input type="hidden" name="list[0].goodsId" th:value="${op.goodsId}">
-			<input type="hidden" name="list[0].name" th:value="${op.name}">
+			<!-- <input type="hidden" th:name="'list['+${in.index}+'].productSpecName'" th:value="${op.productSpecName}">
+			<input type="hidden" th:name="'list['+${in.index}+'].picImg'" th:value="${op.picImg}">
+			<input type="hidden" th:name="'list['+${in.index}+'].price'" th:value="${op.price}">
+			<input type="hidden" th:name="'list['+${in.index}+'].buyNumber'" th:value="${op.buyNumber}">
+			<input type="hidden" th:name="'list['+${in.index}+'].goodsId'" th:value="${op.goodsId}">
+			<input type="hidden" th:name="'list['+${in.index}+'].name'" th:value="${op.name}"> -->
 			
 			<span><img alt="" th:src="${op.picImg}" width="50" height="50"/></span>
-			<span th:text="${op.productSpecName}" style="font-size: 15px;"></span>
+			<span th:text="${op.spec}" style="font-size: 15px;"></span>
 			<span th:text="'￥  '+${op.price}" style="font-size: 15px;color: red"></span>
 			<span style="font-size: 15px;"></span>
 			<span th:text="'购买量 '+${op.buyNumber}" style="font-size: 15px;"></span>
 		  </div>
-		<div class="fangwu-add-txt bg-white" id="fangzhudiv">
+		<div class="fangwu-add-txt bg-white" id="fangzhudiv" style="font-size: 15px;">
 			<ul>
 				<li><span>收货人</span><em><input id="consignee"  name="consignee"  type="text" th:value="${orderDO.consignee}"></em></li>
 			
 				<li><span>联系电话</span><em><input id="mobile"  name="mobile"  type="text" th:value="${orderDO.mobile}"></em></li>
-				<li><span>收货地址</span><em><input id="address"  name="address"  type="text" th:value="${orderDO.address}"></em><a href="/information/address/list"><span style="font-size: 16px">></span></a></li>
+				<li><span>收货地址</span><em><input id="address"  name="address"  type="text" th:value="${orderDO.address}"></em><a href="/information/address"><span style="font-size: 16px">></span></a></li>
 				
 			<!-- 	<li><span>售后服务</span><em><input id="identityCard"  name="identityCard"  type="text"></em>
 				<li><span>店铺优惠</span><em><input id="identityCard" name="identityCard"  type="text"></em> -->
-				<li><span>快递费</span><em><input id="shipmentAmount"  name="shipmentAmount"  type="text"></em></li>
+				<!-- <li><span>快递费</span><em><input id="shipmentAmount"  name="shipmentAmount"  type="text"></em></li> -->
 				<li><span>订单金额</span><em><input id="orderAmount" name="orderAmount"  type="text" th:value="${orderDO.orderAmount}"></em></li>
-				<li><span>支付金额</span><em><input id="payAmount"  name="payAmount"  type="text"></em>
+				<!-- <li><span>支付金额</span><em><input id="payAmount"  name="payAmount"  type="text"></em> -->
 			<!-- 	<li><span>发票</span><em><input id="identityCard" maxlength="18" name="identityCard"  type="text"></em>
 				<li><span>买家留言</span><em><input id="identityCard" maxlength="18" name="identityCard"  type="text"></em> -->
 				<li><span>支付方式</span><select name="payType">
-											<option value="0">积分兑换</option>
+											<!-- <option value="0">浆果票兑换</option> -->
 											<option value="1">在线支付</option>
 										</select>
 				</li>
@@ -79,9 +79,31 @@
     	
     	$("#payAmount").val(parseInt($("#orderAmount").val())+shipmentAmount);
     });
-  
+    
+    //发起支付
+    function save(){
+ //   	var ptype=$("[name='payType']").val();
+        var orderNo=[[${orderDO.orderNo}]];
+//		if(ptype == 0){//浆果票兑换
+			$.ajax({
+				url: "/system/order/payforselect/"+orderNo,
+				type: "POST",
+				success: function(r){
+					if(r.code == '0'){
+						var result = confirm("是否用浆果票代扣");
+	    				if(result){
+	    					
+	    				}
+						
+					}
+					alert(r.errmsg);
+				}
+			});
+//		}
+    }
   </script>
   <script type="text/javascript" src="/js/order/order.js"></script>
+  
   
 </body>
 </html>

@@ -17,10 +17,6 @@ public class SpecDO implements Serializable {
 	
 	//规格ID
 	private Long id;
-	//父规格ID
-	private Long parentId;
-	//父规格名称
-	private String parentName;
 				   
 	//商品规格编号
 	private Long productSpecId;
@@ -40,10 +36,44 @@ public class SpecDO implements Serializable {
 	private Integer status;
 	//数据删除标志(0:数据没有执行删除操作        1：数据被执行了删除操作)
 	private Integer deleteEnable;
-
+	//商品分类id
+	private Long categoryId;
+	//商品分类名称
+	private String categoryName;
+	/**
+	 * 设置商品分类名称
+	 */
+    public String getCategoryName() {
+		return categoryName;
+	}
+    /**
+     * 获取商品分类名称
+     */
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
+	/**
+     * 设置商品分类id
+     */
+	public Long getCategoryId() {
+		return categoryId;
+	}
+	/**
+	 * 获取商品分类id
+	 */
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
+	}
+	
+	/**
+	 * 获取商品规格的删除状态
+	 */
 	public Integer getDeleteEnable() {
 		return deleteEnable;
 	}
+	/**
+	 * 设置商品规格的删除状态
+	 */
 	public void setDeleteEnable(Integer deleteEnable) {
 		this.deleteEnable = deleteEnable;
 	}
@@ -59,14 +89,6 @@ public class SpecDO implements Serializable {
 	 */
 	public Long getId() {
 		return id;
-	}
-	
-	public void setParentId(Long parentId) {
-		this.parentId = parentId;
-	}
-	
-	public Long getParentId() {
-		return parentId;
 	}
 	/**
 	 * 设置：商品规格编号
@@ -163,17 +185,5 @@ public class SpecDO implements Serializable {
 	 */
 	public Integer getStatus() {
 		return status;
-	}
-    /**
-     * 获取：父规格名称
-     */
-	public String getParentName() {
-		return parentName;
-	}
-	/**
-	 * 设置：父规格名称
-	 */
-	public void setParentName(String parentName) {
-		this.parentName = parentName;
 	}
 }

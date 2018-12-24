@@ -55,17 +55,7 @@ function load() {
 																{
 									field : 'shipmentType', 
 									title : '配送方式 ' 
-								},								{
-									field:'name',
-									title:'商品名称'
-								},								{
-									field:'goodsNumber',
-									title:'商品编号'
-								},								{
-									field:'tgoodsNumber',
-									title:'商品条形码号'
-								},
-																
+								},												
 																{
 									field : 'postid', 
 									title : '运单号' 
@@ -73,30 +63,11 @@ function load() {
 																
 									field : 'createTime', 
 									title : '创建时间' 
-								},                             {
-									field : 'shipmentAmount', 
-									title : '快递费' 
-								}, 								{
-									field:'buyNumber',
-									title:'购买数量'
-									
-								},
+								},                            
 																{
 									field : 'orderAmount', 
 									title : '订单金额' 
-								},                            {
-									field : 'payAmount', 
-									title : '支付金额'
-								},{
-									field : 'payType', 
-									title : '支付方式 ',
-									formatter : function(value, row, index) {
-										if(value=='0')
-											return '积分兑换';
-										if(value=='1')
-											return '现金支付';
-									}
-								},
+								},                           
 																{
 									field : 'address', 
 									title : '收获地址' 
@@ -133,7 +104,7 @@ function load() {
 									field : 'id',
 									align : 'center',
 									formatter : function(value, row, index) {
-										var e = '<a class="btn btn-primary btn-sm '+s_edit_h+'" href="#" mce_href="#" title="编辑" onclick="edit(\''
+										var e = '<a class="btn btn-primary btn-sm '+s_edit_h+'" href="#" mce_href="#" title="订单商品" onclick="look(\''
 												+ row.id
 												+ '\')"><i class="fa fa-edit"></i></a> ';
 										var d = '<a class="btn btn-warning btn-sm '+s_remove_h+'" href="#" title="删除"  mce_href="#" onclick="remove(\''
@@ -160,15 +131,10 @@ function add() {
 		content : prefix + '/add' // iframe的url
 	});
 }
-function edit(id) {
-	layer.open({
-		type : 2,
-		title : '编辑',
-		maxmin : true,
-		shadeClose : false, // 点击遮罩关闭层
-		area : [ '800px', '520px' ],
-		content : prefix + '/edit/' + id// iframe的url
-	});
+function look(id) {
+	
+		window.location.href= prefix + '/look/' + id// iframe的url
+	
 }
 function remove(id,orderStatus) {
 	if(orderStatus!=='3'){
@@ -230,5 +196,32 @@ function batchRemove() {
 		});
 	}, function() {
 
+	});
+}
+
+function fahuo(){
+	var rows = $('#exampleTable').bootstrapTable('getSelections'); // 返回所有选择的行，当没有选择的记录时，返回一个空数组
+	if (rows.length == 0) {
+		layer.msg("请选择要发货的订单");
+		return;
+	}
+	
+	if(rows.length>1){
+		layer.msg("每次只能选择一条数据");
+		return;
+	}
+	var data=rows[0];
+	if(data.orderStatus!=0){
+		layer.msg("订单已经发货或订单不存在");
+		return;
+	}
+	
+	layer.open({
+		type : 2,
+		title : '编辑',
+		maxmin : true,
+		shadeClose : false, // 点击遮罩关闭层
+		area : [ '800px', '520px' ],
+		content : prefix + '/fahuo/' + data.orderNo// iframe的url
 	});
 }

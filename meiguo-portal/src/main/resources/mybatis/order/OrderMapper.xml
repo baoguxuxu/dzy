@@ -4,12 +4,13 @@
 <mapper namespace="com.meiguo.order.dao.OrderDao">
 
 	<select id="get" resultType="com.meiguo.order.domain.OrderDO">
-		select `id`,`order_no`,`user_id`,`pay_type`,`shipment_time`,`shipment_type`,`shipment_amount`,`invoice_type`,`invoice_title`,`order_status`,`postid`,`create_time`,`update_time`,`order_amount`,`order_score`,`pay_amount`,`buy_number`,`address`,`consignee`,`mobile` from goods_order where id = #{value}
+		select `id`,`order_no`,`user_id`,`pay_type`,`shipment_time`,`shipment_type`,`shipment_amount`,`invoice_type`,`invoice_title`,`order_status`,`postid`,`create_time`,`update_time`,`order_amount`,`order_score`,`pay_amount`,`address`,`consignee`,`mobile` from goods_order where 
+		order_no=#{orderNo} and user_id=#{userId} and deleteEnable=0
 	</select>
 
 	<select id="list" resultType="com.meiguo.order.domain.OrderDO">
-		select `id`,`order_no`,`user_id`,`pay_type`,`shipment_time`,`shipment_type`,`shipment_amount`,`invoice_type`,`invoice_title`,`order_status`,`postid`,`create_time`,`update_time`,`order_amount`,`order_score`,`pay_amount`,`buy_number`,`address`,`consignee`,`mobile` from goods_order
-        <where>  
+		select `id`,`order_no`,`user_id`,`pay_type`,`shipment_time`,`shipment_type`,`shipment_amount`,`invoice_type`,`invoice_title`,`order_status`,`postid`,`create_time`,`update_time`,`order_amount`,`order_score`,`pay_amount`,`address`,`consignee`,`mobile` from goods_order
+        where deleteEnable=0
 		  		  <if test="id != null and id != ''"> and id = #{id} </if>
 		  		  <if test="orderNo != null and orderNo != ''"> and order_no = #{orderNo} </if>
 		  		  <if test="userId != null and userId != ''"> and user_id = #{userId} </if>
@@ -19,18 +20,17 @@
 		  		  <if test="shipmentAmount != null and shipmentAmount != ''"> and shipment_amount = #{shipmentAmount} </if>
 		  		  <if test="invoiceType != null and invoiceType != ''"> and invoice_type = #{invoiceType} </if>
 		  		  <if test="invoiceTitle != null and invoiceTitle != ''"> and invoice_title = #{invoiceTitle} </if>
-		  		  <if test="orderStatus != null and orderStatus != ''"> and order_status = #{orderStatus} </if>
+		  		  <if test="orderStatus != null"> and order_status = #{orderStatus} </if>
 		  		  <if test="postid != null and postid != ''"> and postid = #{postid} </if>
 		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
 		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
 		  		  <if test="orderAmount != null and orderAmount != ''"> and order_amount = #{orderAmount} </if>
 		  		  <if test="orderScore != null and orderScore != ''"> and order_score = #{orderScore} </if>
 		  		  <if test="payAmount != null and payAmount != ''"> and pay_amount = #{payAmount} </if>
-		  		  <if test="buyNumber != null and buyNumber != ''"> and buy_number = #{buyNumber} </if>
 		  		  <if test="address != null and address != ''"> and address = #{address} </if>
 		  		  <if test="consignee != null and consignee != ''"> and consignee = #{consignee} </if>
 		  		  <if test="mobile != null and mobile != ''"> and mobile = #{mobile} </if>
-		  		</where>
+		  	
         <choose>
             <when test="sort != null and sort.trim() != ''">
                 order by ${sort} ${order}
@@ -63,7 +63,6 @@
 		  		  <if test="orderAmount != null and orderAmount != ''"> and order_amount = #{orderAmount} </if>
 		  		  <if test="orderScore != null and orderScore != ''"> and order_score = #{orderScore} </if>
 		  		  <if test="payAmount != null and payAmount != ''"> and pay_amount = #{payAmount} </if>
-		  		  <if test="buyNumber != null and buyNumber != ''"> and buy_number = #{buyNumber} </if>
 		  		  <if test="address != null and address != ''"> and address = #{address} </if>
 		  		  <if test="consignee != null and consignee != ''"> and consignee = #{consignee} </if>
 		  		  <if test="mobile != null and mobile != ''"> and mobile = #{mobile} </if>
@@ -88,10 +87,10 @@
 			`order_amount`, 
 			`order_score`, 
 			`pay_amount`, 
-			`buy_number`, 
 			`address`, 
 			`consignee`, 
-			`mobile`
+			`mobile`,
+			deleteEnable
 		)
 		values
 		(
@@ -110,10 +109,10 @@
 			#{orderAmount}, 
 			#{orderScore}, 
 			#{payAmount}, 
-			#{buyNumber}, 
 			#{address}, 
 			#{consignee}, 
-			#{mobile}
+			#{mobile},
+			#{deleteEnable}
 		)
 	</insert>
 	 
@@ -135,10 +134,10 @@
 			<if test="orderAmount != null">`order_amount` = #{orderAmount}, </if>
 			<if test="orderScore != null">`order_score` = #{orderScore}, </if>
 			<if test="payAmount != null">`pay_amount` = #{payAmount}, </if>
-			<if test="buyNumber != null">`buy_number` = #{buyNumber}, </if>
 			<if test="address != null">`address` = #{address}, </if>
 			<if test="consignee != null">`consignee` = #{consignee}, </if>
-			<if test="mobile != null">`mobile` = #{mobile}</if>
+			<if test="mobile != null">`mobile` = #{mobile},</if>
+			<if test="deleteEnable != null">`deleteEnable` = #{deleteEnable}</if>
 		</set>
 		where id = #{id}
 	</update>

@@ -58,6 +58,16 @@ public class GoodsServiceImpl implements GoodsService {
 	
 	@Override
 	public int update(GoodsDO goods){
+		List<GoodsSpec> list = goods.getList();
+		if(list!=null){
+			String rel="";
+			for(GoodsSpec goodsSpec :list){
+				rel+=goodsSpec.getSpecname()+":"+goodsSpec.getSpecdetail()+"  ";
+			}
+			goods.setSpec(rel);
+		}
+		goods.setUpdateBy(ShiroUtils.getUser().getUsername());
+		goods.setUpdateTime(new Date());
 		return goodsDao.update(goods);
 	}
 	

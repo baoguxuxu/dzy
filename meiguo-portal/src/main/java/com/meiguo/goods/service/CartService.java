@@ -1,10 +1,11 @@
-package com.meiguo.order.service;
+package com.meiguo.goods.service;
 
 
 import java.util.List;
 import java.util.Map;
 
-import com.meiguo.order.domain.CartDO;
+import com.meiguo.goods.domain.CartDO;
+
 
 /**
  * 购物车表

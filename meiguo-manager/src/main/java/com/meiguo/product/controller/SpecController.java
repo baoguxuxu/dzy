@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.meiguo.common.utils.PageUtils;
 import com.meiguo.common.utils.Query;
 import com.meiguo.common.utils.R;
+import com.meiguo.product.domain.CategoryDO;
 import com.meiguo.product.domain.SpecDO;
+import com.meiguo.product.service.CategoryService;
 import com.meiguo.product.service.SpecService;
 
 
@@ -36,12 +38,13 @@ import com.meiguo.product.service.SpecService;
 public class SpecController {
 	@Autowired
 	private SpecService specService;
+	@Autowired
+	private CategoryService categoryService;
 	
 	@GetMapping()
 	@RequiresPermissions("information:spec:spec")
 	String Spec(Model model){
 		Map<String,Object> map = new HashMap<String,Object>();
-		map.put("parent_id", 0);
 		List<SpecDO> specList  = specService.list(map);
 		model.addAttribute("specList", specList);
 	    return "information/spec/spec";
@@ -51,14 +54,7 @@ public class SpecController {
 	@GetMapping("/list")
 	@RequiresPermissions("information:spec:spec")
 	public PageUtils list(@RequestParam Map<String, Object> params){
-		//查询列表数据
-        Query query = new Query(params);
-        if(params.get("id")!=null){
-        	query.put("parent_id",Integer.parseInt(params.get("id").toString()));
-        }
-        else{
-        	query.put("parent_id",0);
-        }
+		Query query = new Query(params);
 		List<SpecDO> specList = specService.list(query);
 		int total = specService.count(query);
 		PageUtils pageUtils = new PageUtils(specList, total);
@@ -67,7 +63,10 @@ public class SpecController {
 	
 	@GetMapping("/add")
 	@RequiresPermissions("information:spec:add")
-	String add(){
+	String add(Model model){
+		Map<String,Object> map = new HashMap<String,Object>();
+		List<CategoryDO> list1 = categoryService.list(map);
+		model.addAttribute("list1",list1);
 	    return "information/spec/add";
 	}
 
@@ -88,7 +87,6 @@ public class SpecController {
 	public R save( SpecDO spec){
 		Map<String,Object> map  = new HashMap<String,Object>();
 		map.put("productSpecId", spec.getProductSpecId());
-		map.put("parent_id", spec.getParentId()==null?0:spec.getParentId());
 		List<SpecDO> list = specService.list(map);
 		if(list.size()>0)
 			return R.error("规格编号已存在，请重新输入");
@@ -104,13 +102,6 @@ public class SpecController {
 	@RequestMapping("/update")
 	@RequiresPermissions("information:spec:edit")
 	public R update( SpecDO spec){
-		if(spec.getParentId()==null){
-			specService.update(spec);//修改父规格
-			SpecDO specDO = new SpecDO();
-			specDO.setParentId(spec.getId());
-			specDO.setParentName(spec.getName());
-			specService.updateByParentId(specDO);//修改自规格中保存的父规格名称
-		}
 			specService.update(spec);
 			return R.ok();
 	}
@@ -133,7 +124,7 @@ public class SpecController {
 	}
 	
 	/**
-	 * 删除
+	 * 批量删除
 	 */
 	@PostMapping( "/batchRemove")
 	@ResponseBody
@@ -141,31 +132,5 @@ public class SpecController {
 	public R remove(@RequestParam("ids[]") Long[] ids){
 		specService.batchRemove(ids);
 		return R.ok();
-	}
-	
-	/**
-	 * 规格明细
-	 */
-	@GetMapping("/specMX")
-	@RequiresPermissions("information:spec:spec")
-	String Spec(Integer id,Model model){
-		model.addAttribute("id",id);
-		Map<String,Object> map = new HashMap<String,Object>();
-		map.put("parent_id", id);
-		List<SpecDO> specList  = specService.list(map);
-		model.addAttribute("specList", specList);
-	    return "information/spec/specMX";
-	}
-	
-	/**
-	 * 增加子规格
-	 */
-	@GetMapping("/addMX/{parent_id}")
-	@RequiresPermissions("information:spec:add")
-	String add(@PathVariable("parent_id") Long id,Model model){
-		SpecDO spec = specService.get(id);
-		model.addAttribute("spec", spec);
-	 
-	    return "information/spec/addMX";
 	}
 }

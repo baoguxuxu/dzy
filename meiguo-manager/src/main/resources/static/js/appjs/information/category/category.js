@@ -72,7 +72,29 @@ function load() {
 																{
 									field : 'remarks', 
 									title : '备注信息' 
-								},                              {
+								},  							{
+									field:'jiangguoFlag',
+									title:'浆果票兑换',
+									formatter : function(value, row, index) {
+										var str = '';
+										
+										str +=' <div class="switch onoffswitch col-sm-1"> ';
+											str +=' <div class="onoffswitch"> ';
+												str +=' <input name="allowComment" '; 
+												//启用状态 0：是；1：否
+												if(row.jiangguoFlag == 0)
+													str += ' checked="" ';
+													
+												str +=' type="checkbox" onchange="updateDuihuan(' +row.id+ ',this)" value="' +row.id+ '" class="onoffswitch-checkbox" id="example1' +row.id+ '">  ';
+												str +=' <label class="onoffswitch-label" for="example1' +row.id+ '">  ';
+													str +=' <span class="onoffswitch-inner"></span> ';
+													str +=' <span class="onoffswitch-switch"></span> ';
+														str +=' </label> ';
+											str +=' </div>';
+										str +=' </div>';
+										return str;
+									} 
+								},                            {
 									field: 'status',
 									title: '是否禁用',
 									formatter : function(value, row, index) {
@@ -144,6 +166,29 @@ function updateEnable(id,enable) {
 	}
 		$.ajax({
 			url : prefix+"/updateEnable",
+			type : "post",
+			data : {
+				'id' : id,
+				'enable':isEnable
+			},
+			success : function(r) {
+				if (r.code==0) {
+					layer.msg(r.msg);
+					reLoad();
+				}else{
+					layer.msg(r.msg);
+				}
+			}
+		});
+}
+
+function updateDuihuan(id,enable){
+	var isEnable = 1;
+	if($(enable).prop("checked")){
+		isEnable = 0;
+	}
+		$.ajax({
+			url : prefix+"/updateDuihuan",
 			type : "post",
 			data : {
 				'id' : id,

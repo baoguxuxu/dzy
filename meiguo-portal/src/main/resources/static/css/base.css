@@ -311,10 +311,10 @@ background-size:1.4rem .33rem;}
 .fangwu img{width: .14rem;height: .23rem;}
 .fangwu span{background-image:url(../img/wode-wu.png);}
 .fangwu-msg{margin-bottom:.11rem;padding-bottom:.1rem;overflow: hidden;}
-.fangwu-msg h3{font-size:.28rem;height: .94rem;line-height: .94rem;border-bottom:1px solid #f1f1f1;padding:0 .4rem;margin-bottom:.3rem;}
+.fangwu-msg h3{font-size:.2rem;height: .94rem;line-height: .94rem;border-bottom:1px solid #f1f1f1;padding:0 .4rem;margin-bottom:.3rem;}
 .fangwu-msg p{margin-left: .74rem;margin-bottom:.2rem;}
 .fangwu-msg p i{padding:0 .32rem;}
-.fangwu-msg p span{width: .52rem;height: .27rem;line-height:.27rem;font-size:.16rem;display: inline-block;text-align: center;color:#fff;border-radius:.05rem;}
+.fangwu-msg p span{width: .52rem;height: .27rem;line-height:.27rem;font-size:.1rem;display: inline-block;text-align: center;color:#fff;border-radius:.05rem;}
 .fangwu-msg p.dizhi{text-indent:.48rem;background:url(../img/wode-weizhi.png) no-repeat left center;-webkit-background-size:.22rem .25rem;background-size:.22rem .25rem;}
 
 /*------------------------------我的服务------------------------------*/

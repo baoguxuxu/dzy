@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.meiguo.order.domain.OrderDO;
 
@@ -18,7 +19,7 @@ import com.meiguo.order.domain.OrderDO;
 @Mapper
 public interface OrderDao {
 
-	OrderDO get(Long id);
+	OrderDO get(@Param("orderNo") String orderNo,@Param("userId") Long userId);
 	
 	List<OrderDO> list(Map<String,Object> map);
 	

@@ -1,4 +1,4 @@
-package com.meiguo.order.control;
+package com.meiguo.goods.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,19 +12,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.meiguo.common.utils.PageUtils;
-import com.meiguo.common.utils.Query;
+
 import com.meiguo.common.utils.R;
+import com.meiguo.common.utils.ShiroUtils;
+import com.meiguo.goods.domain.CartDO;
 import com.meiguo.goods.domain.GoodsDO;
 import com.meiguo.goods.domain.ImgDO;
+import com.meiguo.goods.service.CartService;
 import com.meiguo.goods.service.GoodsService;
-import com.meiguo.order.domain.CartDO;
-import com.meiguo.order.service.CartService;
 
 
 
@@ -44,28 +43,28 @@ public class CartController {
 	@Autowired
 	private GoodsService goodService;
 	@GetMapping()
-	@RequiresPermissions("system:cart:cart")
 	String Cart(){
-	    return "system/cart/cart";
+	    return "order/cart";
 	}
 	
 	/**
 	 * 查询购物车
 	 */
+	@ResponseBody
 	@GetMapping("/list")
-	public String list(Model model){
+	public List<CartDO> list(Model model){
        Map<String,Object> map = new HashMap<String,Object>();
+       map.put("userId",ShiroUtils.getUserId());
 	   List<CartDO> cartList = cartService.list(map);
 	   for(CartDO cartDO :cartList){
 		   Long goodsId  = cartDO.getGoodsId();
 		   GoodsDO goodsDO =  goodService.get(goodsId);
-		   List<ImgDO> imgDO =   goodService.listGoodsimgAndDetailimg(goodsId, 0);
+		   List<ImgDO> imgDO =   goodService.listGoodsimgAndDetailimg(goodsId, 1);
 		   if(imgDO.size()>0)
 			   goodsDO.setUrl(imgDO.get(0).getUrl());
 		 cartDO.setGoodsDO(goodsDO);
 	   }  
-		model.addAttribute("cartList", cartList);
-		return "order/cart";
+		return cartList;
 	}
 	
 	@GetMapping("/add")
@@ -88,9 +87,12 @@ public class CartController {
 	@ResponseBody
 	@PostMapping("/save")
 	public R save( Long goodsId){
-		if(cartService.save(goodsId)>0){
-			return R.ok();
+		int i=  cartService.save(goodsId);
+		if(i>0){
+			return R.ok("加入购物车成功");
 		}
+		if(i==-1)
+			return R.ok("购物车中已存在");
 		return R.error();
 	}
 	/**
