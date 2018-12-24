@@ -6,9 +6,15 @@
 	<select id="get" resultType="com.meiguo.owneruser.domain.OwnerUserDO">
 		select `id`,`open_id`,`nickname`,`password`,`phone`,`heard_url`,`name`,`identity_card`,`register_time`,`pay_num`,`serve_num`,`balance`,`restitution`,`pay_time`,`login_time`,`add_time`,`update_time`,`delete_flag`,`zhucema`,`zhucema_num`,`denglu_num` from t_user where id = #{value}
 	</select>
+	<select id="getList" resultType="com.meiguo.owneruser.domain.OwnerUserDO">
+		select `id`,`open_id`,`nickname`,`password`,`phone`,`heard_url`,`name`,`identity_card`,`register_time`,`pay_num`,`serve_num`,`balance`,`restitution`,`pay_time`,`login_time`,`add_time`,`update_time`,`delete_flag`,`zhucema`,`zhucema_num`,`denglu_num`,inviter_id from t_user where inviter_id = #{value}
+	</select>
 	
 	<select id="getbyname" resultType="com.meiguo.owneruser.domain.OwnerUserDO">
 		select `id`,`open_id`,`nickname`,`password`,`phone`,`heard_url`,`name`,`identity_card`,`register_time`,`pay_num`,`serve_num`,`balance`,`restitution`,`pay_time`,`login_time`,`add_time`,`update_time`,`delete_flag`,`zhucema`,`zhucema_num`,`denglu_num` from t_user where username = #{value}
+	</select>
+	<select id="getbyzhuce" resultType="com.meiguo.owneruser.domain.OwnerUserDO">
+		select `id`,`open_id`,`nickname`,`password`,`phone`,`heard_url`,`name`,`identity_card`,`register_time`,`pay_num`,`serve_num`,`balance`,`restitution`,`pay_time`,`login_time`,`add_time`,`update_time`,`delete_flag`,`zhucema`,`zhucema_num`,`denglu_num` from t_user where zhucema = #{value}
 	</select>
 
 	<select id="list" resultType="com.meiguo.owneruser.domain.OwnerUserDO">
@@ -34,7 +40,7 @@
 		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
 		  		  <if test="deleteFlag != null and deleteFlag != ''"> and delete_flag = #{deleteFlag} </if>
 		  		  <if test="zhucema != null and zhucema != ''"> and zhucema = #{zhucema} </if>
-		  		  <if test="zhuceNum != null and zhucemaNum != ''"> and zhucema_num = #{zhucemaNum} </if>
+		  		  <if test="zhucemaNum != null and zhucemaNum != ''"> and zhucema_num = #{zhucemaNum} </if>
 		  		  <if test="dengluNum != null and dengluNum != ''"> and denglu_num = #{dengluNum} </if>	  		  
 		  		</where>
         <choose>
@@ -72,7 +78,7 @@
 		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
 		  		  <if test="deleteFlag != null and deleteFlag != ''"> and delete_flag = #{deleteFlag} </if>
 		  		  <if test="zhucema != null and zhucema != ''"> and zhucema = #{zhucema} </if>
-		  		  <if test="zhuceNum != null and zhucemaNum != ''"> and zhucema_num = #{zhucemaNum} </if>
+		  		  <if test="zhucemaNum != null and zhucemaNum != ''"> and zhucema_num = #{zhucemaNum} </if>
 		  		  <if test="dengluNum != null and dengluNum != ''"> and denglu_num = #{dengluNum} </if>
 		  		</where>
 	</select>
@@ -149,7 +155,7 @@
 			<if test="addTime != null">`add_time` = #{addTime}, </if>
 			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
 			<if test="deleteFlag != null">`delete_flag` = #{deleteFlag},</if>
-			<if test="zhucema != null">`zhucema` = #{zhucema} ,</if>  
+			<if test="zhucema != null">`zhucema` = #{zhucema}, </if>
 		  	<if test="zhucemaNum != null"> `zhucema_num` = #{zhucemaNum}, </if>
 		  	<if test="dengluNum != null">`denglu_num` = #{dengluNum} </if>
 		</set>
