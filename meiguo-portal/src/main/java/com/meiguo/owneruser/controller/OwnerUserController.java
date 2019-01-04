@@ -17,20 +17,19 @@ import com.meiguo.owneruser.service.UserPlotService;
 import com.meiguo.owneruser.service.UserRewardMidService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 @RequestMapping("/owner")
@@ -167,17 +166,17 @@ public class OwnerUserController extends BaseController {
 		try {
 			OwnerUserDO uDO = userService.get(id);
 			UserRewardMidDO urm = new UserRewardMidDO();
-			if(uDO.getPayNum() == 350){
+			if(uDO.getPayNum() == new BigDecimal(350)){
 				urm.setUserId(uDO.getId());
 				urm.setRewardId(6);
 				urm.setWinTime(new Date());
 				userRewardMidService.save(urm);
-			}else if(uDO.getPayNum() == 1000){
+			}else if(uDO.getPayNum() == new BigDecimal(1000)){
 				urm.setUserId(uDO.getId());
 				urm.setRewardId(7);
 				urm.setWinTime(new Date());
 				userRewardMidService.save(urm);
-			}else if(uDO.getPayNum() == 2000){
+			}else if(uDO.getPayNum() == new BigDecimal(2000)){
 				urm.setUserId(uDO.getId());
 				urm.setRewardId(8);
 				urm.setWinTime(new Date());
@@ -185,7 +184,7 @@ public class OwnerUserController extends BaseController {
 				urm.setRewardId(1234546);
 				urm.setWinTime(new Date());
 				userRewardMidService.save(urm);
-			}else if(uDO.getPayNum() == 5000){
+			}else if(uDO.getPayNum() == new BigDecimal(5000)){
 				urm.setUserId(uDO.getId());
 				urm.setRewardId(9);
 				urm.setWinTime(new Date());

@@ -1,6 +1,7 @@
 package com.meiguo.owneruser.domain;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -44,7 +45,7 @@ public class OwnerUserDO implements Serializable {
 	//注册时间
 	private Date registerTime;
 	//消费金额
-	private Double payNum;
+	private BigDecimal payNum;
 	//服务次数
 	private Integer serveNum;
 	//余额
@@ -255,13 +256,13 @@ public class OwnerUserDO implements Serializable {
 	/**
 	 * 设置：消费金额
 	 */
-	public void setPayNum(Double payNum) {
+	public void setPayNum(BigDecimal payNum) {
 		this.payNum = payNum;
 	}
 	/**
 	 * 获取：消费金额
 	 */
-	public Double getPayNum() {
+	public BigDecimal getPayNum() {
 		return payNum;
 	}
 	/**

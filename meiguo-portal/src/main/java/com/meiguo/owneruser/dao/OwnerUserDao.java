@@ -18,7 +18,7 @@ public interface OwnerUserDao {
 	
 	OwnerUserDO getbyname(String username);
 	
-	OwnerUserDO getList(Long inviterId);
+	List<OwnerUserDO> getList(Long inviterId);
 	
 	List<OwnerUserDO> list(Map<String,Object> map);
 	

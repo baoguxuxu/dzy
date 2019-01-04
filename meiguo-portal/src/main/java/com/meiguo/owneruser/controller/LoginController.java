@@ -1,5 +1,8 @@
 package com.meiguo.owneruser.controller;
 
+import java.lang.reflect.Array;
+import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -12,6 +15,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.apache.solr.common.util.Hash.LongPair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +24,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.alibaba.fastjson.JSONArray;
 import com.meiguo.carousel.domain.BannerDO;
 import com.meiguo.carousel.service.BannerService;
 import com.meiguo.common.annotation.Log;
@@ -40,6 +46,8 @@ import com.meiguo.owneruser.domain.UserRewardMidDO;
 import com.meiguo.owneruser.service.OwnerUserService;
 import com.meiguo.owneruser.service.UserRewardMidService;
 import com.meiguo.smsservice.service.ISMSService;
+
+import net.sf.ehcache.pool.sizeof.SizeOf;
 
 
 
@@ -83,7 +91,7 @@ public class LoginController extends BaseController {
 	
 	@Log("请求访问主页")
 	@GetMapping({ "/index" })
-	String index(Model model, Long inviterId) {
+	String index(Model model, Long id) {
 		
 		
 		// 查询banner数据
@@ -96,10 +104,41 @@ public class LoginController extends BaseController {
 		if(udo != null)
 			paramsNotice.put("user_id", this.getUserId());
 		List<NoticeDO> noticeList = noticeService.list(paramsNotice);
+		
+		OwnerUserDO zhuce = userService.get(getUserId());
+		Long zhucema = zhuce.getZhucema();
+		List<OwnerUserDO> list = userService.getList(zhucema);
+		UserRewardMidDO urm = new UserRewardMidDO();
+		urm.setUserId(getUserId());
+		urm.setRewardId(654321);
+		urm.setWinTime(new Date());
+		try {
+			if(list.size() == 5){
+				if(null != list.get(0).getPayNum()){
+					if(null != list.get(1).getPayNum()){
+						if(null != list.get(2).getPayNum()){
+							if(null != list.get(3).getPayNum()){
+								if(null != list.get(4).getPayNum());{
+									userRewardMidService.save(urm);
+								}
+							}
+						}
+					}
+				}		
+			}else{
+				System.out.println("no");
+			}	
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+//			Object json = JSONArray.toJSON(list);
+//			System.out.println(json.toString());
+
 		model.addAttribute("bannerList", bannerList);
 		model.addAttribute("noticeList", noticeList);
 		return "index";
-
+	
 	}	
 	
 	@GetMapping({ "/jieshao" })
@@ -229,6 +268,10 @@ public class LoginController extends BaseController {
 		udo.setZhucema(Long.parseLong(yaoqing.substring(8,14)));
 		udo.setZhucemaNum(0);
 		udo.setDengluNum(1);
+		UserRewardMidDO urmDO = new UserRewardMidDO();
+		urmDO.setUserId(udo.getId());
+		urmDO.setRewardId(1);
+		urmDO.setWinTime(new Date());
 		
 		if(StringUtils.isNotBlank(zhucema)){
 			Map<String, Object> map = new HashMap<String, Object>();
@@ -240,12 +283,10 @@ public class LoginController extends BaseController {
 					Long ids =ownerUserDO.getUserId();
 					Integer num = ownerUserDO.getZhucemaNum();
 					ownerUserDO.setZhucemaNum(num+1);
-					udo.setInviterId(ids);
+					udo.setInviterId(Long.parseLong(zhucema));
 					if(userService.update(ownerUserDO)>0){
 						//return R.ok();
-					}
-					//OwnerUserDO list = userService.getList(map);
-					
+					}					
 					if(ownerUserDO.getZhucemaNum().equals(1)){
 						UserRewardMidDO midDO = new UserRewardMidDO();						
 						midDO.setUserId(ids);

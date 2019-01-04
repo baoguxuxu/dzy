@@ -82,7 +82,7 @@ public class OwnerUserServiceImpl implements OwnerUserService {
 	}
 
 	@Override
-	public OwnerUserDO getList(Long inviterId) {
+	public List<OwnerUserDO> getList(Long inviterId) {
 		return ownerUserMapper.getList(inviterId);
 	}
 
